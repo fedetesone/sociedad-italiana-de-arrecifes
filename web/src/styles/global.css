@@ -124,7 +124,8 @@ a:hover {
   flex-shrink: 0;
   overflow: hidden;
   border-radius: 50%;
-  background: white;
+  /* Blend the supplied logo’s white background into the page surface. */
+  mix-blend-mode: multiply;
 }
 .brand-logo img {
   width: 100%;
