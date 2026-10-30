@@ -76,7 +76,9 @@ a:hover {
   margin-inline: auto;
 }
 .tricolor {
-  height: 5px;
+  height: 10px;
+  flex: 0 0 100vw;
+  margin-inline: calc(50% - 50vw);
   background: linear-gradient(
     to right,
     #254e3f 0 33.33%,
@@ -919,7 +921,7 @@ footer {
 }
 #navigation {
   width: 100%;
-  border-top: 1px solid #d8dccf;
+  border-top: 0;
   justify-content: space-between;
   gap: 16px;
   min-height: 53px;
@@ -1232,6 +1234,14 @@ footer {
   }
   .site-header .brand {
     margin: 0;
+  }
+  .site-header .tricolor {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    margin: 0;
+    transform: translateX(-50%);
   }
   .site-header .menu-toggle {
     display: flex;
