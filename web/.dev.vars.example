@@ -1,0 +1,8 @@
+# Only astro dev on localhost can use mock delivery and official test keys.
+EMAIL_PROVIDER=mock
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+# Production values belong in Cloudflare runtime secrets, not this file:
+# RESEND_API_KEY=
+# EMAIL_FROM=Sociedad Italiana <contacto@your-verified-domain.com.ar>
+# EMAIL_TO=soc.italiana.arrecifes@gmail.com
+# CONTACT_ORIGIN=https://your-worker.your-account.workers.dev

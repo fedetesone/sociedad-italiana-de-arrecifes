@@ -1,23 +1,11 @@
-export interface Event {
-  _id: string;
-  title: string;
-  slug: string;
-  startsAt: string;
-  endsAt?: string;
-  venue: string;
-  summary: string;
-  category?: string;
-  image?: string;
-  imageAlt?: string;
-  body?: import("@portabletext/types").PortableTextBlock[];
-  ticketUrl?: string;
-}
+import { z } from "zod";
+import type { Event } from "../../types/event";
 export function splitEvents(events: Event[], now = new Date()) {
   const upcoming: Event[] = [],
     past: Event[] = [];
   for (const event of events) {
+    if (!isValidEvent(event) || event.status === "cancelled") continue;
     const date = Date.parse(event.endsAt || event.startsAt);
-    if (!Number.isFinite(date)) continue;
     (date >= now.getTime() ? upcoming : past).push(event);
   }
   return {
@@ -49,4 +37,21 @@ export function safeUrl(value?: string) {
   } catch {
     return undefined;
   }
+}
+
+// Require an absolute timestamp; reject ambiguous dates and inconsistent intervals.
+export function isValidEvent(event: Event): boolean {
+  const timestamp = (value: string) =>
+    z.iso.datetime({ offset: true }).safeParse(value).success;
+  return Boolean(
+    event &&
+    typeof event.slug === "string" &&
+    /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(event.slug) &&
+    typeof event.startsAt === "string" &&
+    timestamp(event.startsAt) &&
+    (!event.endsAt ||
+      (timestamp(event.endsAt) &&
+        Date.parse(event.endsAt) >= Date.parse(event.startsAt))) &&
+    (!event.status || ["scheduled", "cancelled"].includes(event.status)),
+  );
 }

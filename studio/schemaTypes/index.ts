@@ -66,6 +66,20 @@ const event = defineType({
       validation: (r) => r.required().max(120),
     }),
     defineField({
+      name: "status",
+      title: "Estado",
+      type: "string",
+      initialValue: "scheduled",
+      options: {
+        list: [
+          { title: "Programado", value: "scheduled" },
+          { title: "Cancelado", value: "cancelled" },
+        ],
+      },
+      description:
+        "Los cancelados conservan su página, pero no aparecen en la agenda ni permiten acceder al enlace de entradas.",
+    }),
+    defineField({
       name: "slug",
       title: "Dirección de la página",
       type: "slug",

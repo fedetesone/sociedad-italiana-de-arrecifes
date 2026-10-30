@@ -1,0 +1,1 @@
+export const contentQuery = `{"settings":*[_type=="siteSettings" && _id=="siteSettings"][0]{...,"heroImage":heroImage.asset->url,"heroAlt":heroImage.alt,"aboutImage":aboutImage.asset->url,"aboutAlt":aboutImage.alt},"events":*[_type=="event" && defined(slug.current)]{...,"slug":slug.current,"image":image.asset->url,"imageAlt":image.alt}}`;

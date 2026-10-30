@@ -1,6 +1,6 @@
 ---
 import { toHTML } from "@portabletext/to-html";
-import { safeUrl } from "../lib/events";
+import { safeUrl } from "../../lib/events/utils";
 const { value = [] } = Astro.props;
 const html = toHTML(value, {
   components: {

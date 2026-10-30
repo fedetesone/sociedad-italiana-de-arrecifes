@@ -15,6 +15,7 @@ jobs:
       - run: npm run check
       - run: npm test
       - run: npm run build
+      - run: npm run verify:build
       # ID de prueba sintácticamente válido. No se realizan solicitudes al dataset.
       - run: npm run build:studio
         env:

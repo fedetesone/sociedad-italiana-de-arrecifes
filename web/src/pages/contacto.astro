@@ -1,8 +1,9 @@
 ---
+export const prerender = true;
 import Layout from "../layouts/Layout.astro";
-import RequestForm from "../components/RequestForm.astro";
+import ContactForm from "../components/forms/ContactForm.astro";
 import { getContent } from "../lib/content";
-import { safeUrl } from "../lib/events";
+import { safeUrl } from "../lib/events/utils";
 const { settings } = await getContent();
 ---
 
@@ -86,7 +87,7 @@ const { settings } = await getContent();
   </section>
   <div class="wrap service-body">
     <div class="narrow">
-      <RequestForm kind="contacto" title="Envianos un mensaje" />
+      <ContactForm />
     </div>
   </div>
 </Layout>

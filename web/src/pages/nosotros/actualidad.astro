@@ -1,11 +1,10 @@
 ---
+export const prerender = true;
 import ServiceLayout from "../../layouts/ServiceLayout.astro";
-import EventCard from "../../components/EventCard.astro";
-import EmptyEvents from "../../components/EmptyEvents.astro";
-import { getContent } from "../../lib/content";
-import { splitEvents } from "../../lib/events";
-const { events } = await getContent();
-const { upcoming } = splitEvents(events);
+import EventCard from "../../components/events/EventCard.astro";
+import EmptyEvents from "../../components/events/EmptyEvents.astro";
+import { getUpcomingEvents } from "../../lib/events/service";
+const upcoming = await getUpcomingEvents(3);
 ---
 
 <ServiceLayout
@@ -32,7 +31,7 @@ const { upcoming } = splitEvents(events);
     </div>
     {upcoming.length ? (
       <div class="events-grid">
-        {upcoming.slice(0, 3).map((event) => (
+        {upcoming.map((event) => (
           <EventCard event={event} />
         ))}
       </div>

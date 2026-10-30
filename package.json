@@ -15,8 +15,11 @@
     "build": "npm run build -w web",
     "build:studio": "npm run build -w studio",
     "check": "npm run check -w web && npm run check -w studio",
-    "test": "node --import tsx --test web/src/lib/*.test.ts",
-    "format": "prettier --write ."
+    "test": "node --import tsx --test \"web/src/**/*.test.ts\"",
+    "format": "prettier --write .",
+    "deploy": "npm run deploy -w web",
+    "preview": "npm run preview -w web",
+    "verify:build": "node scripts/verify-build.mjs"
   },
   "devDependencies": {
     "prettier": "3.9.10",

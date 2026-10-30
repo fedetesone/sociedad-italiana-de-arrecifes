@@ -1,5 +1,6 @@
 ---
-import { eventDate, eventTime, type Event } from "../lib/events";
+import type { Event } from "../../types/event";
+import { eventDate, eventTime } from "../../lib/events/utils";
 const { event } = Astro.props as { event: Event };
 ---
 

@@ -1,43 +1,153 @@
-# Sociedad Italiana de S.M. "Voz de Caprera"
+# Sociedad Italiana de Arrecifes
 
-Sitio institucional en español argentino de la Sociedad Italiana de Socorros Mutuos "Voz de Caprera", Arrecifes. Astro + TypeScript, Tailwind CSS 4, Sanity Studio y alojamiento estático en Cloudflare Pages. Monorepo npm: `web/` contiene el sitio público y `studio/` el administrador independiente.
+Sitio de la Sociedad Italiana de Socorros Mutuos “Voz de Caprera”. Astro + TypeScript, Tailwind, Sanity Studio y Cloudflare Workers. Se conserva el diseño y las páginas existentes: la web es estática y solo Contacto necesita ejecutar código del servidor.
 
-## Guía para administrar contenido
+**Para cargar eventos, fotos o datos institucionales:** [guía en español para personas no técnicas](docs/README.md). Lo que sigue está dirigido a quien configura y mantiene el proyecto.
 
-Si vas a cargar eventos, fotos o datos institucionales, empezá por la **[guía de administración para personas no técnicas](docs/README.md)**. Explica el uso diario de Sanity, las consultas por correo y la gestión de accesos. El resto de este documento está dirigido a quien configura y mantiene el sitio.
+## Arquitectura
 
-## Requisitos y desarrollo
+```mermaid
+flowchart LR
+  S[Sanity: contenido publicado] --> B[Astro: compilación]
+  B --> A[Cloudflare: páginas y archivos estáticos]
+  V[Visitante] --> A
+  V -->|POST /api/contact| W[Astro API en Workers]
+  W --> T[Turnstile y límite de solicitudes]
+  T --> E[Servicio de email]
+  E --> R[Resend en producción]
+  E --> M[Registro local sin entrega en desarrollo]
+```
 
-Node.js 24 LTS y npm. Las versiones exactas resueltas se conservan en `package-lock.json`.
+| Momento                         | Código que se ejecuta                                                                                 |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| Compilación                     | Sanity, filtros y orden de eventos, fechas argentinas, páginas Astro, sitemap                         |
+| Navegador                       | Menú, validación de comodidad, widget Turnstile y estados del formulario                              |
+| Cada solicitud a `/api/contact` | Validación real, control de origen, límite de solicitudes, verificación de Turnstile y envío de email |
+
+La configuración usa el adaptador oficial `@astrojs/cloudflare`. Aunque establece salida `server`, **todas las páginas públicas y robots declaran `prerender = true`**; el endpoint declara `false`. `run_worker_first: ["/api/*"]` envía la API al Worker y permite servir los archivos estáticos sin ejecutar la aplicación. No hay Express, servidor Node en producción, base de datos, KV, sesiones ni autenticación propia. Sanity Studio se publica por separado en el alojamiento de Sanity como antes; no es otro backend propio.
+
+```text
+web/src/
+  components/common/    Texto enriquecido
+  components/events/    Tarjetas y estados vacíos
+  components/forms/     Contacto y formularios de trámites existentes
+  layouts/              Presentación compartida
+  pages/                Páginas estáticas; api/contact.ts es la entrada HTTP
+  lib/sanity/           Cliente, consultas y acceso a datos publicados
+  lib/events/           Servicio de agenda, filtros y fechas
+  lib/email/            Integración Resend y registro local
+  lib/validation/       Esquema Zod de contacto
+  lib/security/         Verificación Turnstile
+  lib/server/           Configuración y manejo HTTP del contacto
+  types/                Tipos compartidos
+studio/                 Administrador y esquemas Sanity
+scripts/                Verificación de salida estática
+```
+
+`lib/content.ts` reúne datos institucionales y eventos para la compilación; conserva los textos de respaldo existentes. Si Sanity está configurado pero falla, el build falla: no reemplaza silenciosamente contenido publicado por datos vacíos. No se inventan eventos.
+
+## Desarrollo local, sin dominio ni cuenta de email
+
+Requisito: **Node.js 24 LTS** y npm. Las versiones están fijadas en `package-lock.json`.
+
+Desde la raíz del repositorio:
 
 ```sh
 npm ci
-npm run dev            # http://localhost:4321
-npm run check
-npm test
-npm run build          # web/dist
-npm run dev:studio     # http://localhost:3333 (requiere configurar Sanity)
+cp web/.env.example web/.env
+cp web/.dev.vars.example web/.dev.vars
+npm run dev
 ```
 
-El sitio funciona sin Sanity con textos institucionales de base y una agenda vacía. No se publican eventos de ejemplo ni datos de contacto inventados. La fotografía de Italia es ilustrativa; reemplazarla con imágenes propias desde el Studio. La reseña histórica incorpora datos contrastados y enlaces a fuentes públicas; el detalle de la investigación está en [docs/historia-fuentes.md](docs/historia-fuentes.md). La institución puede ampliarla desde Sanity.
+Abrí **http://localhost:4321/contacto/**. Completá Nombre, Email, Asunto, Mensaje y consentimiento. El widget usa las claves oficiales de prueba de Cloudflare. Al enviar, el mensaje se imprime en la terminal o en los registros del servidor de desarrollo y la pantalla dice **“Prueba local… No se envió ningún correo”**. No se necesita Resend ni un dominio. Usá datos ficticios: el registro local incluye el contenido para poder inspeccionarlo.
 
-## Configurar Sanity (plan gratuito)
+Astro 7 puede iniciar el servidor en segundo plano. Para ver los mensajes locales o detenerlo:
 
-1. Creá un proyecto en <https://www.sanity.io/manage>, elegí el plan gratuito y creá el dataset **público** `production`. No cargues información personal o interna: el dataset público es legible por cualquiera.
-2. Copiá las plantillas locales:
+```sh
+npm exec -w web astro -- dev logs
+npm exec -w web astro -- dev stop
+```
 
-   ```sh
-   cp web/.env.example web/.env
-   cp studio/.env.example studio/.env
-   ```
+El modo mock solo funciona en `astro dev` y con una URL de loopback (`localhost`, `127.0.0.1` o `::1`). No sirve para publicar una demo que simule entregas. No uses una IP de la red local para probarlo.
 
-3. En `web/.env`, completá `PUBLIC_SANITY_PROJECT_ID` y `PUBLIC_SANITY_DATASET`. En `studio/.env`, completá `SANITY_STUDIO_PROJECT_ID` y `SANITY_STUDIO_DATASET` con los mismos valores. Los IDs de proyecto no son secretos; no hace falta un token de lectura para un dataset público.
-4. Ejecutá `npm run dev:studio` e iniciá sesión con Sanity. En la configuración del proyecto, agregá `http://localhost:3333` a CORS con credenciales si es necesario.
-5. En **La institución**, completá presentación, historia, propósito, actividades, fotos, dirección, contacto y redes. Publicá el documento. Es un singleton con ID `siteSettings`.
-6. En **Eventos**, creá un evento, generá su dirección, completá fecha y hora, lugar, resumen y descripción. Agregá afiche y enlace de inscripción si corresponde. Confirmá la zona horaria del selector y publicá.
-7. Volvé a compilar la web. Las consultas leen únicamente documentos publicados y no usan caché CDN. Un error de Sanity hace fallar el build para evitar desplegar contenido vacío por accidente.
+```sh
+npm run check          # Genera tipos de Workers; revisa Astro y Studio
+npm test               # Pruebas sin enviar correos reales
+npm run build          # web/dist/client + web/dist/server
+npm run verify:build   # Comprueba páginas estáticas y API runtime
+npm run preview        # Runtime workerd con el build de producción
+npm run dev:studio     # Requiere configurar Sanity
+```
 
-### Publicar el Studio
+`preview` usa las restricciones de producción: las claves dummy y el proveedor mock se rechazan con 503 incluso en localhost. Usá `dev` para la prueba local de email. La vista previa permite comprobar que las páginas estáticas funcionan y que el endpoint falla de manera segura sin credenciales.
+
+## Variables de compilación y secretos de ejecución
+
+**Son dos configuraciones diferentes.** Cambiar una variable de compilación requiere recompilar; los secretos del servidor se leen mediante `env` de `cloudflare:workers`, nunca mediante variables `PUBLIC_*`.
+
+| Variable                    | Dónde va                                  | Uso                                                                                  |
+| --------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |
+| `PUBLIC_SITE_URL`           | `web/.env` / variables de Workers Builds  | URL pública definitiva para metadatos y sitemap; localmente `http://localhost:4321`  |
+| `PUBLIC_SANITY_PROJECT_ID`  | Compilación                               | ID público de Sanity; vacío permite desarrollar sin CMS                              |
+| `PUBLIC_SANITY_DATASET`     | Compilación                               | `production`                                                                         |
+| `PUBLIC_TURNSTILE_SITE_KEY` | Compilación y navegador                   | Clave pública del widget; clave real para despliegues públicos                       |
+| `EMAIL_PROVIDER`            | Runtime: `.dev.vars` / `wrangler.jsonc`   | `mock` local; `resend` en producción                                                 |
+| `TURNSTILE_SECRET_KEY`      | Runtime: `.dev.vars` / secreto Cloudflare | Verificación del token en el servidor                                                |
+| `RESEND_API_KEY`            | Secreto runtime Cloudflare                | Credencial de envío; nunca se publica                                                |
+| `EMAIL_FROM`                | Secreto o binding runtime                 | Remitente fijo, por ejemplo `Sociedad Italiana <contacto@dominio-verificado.com.ar>` |
+| `EMAIL_TO`                  | Secreto o binding runtime                 | Casilla fija receptora, normalmente `soc.italiana.arrecifes@gmail.com`               |
+| `CONTACT_ORIGIN`            | Secreto o binding runtime                 | Origen HTTPS autorizado, sin barra final, por ejemplo la URL `workers.dev`           |
+| `CONTACT_RATE_LIMITER`      | Binding en `web/wrangler.jsonc`           | Cinco intentos por minuto y por IP en cada ubicación de Cloudflare                   |
+
+No comitear `.env`, `.dev.vars`, tokens, contraseñas ni URLs de deploy hooks. Las plantillas de ejemplo contienen únicamente valores públicos o claves de prueba oficiales. `worker-configuration.d.ts` se genera automáticamente con `npm run check` y no se versiona.
+
+En producción, si faltan remitente, destinatario, API key, origen, clave Turnstile, clave pública o binding de límite, Contacto devuelve **503**. También rechaza las claves de prueba oficiales y `EMAIL_PROVIDER=mock`. No hay una caída silenciosa a un proveedor simulado.
+
+## Contacto y correo
+
+`POST /api/contact` acepta JSON con `name`, `email`, `subject`, `message`, `consent: true`, `website: ""` y `turnstileToken`. Rechaza campos desconocidos, incluidos destinatarios enviados por el cliente.
+
+- Nombre: 1–100 caracteres; asunto: 1–140; mensaje: 1–5000. Se aceptan mensajes cortos.
+- Email válido, consentimiento obligatorio, token máximo 2048 caracteres.
+- Cuerpo máximo 32 KiB, medido al leerlo, sin confiar en `Content-Length`.
+- Solo JSON y mismo origen autorizado; no se habilita CORS para sitios externos.
+- Turnstile se verifica en servidor, incluyendo hostname y acción `contact` en producción. Tokens vencidos o reutilizados se rechazan.
+- Honeypot complementario y rate limit de Workers. Si el limitador o Turnstile no están disponibles, no se envía correo.
+- El límite es aproximado y por ubicación de Cloudflare, no una cuota global estricta. No usa una base de datos. El `namespace_id` debe ser único respecto de otros limitadores de la misma cuenta si no se quieren compartir contadores.
+- El servicio fija `from` y `to` desde el servidor, y usa el email del visitante como `reply_to`. El asunto incluye `[Voz de Caprera]`.
+- Email con texto plano y HTML escapado; no se interpreta HTML del visitante ni se permiten saltos de línea en encabezados.
+- Los errores no exponen respuestas del proveedor, credenciales ni contenido. No se registran datos de solicitudes en producción.
+
+Respuestas:
+
+| HTTP                     | Significado                                                          |
+| ------------------------ | -------------------------------------------------------------------- |
+| 202                      | Resend aceptó el mensaje. No garantiza entrega en bandeja de entrada |
+| 200, `status: simulated` | Solo desarrollo local: registrado, no enviado                        |
+| 400 / 413 / 415          | Cuerpo inválido / demasiado grande / tipo de contenido incorrecto    |
+| 422                      | Error de campos: `error.fields` indica cuáles                        |
+| 403                      | Origen o Turnstile inválido                                          |
+| 405                      | Método no permitido, con `Allow: POST`                               |
+| 429                      | Demasiados intentos, con `Retry-After: 60`                           |
+| 502                      | Fallo o falta de confirmación del proveedor de email                 |
+| 503                      | Configuración incompleta o protección no disponible                  |
+
+Los errores usan `{ "ok": false, "error": { "code": "…", "message": "…", "fields": {} } }`; `fields` es opcional. Todas las respuestas indican `Cache-Control: no-store`. El formulario mantiene los datos ante errores, evita envíos simultáneos, renueva el desafío y anuncia el estado de forma accesible. Necesita JavaScript; siempre ofrece el correo directo como alternativa.
+
+### Formularios de trámites existentes
+
+Los formularios de socios, escuela y salones **siguen usando FormSubmit**, con asunto por trámite, Reply-To, honeypot y respuesta dentro del sitio. Se preservó su comportamiento; esta refactorización migra solo `/contacto` a Resend. FormSubmit requiere activar el destinatario y comprobar recepción desde el sitio publicado. Los trámites no se guardan en Sanity ni se aprueban automáticamente.
+
+Cambiar el correo visible en Sanity no cambia `EMAIL_TO` ni el destinatario de FormSubmit, definido en `web/src/lib/navigation.ts`. La [guía de administración](docs/README.md) explica esta diferencia.
+
+## Sanity: configuración y eventos
+
+1. En [Sanity Manage](https://www.sanity.io/manage), usá el proyecto de la institución y un dataset público `production`.
+2. Completá `PUBLIC_SANITY_PROJECT_ID` y `PUBLIC_SANITY_DATASET` en el entorno de compilación web.
+3. Copiá `studio/.env.example` a `studio/.env` y completá `SANITY_STUDIO_PROJECT_ID` y `SANITY_STUDIO_DATASET` con los mismos valores.
+4. Ejecutá `npm run dev:studio`. Agregá `http://localhost:3333` como origen CORS de Sanity con credenciales si hace falta.
+5. Cargá **La institución** y **Eventos**, y publicá los documentos. El sitio lee solo contenido publicado.
+6. Publicá el administrador:
 
 ```sh
 cd studio
@@ -45,113 +155,102 @@ npx sanity login
 npm run deploy
 ```
 
-Elegí un nombre disponible para obtener `https://<nombre>.sanity.studio`. El alojamiento y la autenticación son los de Sanity; no hay autenticación propia. Agregá esa URL a los orígenes CORS permitidos del proyecto con credenciales y administrá los permisos de edición desde Sanity Manage. La disponibilidad de miembros y cuotas depende del plan gratuito vigente.
+Agregá la URL del Studio a CORS con credenciales e invitá editores desde Sanity Manage. El dataset es público: no cargar datos personales, padrones ni documentos privados.
 
-## Publicar en Cloudflare Pages
+La agenda se calcula al compilar, con hora `America/Argentina/Buenos_Aires` y formato `es-AR`. Próximos se ordenan del más cercano al más lejano; anteriores, del más reciente al más antiguo. La finalización mantiene un evento en curso entre próximos. Sin finalización, pasa a anteriores después del inicio. Fechas inválidas, ambiguas o intervalos invertidos se excluyen. Los eventos existentes sin estado se consideran programados.
 
-La web es **100 % estática**, sin adaptador SSR, Workers, base de datos ni funciones de pago.
+El nuevo campo **Estado → Cancelado** quita el evento de la agenda, conserva su URL estática con un aviso e impide mostrar el enlace de entradas. No borres el documento si querés mantener el aviso para quienes ya recibieron el enlace. Publicá también el Studio actualizado para que los editores vean el campo.
 
-1. Iniciá sesión en Cloudflare y abrí **Workers & Pages → Create application → Pages → Import an existing Git repository**.
-2. Seleccioná `fedetesone/sociedad-italiana-de-arrecifes` y la rama `main`.
-3. Configurá:
+### Recompilación al publicar y actualización diaria
 
-   | Opción                     | Valor                                         |
-   | -------------------------- | --------------------------------------------- |
-   | Directorio raíz            | raíz del repositorio (vacío)                  |
-   | Comando de compilación     | `npm run build`                               |
-   | Directorio de salida       | `web/dist`                                    |
-   | `NODE_VERSION`             | `24`                                          |
-   | `PUBLIC_SITE_URL`          | URL HTTPS final del sitio, sin barra al final |
-   | `PUBLIC_SANITY_PROJECT_ID` | ID real de Sanity                             |
-   | `PUBLIC_SANITY_DATASET`    | `production`                                  |
+En **Workers Builds**, creá un **Deploy Hook** para el Worker conectado al repositorio y a `main`. La URL es secreta. Si antes se usaba Pages, reemplazá el hook de Pages por el de Workers en ambos lugares siguientes:
 
-4. Desplegá. Cada push a `main` genera una nueva versión. Si agregás un dominio propio, actualizá `PUBLIC_SITE_URL` y recompilá para corregir enlaces canónicos, sitemap y metadatos sociales.
+- **Sanity Manage → API → Webhooks:** URL del hook, método POST, dataset `production`, eventos create/update/delete; filtro `(_type == "event" || _type == "siteSettings") && !(_id in path("drafts.**"))`.
+- **GitHub → Settings → Secrets and variables → Actions:** guardá la URL como `CLOUDFLARE_DEPLOY_HOOK`. El workflow `rebuild.yml` hace un POST diario a las 00:15 de Argentina y también admite ejecución manual.
 
-La URL `sociedad-italiana-de-arrecifes.pages.dev` es un valor por defecto, **no una afirmación de que ya existe un despliegue**. Configurá la URL real asignada por Cloudflare. El despliegue requiere acceso a la cuenta de Cloudflare.
+Sin el secreto, el workflow informa que falta configuración y no publica. Los cambios de fecha no se reflejan hasta la próxima compilación; GitHub puede retrasar tareas o deshabilitarlas en repositorios públicos inactivos. Comprobá publicaciones, cancelaciones, despublicaciones y actualización diaria después de migrar. [Deploy Hooks de Workers](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/).
 
-### Actualizaciones de contenido y fechas
+## Cloudflare Workers: publicar sin dominio
 
-Un sitio estático necesita reconstruirse cuando cambia el contenido. En Cloudflare Pages, creá un **Deploy Hook** para `main`. Su URL es un secreto: nunca la guardes en código ni en variables públicas.
+El adaptador actual usa **Workers**, no el antiguo flujo de **Pages**. No subas solo `web/dist/client`: eso dejaría la API sin servidor. Un único Worker incluye los archivos estáticos y el endpoint; Cloudflare asigna una URL `https://nombre.subdominio.workers.dev`.
 
-- En Sanity Manage → API → Webhooks, agregá el hook con método `POST`, dataset `production`, eventos create/update/delete y filtro `(_type == "event" || _type == "siteSettings") && !(_id in path("drafts.**"))`. Esto incluye publicaciones, ediciones, eliminaciones y retiros de publicación.
-- En GitHub → Settings → Secrets and variables → Actions, guardá la misma URL como `CLOUDFLARE_DEPLOY_HOOK`. El workflow `rebuild.yml` solicita un build diario a las 00:15 de Argentina para mover eventos pasados. Puede ejecutarse manualmente. Sin el secreto, informa la configuración pendiente y no hace solicitudes.
-- La agenda se clasifica en el momento del build. La finalización, cuando existe, mantiene el evento en próximos mientras está en curso. Sin finalización, pasa a anteriores después del inicio. Entre builds puede haber hasta un día de demora; las tareas programadas de GitHub pueden retrasarse y deshabilitarse en repositorios públicos inactivos. Se puede ejecutar el workflow o redesplegar manualmente.
-- Los borradores nunca se muestran. No se implementó vista previa editorial de borradores.
+### Primera publicación por terminal
 
-## Contenido y accesibilidad
-
-- Menú: Socios (trámites y beneficios), Escuela de italiano, Alquiler de salones, Quiénes somos (historia, actualidad y comisión directiva) y Contacto. La agenda sigue disponible desde inicio, Actualidad y el pie de página.
-- Las fechas se muestran en `America/Argentina/Buenos_Aires`, independientemente de la zona del servidor.
-- Navegación móvil con estado expandido y cierre con Escape; enlace para saltar al contenido, foco visible y HTML semántico.
-- El texto enriquecido se renderiza escapado, con lista permitida de protocolos para enlaces. Las imágenes tienen texto alternativo editable.
-- Formularios enviados mediante FormSubmit por AJAX, con honeypot y confirmación dentro del sitio. Requieren activar el destinatario antes de recibir correos (ver abajo).
-- Fuentes locales (DM Sans y Newsreader); ninguna petición a Google Fonts. Imagen de portada almacenada localmente.
-- Metadata Open Graph, Twitter, URL canónica, sitemap, robots y cabeceras estáticas de seguridad.
-
-## Verificaciones
+Desde la raíz:
 
 ```sh
-npm run check
-npm test
+npm ci
 npm run build
-SANITY_STUDIO_PROJECT_ID=ci123456 npm run build:studio
+npm run verify:build
+cd web
+npx wrangler login
+npm run deploy
 ```
 
-El último comando verifica la compilación del Studio con un ID ficticio válido; no verifica un proyecto ni autenticación reales. Para uso real se necesita el ID propio. CI ejecuta estos controles en cada push/PR. Las pruebas cubren orden cronológico, eventos en curso, límite horario, cambio de fecha UTC/Argentina y enlaces inseguros.
+Wrangler usa la configuración generada por Astro después del build. `web/wrangler.jsonc` define el entrypoint oficial, assets, compatibilidad Node y binding del limitador. No hay que crear un servidor aparte. El primer despliegue puede hacerse sin secretos de email: la web funcionará y Contacto responderá 503 hasta completar su configuración; no simulará entregas.
 
-## Publicar el repositorio manualmente
+Anotá la URL real asignada y usala en `PUBLIC_SITE_URL`. Recompilá y publicá otra vez para actualizar metadatos. No se afirma que la dirección temporal de ejemplo exista.
 
-Si se trabaja en una copia nueva que todavía no tiene Git ni remoto:
+### Publicación automática desde GitHub
+
+Conectá el repositorio existente `fedetesone/sociedad-italiana-de-arrecifes` a **Workers Builds**:
+
+| Opción                | Valor                |
+| --------------------- | -------------------- |
+| Rama de producción    | `main`               |
+| Directorio raíz       | Raíz del repositorio |
+| Comando de build      | `npm run build`      |
+| Comando de despliegue | `npm run deploy`     |
+| Node                  | `24`                 |
+
+Agregá las variables **de compilación** `PUBLIC_SITE_URL`, las de Sanity y `PUBLIC_TURNSTILE_SITE_KEY` en la configuración de Builds. Las credenciales de email y Turnstile van en los **secretos del Worker**, no solo en los secretos del proceso de build. No publiques automáticamente ramas de prueba sobre el Worker de producción.
+
+Si existe un proyecto Pages previo, mantenelo hasta verificar Workers. La integración nueva requiere configurar Workers Builds y cambiar los hooks; un push por sí solo no convierte Pages en Workers. Para un dominio ya conectado a Pages, verificá primero la URL temporal y luego trasladá la asociación al Worker.
+
+## Turnstile y activación de Resend
+
+### Turnstile
+
+1. Creá un widget Turnstile en Cloudflare y autorizá el hostname exacto de la URL temporal `workers.dev` (sin protocolo ni ruta).
+2. Colocá la **site key real** en `PUBLIC_TURNSTILE_SITE_KEY` y recompilá.
+3. Guardá la **secret key real** en el Worker.
+4. Configurá `CONTACT_ORIGIN` con el origen HTTPS autorizado completo, sin barra final.
+
+Las claves locales de ejemplo son las oficiales: site key `1x00000000000000000000AA` y secret key `1x0000000000000000000000000000000AA`. No se aceptan para la API de producción. [Pruebas oficiales](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).
+
+### Al comprar el futuro dominio `.com.ar`
+
+1. Conectá el dominio al Worker en Cloudflare y verificá HTTPS. Actualizá `PUBLIC_SITE_URL` y `CONTACT_ORIGIN`; agregá el nuevo hostname al widget Turnstile y recompilá.
+2. Creá o usá la cuenta institucional en Resend. Agregá el dominio remitente y copiá los registros DNS que indique Resend. No inventes registros ni reemplaces los de recepción de correo existentes.
+3. Esperá que Resend indique dominio verificado y creá una API key con permiso de envío.
+4. Desde `web/`, configurá los bindings mediante los comandos siguientes. Cada comando pide el valor de manera interactiva; no pongas claves en archivos versionados:
 
 ```sh
-git init -b main
-git add .
-git commit -m "feat: build Sociedad Italiana website and Sanity Studio"
-gh auth login
-gh repo create sociedad-italiana-de-arrecifes --public --source=. --remote=origin --push
+npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put TURNSTILE_SECRET_KEY
+npx wrangler secret put EMAIL_FROM
+npx wrangler secret put EMAIL_TO
+npx wrangler secret put CONTACT_ORIGIN
 ```
 
-Nunca subas `.env`, tokens ni URLs privadas de hooks. Los ejemplos `.env.example` no contienen secretos.
+5. Usá como `EMAIL_FROM` un remitente del dominio verificado, por ejemplo `Sociedad Italiana <contacto@tu-dominio.com.ar>`, y como `EMAIL_TO` la casilla institucional. `EMAIL_PROVIDER` ya está establecido en `resend` en Wrangler.
+6. Probá una consulta desde el sitio público. Comprobá el asunto, contenido, destinatario y que Responder vaya al visitante. Revisá los eventos de entrega de Resend y la bandeja/Spam: **202 significa aceptado por Resend, no entregado en Gmail**.
+7. Actualizá los enlaces de la guía de administración y verificá también los formularios de trámites que continúan en FormSubmit.
 
-## Referencias y recursos
+La web puede estar publicada en `workers.dev` antes de comprar el dominio. La entrega normal con remitente institucional requiere verificar un dominio en Resend; mientras tanto, se desarrolla con el registro local, sin afirmar envíos reales.
 
-- [Astro: estilos y Tailwind](https://docs.astro.build/en/guides/styling/)
-- [Cloudflare Pages: Astro](https://developers.cloudflare.com/pages/framework-guides/deploy-an-astro-site/)
-- [Sanity: instalación](https://www.sanity.io/docs/studio/installation)
-- [Sanity: despliegue del Studio](https://www.sanity.io/docs/studio/deployment)
-- Foto ilustrativa de Cinque Terre: [Unsplash](https://unsplash.com/photos/pEFIxD6atFQ), [archivo utilizado](https://images.unsplash.com/photo-1516483638261-f4dbaf036963), bajo [licencia Unsplash](https://unsplash.com/license). No representa la sede de Arrecifes.
-- Fuentes distribuidas mediante Fontsource bajo sus licencias SIL OFL incluidas en los paquetes.
+## Pruebas y límites de verificación
 
-### Validación de la implementación inicial
+`npm test` cubre orden y filtros de eventos, cancelaciones, intervalos inválidos, límites de fechas argentinos, validación Zod, envío Resend simulado y fallos, verificación Turnstile, origen, métodos, tamaños, rate limit, errores de API y rechazo de mock/claves de prueba en producción. Ninguna prueba unitaria entrega correos.
 
-Verificada con Node 24: chequeo de Astro y TypeScript sin errores, cuatro pruebas unitarias aprobadas y builds del sitio y Studio correctos. Se probó además un evento temporal (sin publicarlo ni conservarlo) para verificar generación de su detalle, enlaces, fecha argentina y escape de HTML. La portada estática obtuvo 100 en accesibilidad, buenas prácticas y SEO en Lighthouse móvil local; estos resultados no sustituyen una revisión del contenido real ni una medición del despliegue final. `npm audit` no reportó vulnerabilidades al entregar.
+`npm run verify:build` comprueba archivos públicos prerenderizados, declaraciones estáticas de rutas —incluida la plantilla de eventos—, salida runtime para la API, ausencia de KV y ausencia de referencias a secretos del servidor en JS/HTML públicos. Los eventos reales dependen del dataset publicado; sin Sanity no se generan páginas de eventos ficticios.
 
-Los overrides de npm actualizan tres dependencias indirectas del CLI de Sanity (`js-yaml`, `smol-toml` y `undici`) dentro de sus versiones mayores para aplicar correcciones de seguridad. Revisalos al actualizar Sanity. `npm run format` aplica el formato de código, incluidos los archivos Astro.
+La entrega real necesita credenciales y dominio verificado. La publicación en Cloudflare y el funcionamiento de los hooks requieren acceso/configuración de la cuenta; las pruebas locales no los sustituyen.
 
-## Formularios de solicitudes y contacto
+## Contenido institucional y mantenimiento
 
-Todos se envían por POST a **FormSubmit.co**, con destinatario fijo `soc.italiana.arrecifes@gmail.com`, sin servidor ni credenciales en el sitio. El asunto identifica el trámite y el nombre de quien consulta; `_replyto` permite responder a su email. Se conserva la plantilla `table` del proveedor. El correo de activación es propio de FormSubmit y no usa esta plantilla ni este asunto; no es una consulta recibida. No se suben documentos ni se almacenan solicitudes en Sanity. El destinatario se define en `web/src/lib/navigation.ts`; cambiar el email editorial en Sanity no cambia el receptor de los formularios.
+Profesor: **Matias Costantini Reschia**. Escuela: **cuatro niveles más Conversación**. Dirección: **España 694, Arrecifes, Buenos Aires**. Teléfono: **2478 610004**. Faltan aranceles, horarios, condiciones de bonificaciones, nómina y mandato de comisión y detalles de salones. Escuela y servicios siguen siendo páginas estáticas editadas en código. La fotografía de Italia es ilustrativa; reemplazarla por fotografías propias desde Sanity.
 
-### Activación pendiente antes de habilitar el sitio al público
+Fuentes: [historia](docs/historia-fuentes.md) y [servicios](docs/servicios-fuentes.md). El proyecto conserva los overrides de dependencias indirectas de Sanity; revisarlos al actualizar paquetes. `npm run format` aplica Prettier.
 
-1. Publicá el sitio en su dominio definitivo y configurá `PUBLIC_SITE_URL`.
-2. Enviá una solicitud identificada como prueba desde Contacto usando un correo propio.
-3. Abrí `soc.italiana.arrecifes@gmail.com`, revisá también Spam y confirmá el mensaje de activación enviado por FormSubmit. Si el proveedor pide confirmar otros formularios/orígenes, repetí la activación correspondiente.
-4. Probá alta, baja, ingreso a la escuela y contacto. Verificá destinatario, asunto, datos y respuesta al remitente. Comprobá también alquileres y las consultas de socios.
-5. Confirmá la llegada real de cada correo. **El envío a la casilla no fue probado ni activado durante el desarrollo**; se verificaron el destino POST, campos y validaciones sin enviar mensajes reales.
-
-Con JavaScript, el envío usa el endpoint AJAX de FormSubmit: la confirmación y los errores aparecen en el formulario, sin redirección. El botón se deshabilita durante el envío; ante errores se conservan los campos y se ofrece contacto directo. La aceptación del proveedor no prueba recepción en Gmail. Una respuesta que indique activación pendiente se muestra como tal. Se conserva el honeypot; el flujo AJAX no presenta el CAPTCHA alojado del envío HTML, por lo que se debe revisar el spam antes de abrir el sitio al público.
-
-Sin JavaScript se mantiene el POST HTML y el retorno a `/gracias/` según `PUBLIC_SITE_URL`; ese flujo puede mostrar páginas de FormSubmit. No envíes datos reales desde previews hasta verificar el destino. Se valida el formato del email y los campos obligatorios; el mensaje no tiene mínimo ni máximo de caracteres.
-
-### Remitente y diseño de correo propios
-
-FormSubmit no documenta una opción para configurar el encabezado `From` ni una plantilla HTML completamente propia. El remitente continúa siendo el proveedor. Para personalización completa, la alternativa recomendada es una función de Cloudflare + Resend: dominio remitente verificado, API key como secreto del servidor, destinatario fijo y `Reply-To` del visitante. Requiere configurar el dominio y el servicio; no está implementada ni habilitada. La web pública puede seguir siendo estática. Esa función deberá validar datos y protección antispam del lado servidor. Guía: https://resend.com/docs/send-with-cloudflare-workers
-
-Documentación: [configuración](https://formsubmit.co/documentation), [activación y ayuda](https://formsubmit.co/help). Información pública sobre el tratamiento de datos: `/privacidad/`.
-
-## Contenidos pendientes
-
-Profesor confirmado por la institución: **Matias Costantini Reschia**. Oferta confirmada: **niveles 1, 2, 3 y 4, más Conversación**. La página de escuela es estática por ahora; no se asignaron equivalencias CEFR no confirmadas. Faltan aranceles, horarios, condiciones y porcentaje de bonificación, nómina y mandato de comisión directiva, y características de los salones. Dirección y teléfono confirmados por la institución: **España 694, Arrecifes, Buenos Aires** y **2478 610004**. Se muestran en Contacto y en el footer, y pueden actualizarse desde Sanity.
-
-Fuentes y límites de los textos de referencia de salones: [docs/servicios-fuentes.md](docs/servicios-fuentes.md).
+Referencias técnicas: [adaptador oficial Astro](https://docs.astro.build/en/guides/integrations-guide/cloudflare/), [Astro en Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/), [rate limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/), [verificación Turnstile](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/) y [API Resend](https://resend.com/docs/api-reference/emails/send-email).

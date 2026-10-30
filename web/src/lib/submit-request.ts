@@ -21,7 +21,10 @@ export async function submitRequest(
     signal: AbortSignal.timeout(20000),
   });
   if (!response.ok) throw new Error("Submission rejected");
-  const result = await response.json();
+  const result = (await response.json()) as {
+    message?: string;
+    success?: boolean | string;
+  };
   if (/activat|confirm your email/i.test(String(result.message || "")))
     return "activation";
   if (result.success !== true && result.success !== "true") {

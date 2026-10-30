@@ -8,7 +8,7 @@ jobs:
   rebuild:
     runs-on: ubuntu-latest
     steps:
-      - name: Solicitar despliegue de Cloudflare Pages
+      - name: Solicitar despliegue de Cloudflare Workers
         env:
           DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
         run: |

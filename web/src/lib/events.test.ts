@@ -1,12 +1,7 @@
+import type { Event } from "../types/event";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import {
-  splitEvents,
-  eventDate,
-  eventTime,
-  safeUrl,
-  type Event,
-} from "./events.ts";
+import { splitEvents, eventDate, eventTime, safeUrl } from "./events/utils.ts";
 const event = (id: string, startsAt: string, endsAt?: string): Event => ({
   _id: id,
   title: id,
@@ -53,4 +48,34 @@ test("admite enlaces web y rechaza protocolos ejecutables", () => {
   assert.equal(safeUrl("data:text/html,test"), undefined);
   assert.equal(safeUrl("https://example.org/"), "https://example.org/");
   assert.equal(safeUrl(), undefined);
+});
+
+test("excluye cancelados, fechas ambiguas y rangos inválidos", () => {
+  const invalid = [
+    {
+      ...event("cancelled", "2027-01-01T20:00:00-03:00"),
+      status: "cancelled" as const,
+    },
+    event("bad-start", "invalid", "2027-01-01T20:00:00Z"),
+    event("bad-end", "2027-01-01T20:00:00Z", "invalid"),
+    event("backwards", "2027-01-02T20:00:00Z", "2027-01-01T20:00:00Z"),
+    event("ambiguous", "2027-01-01T20:00:00"),
+  ];
+  assert.deepEqual(splitEvents(invalid), { upcoming: [], past: [] });
+});
+test("ordena instantes equivalentes con offsets y clasifica límites argentinos", () => {
+  const now = new Date("2026-11-01T00:00:00-03:00");
+  const result = splitEvents(
+    [
+      event("next", "2026-11-01T03:01:00Z"),
+      event("midnight", "2026-11-01T00:00:00-03:00"),
+      event("previous-day", "2026-10-31T23:59:00-03:00"),
+    ],
+    now,
+  );
+  assert.deepEqual(
+    result.upcoming.map((e) => e._id),
+    ["midnight", "next"],
+  );
+  assert.equal(result.past[0]._id, "previous-day");
 });

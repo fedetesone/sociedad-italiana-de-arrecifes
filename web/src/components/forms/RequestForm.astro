@@ -1,5 +1,5 @@
 ---
-import { contactEmail } from "../lib/navigation";
+import { contactEmail } from "../../lib/navigation";
 interface Props {
   kind:
     | "alta"
@@ -212,7 +212,7 @@ const id = `form-${kind}`;
 </section>
 
 <script>
-  import { submitRequest } from "../lib/submit-request";
+  import { submitRequest } from "../../lib/submit-request";
 
   document
     .querySelectorAll<HTMLFormElement>(".request-form")

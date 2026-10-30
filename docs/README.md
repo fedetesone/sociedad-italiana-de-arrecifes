@@ -119,7 +119,7 @@ Evitá cambiar la **Dirección de la página** una vez que compartiste el enlace
 
 Para reprogramar, cambiá inicio, finalización, texto y afiche para que todo coincida. Publicá nuevamente.
 
-Si se cancela una actividad que ya difundiste, suele ser mejor mantener la página y aclarar **“Cancelado”** en el título, resumen y descripción. El sistema no tiene un botón específico de cancelación. Así quienes abran el enlace podrán enterarse.
+Si se cancela una actividad que ya difundiste, suele ser mejor mantener la página y aclarar **“Cancelado”** en el título, resumen y descripción. Además, cambiá el campo **Estado** a **Cancelado** y publicá: el evento dejará de aparecer en la agenda, pero conservará su página con un aviso y sin enlace de entradas. Si no ves el campo, pedí al responsable técnico que publique la nueva versión del administrador. Así quienes abran el enlace podrán enterarse.
 
 ### Quitar de la web
 
@@ -176,17 +176,17 @@ No cargues documentos de identidad, información bancaria, padrones ni material 
 
 ## 10. Leer y responder formularios
 
-Las solicitudes **no se consultan en Sanity**. Se reciben en el correo **soc.italiana.arrecifes@gmail.com** mediante FormSubmit.
+Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configurada por la institución, normalmente **soc.italiana.arrecifes@gmail.com**. Contacto usa Resend cuando está activado; las solicitudes de socios, escuela y salones continúan usando FormSubmit. Si el envío de Contacto todavía no está habilitado, la página lo informa y ofrece escribir por correo directamente.
 
 1. Abrí la casilla de correo.
-2. Buscá asuntos que comiencen con **[Voz de Caprera]**. El asunto incluye el tipo de consulta y el nombre de quien escribe.
+2. Buscá asuntos que comiencen con **[Voz de Caprera]**. En Contacto, el asunto incluye lo que escribió la persona en el campo Asunto. En los trámites de FormSubmit incluye el tipo de solicitud y el nombre.
 3. Leé los datos y usá **Responder**: está preparado para responder al correo que indicó la persona.
 4. Revisá que el destinatario sea correcto antes de enviar la respuesta.
 5. Respondé según el trámite y los procedimientos de la institución.
 
 Enviar el formulario no da de alta o baja automáticamente a un socio, no confirma una inscripción ni reserva un salón. Es una solicitud que debe revisar la administración.
 
-Si llega un correo de FormSubmit pidiendo **activar el formulario**, es una configuración del servicio, no una solicitud de un visitante. La activación debe coordinarse con el responsable del sitio y comprobarse con una consulta de prueba desde el dominio público. Revisá también Spam si no llega un mensaje esperado.
+Solo para los formularios que usan FormSubmit: si llega un correo pidiendo **activar el formulario**, es una configuración del servicio, no una solicitud de un visitante. La activación debe coordinarse con el responsable del sitio y comprobarse con una consulta de prueba desde el dominio público. Revisá también Spam si no llega un mensaje esperado.
 
 ## 11. Dar acceso a otra persona
 
@@ -203,17 +203,17 @@ No compartas la contraseña de una cuenta para dar acceso. Si alguien deja de co
 
 ## 12. Si algo no funciona
 
-| Problema                                        | Qué hacer                                                                                                                                                               |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No puedo entrar                                 | Revisá el correo con el que iniciaste sesión y si aceptaste la invitación. Pedí revisión de permisos.                                                                   |
-| No puedo publicar                               | Revisá los campos marcados con errores. Si no aparece el botón o está bloqueado por permisos, consultá al administrador.                                                |
-| Publiqué pero no veo el cambio                  | Esperá unos minutos, recargá y verificá que estés en el dominio público correcto. Si persiste, avisá a soporte para revisar la actualización en Cloudflare.             |
-| La hora aparece corrida                         | Revisá la zona horaria del selector y corregí el inicio y la finalización. La web muestra hora argentina.                                                               |
-| Un enlace de evento dejó de abrir               | Revisá si se cambió la Dirección de la página o se despublicó. Pedí ayuda para recuperar el enlace compartido.                                                          |
-| No llegan las consultas                         | Revisá Spam, la casilla destinataria y la activación de FormSubmit. Pedí una prueba de entrega; el mensaje de confirmación de la web no garantiza que Gmail lo recibió. |
-| El evento sigue en Próximos después de terminar | Pedí revisar la actualización diaria del sitio. No hace falta borrarlo.                                                                                                 |
-| Edité algo por error                            | Si ya estaba publicado, corregilo y publicá otra vez. Si necesitás recuperar una versión, pedí ayuda; no borres el documento.                                           |
-| Quiero editar escuela, salones o comisión       | Solicitá el cambio al responsable técnico; esas páginas todavía no se editan desde Sanity.                                                                              |
+| Problema                                        | Qué hacer                                                                                                                                                                                                                               |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No puedo entrar                                 | Revisá el correo con el que iniciaste sesión y si aceptaste la invitación. Pedí revisión de permisos.                                                                                                                                   |
+| No puedo publicar                               | Revisá los campos marcados con errores. Si no aparece el botón o está bloqueado por permisos, consultá al administrador.                                                                                                                |
+| Publiqué pero no veo el cambio                  | Esperá unos minutos, recargá y verificá que estés en el dominio público correcto. Si persiste, avisá a soporte para revisar la actualización en Cloudflare.                                                                             |
+| La hora aparece corrida                         | Revisá la zona horaria del selector y corregí el inicio y la finalización. La web muestra hora argentina.                                                                                                                               |
+| Un enlace de evento dejó de abrir               | Revisá si se cambió la Dirección de la página o se despublicó. Pedí ayuda para recuperar el enlace compartido.                                                                                                                          |
+| No llegan las consultas                         | Revisá Spam y la casilla destinataria. Para Contacto, pedí revisar Resend; para los demás formularios, la activación de FormSubmit. Pedí una prueba de entrega; el mensaje de confirmación de la web no garantiza que Gmail lo recibió. |
+| El evento sigue en Próximos después de terminar | Pedí revisar la actualización diaria del sitio. No hace falta borrarlo.                                                                                                                                                                 |
+| Edité algo por error                            | Si ya estaba publicado, corregilo y publicá otra vez. Si necesitás recuperar una versión, pedí ayuda; no borres el documento.                                                                                                           |
+| Quiero editar escuela, salones o comisión       | Solicitá el cambio al responsable técnico; esas páginas todavía no se editan desde Sanity.                                                                                                                                              |
 
 Cuando pidas ayuda, indicá qué página o evento estabas editando, qué intentaste hacer, a qué hora y qué mensaje apareció. Podés adjuntar una captura sin contraseñas ni datos privados.
 
@@ -236,6 +236,6 @@ Las instrucciones de instalación y configuración están en el [README técnico
 - [Uso de borradores y publicación en Sanity](https://www.sanity.io/docs/user-guides/content-operations-cheatsheet).
 - [Studio e invitación de colaboradores](https://www.sanity.io/docs/deploying-studio-and-inviting-editors).
 - [Roles y permisos de Sanity](https://www.sanity.io/docs/content-lake/roles-concepts).
-- [Conexión automática con Cloudflare](https://developers.cloudflare.com/pages/configuration/deploy-hooks/).
+- [Conexión automática con Cloudflare](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/).
 
 Los nombres de algunos botones pueden variar según el idioma, el plan y las actualizaciones del servicio.

@@ -1,6 +1,7 @@
 ---
+export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
-import RichText from "../../components/RichText.astro";
+import RichText from "../../components/common/RichText.astro";
 import { institutionalHistory } from "../../lib/history";
 import { getContent } from "../../lib/content";
 const { settings } = await getContent();

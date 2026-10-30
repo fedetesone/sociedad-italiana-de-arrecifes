@@ -1,11 +1,10 @@
 ---
+export const prerender = true;
 import Layout from "../../layouts/Layout.astro";
-import EventCard from "../../components/EventCard.astro";
-import EmptyEvents from "../../components/EmptyEvents.astro";
-import { getContent } from "../../lib/content";
-import { splitEvents } from "../../lib/events";
-const { events } = await getContent();
-const { upcoming, past } = splitEvents(events);
+import EventCard from "../../components/events/EventCard.astro";
+import EmptyEvents from "../../components/events/EmptyEvents.astro";
+import { getEventAgenda } from "../../lib/events/service";
+const { upcoming, past } = await getEventAgenda();
 ---
 
 <Layout
