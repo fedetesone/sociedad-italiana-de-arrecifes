@@ -19,6 +19,8 @@ export interface Settings {
 }
 const defaults: Settings = {
   email: "soc.italiana.arrecifes@gmail.com",
+  address: "España 694, Arrecifes, Buenos Aires",
+  phone: "2478 610004",
   name: 'Sociedad Italiana de S.M. "Voz de Caprera"',
   intro:
     "Desde 1881, un lugar para encontrarnos, compartir nuestras raíces y seguir construyendo comunidad en Arrecifes.",

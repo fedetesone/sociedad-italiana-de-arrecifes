@@ -121,7 +121,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           {settings.email && (
             <a href={`mailto:${settings.email}`}>{settings.email}</a>
           )}
-          {settings.phone && <p>{settings.phone}</p>}
+          {settings.phone && (
+            <p>
+              <a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}>
+                {settings.phone}
+              </a>
+            </p>
+          )}
         </div>
         <div>
           <h2>Seguí en contacto</h2>

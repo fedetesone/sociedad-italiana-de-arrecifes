@@ -148,6 +148,6 @@ Documentación: [configuración](https://formsubmit.co/documentation), [activaci
 
 ## Contenidos pendientes
 
-Profesor confirmado por la institución: **Matias Costantini Reschia**. Oferta confirmada: **niveles 1, 2, 3 y 4, más Conversación**. La página de escuela es estática por ahora; no se asignaron equivalencias CEFR no confirmadas. Faltan aranceles, horarios, condiciones y porcentaje de bonificación, nómina y mandato de comisión directiva, y características de los salones. No se encontró un teléfono institucional suficientemente verificable: se muestra el correo indicado por la institución. El teléfono puede cargarse desde Sanity cuando se confirme.
+Profesor confirmado por la institución: **Matias Costantini Reschia**. Oferta confirmada: **niveles 1, 2, 3 y 4, más Conversación**. La página de escuela es estática por ahora; no se asignaron equivalencias CEFR no confirmadas. Faltan aranceles, horarios, condiciones y porcentaje de bonificación, nómina y mandato de comisión directiva, y características de los salones. Dirección y teléfono confirmados por la institución: **España 694, Arrecifes, Buenos Aires** y **2478 610004**. Se muestran en Contacto y en el footer, y pueden actualizarse desde Sanity.
 
 Fuentes y límites de los textos de referencia de salones: [docs/servicios-fuentes.md](docs/servicios-fuentes.md).
