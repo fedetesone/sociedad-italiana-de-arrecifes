@@ -184,6 +184,8 @@ Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configur
 4. Revisá que el destinatario sea correcto antes de enviar la respuesta.
 5. Respondé según el trámite y los procedimientos de la institución.
 
+La solicitud de alta de socios también pide **Domicilio, Localidad y Código postal** como campos obligatorios. Estos datos se incluyen en el correo recibido.
+
 Enviar el formulario no da de alta o baja automáticamente a un socio, no confirma una inscripción ni reserva un salón. Es una solicitud que debe revisar la administración.
 
 Solo para los formularios que usan FormSubmit: si llega un correo pidiendo **activar el formulario**, es una configuración del servicio, no una solicitud de un visitante. La activación debe coordinarse con el responsable del sitio y comprobarse con una consulta de prueba desde el dominio público. Revisá también Spam si no llega un mensaje esperado.

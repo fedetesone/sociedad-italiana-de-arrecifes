@@ -100,6 +100,43 @@ const id = `form-${kind}`;
         </label>
       )}
     </div>
+    {kind === "alta" && (
+      <>
+        <label for={`${id}-address`}>
+          Domicilio *
+          <input
+            id={`${id}-address`}
+            name="Domicilio"
+            autocomplete="street-address"
+            placeholder="Calle, número y piso o departamento, si corresponde"
+            required
+            maxlength="200"
+          />
+        </label>
+        <div class="form-row">
+          <label for={`${id}-city`}>
+            Localidad *
+            <input
+              id={`${id}-city`}
+              name="Localidad"
+              autocomplete="address-level2"
+              required
+              maxlength="100"
+            />
+          </label>
+          <label for={`${id}-postal-code`}>
+            Código postal *
+            <input
+              id={`${id}-postal-code`}
+              name="Código postal"
+              autocomplete="postal-code"
+              required
+              maxlength="20"
+            />
+          </label>
+        </div>
+      </>
+    )}
     {kind === "escuela" && (
       <label for={`${id}-level`}>
         ¿Estudiaste italiano antes? *
