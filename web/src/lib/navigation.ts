@@ -1,4 +1,5 @@
 export const navigation = [
+  { label: "Eventos", href: "/eventos/" },
   {
     label: "Socios",
     href: "/socios/",

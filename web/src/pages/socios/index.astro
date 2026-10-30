@@ -2,7 +2,7 @@
 export const prerender = true;
 import ServiceLayout from "../../layouts/ServiceLayout.astro";
 import { navigation } from "../../lib/navigation";
-const items = navigation[0].children!;
+const items = navigation.find((item) => item.href === "/socios/")!.children!;
 const descriptions = [
   "Acercate a la Sociedad y consultá cómo formar parte.",
   "Solicitá la baja de tu asociación y recibí orientación sobre los pasos a seguir.",
