@@ -1,0 +1,14 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import RequestForm from "../../components/RequestForm.astro";
+---
+
+<ServiceLayout
+  title="Solicitud de baja"
+  kicker="Socios"
+  description="Enviá tu solicitud para que podamos identificar tu asociación e indicarte cómo completar el trámite."
+>
+  <div class="narrow">
+    <RequestForm kind="baja" title="Solicitud de baja" />
+  </div>
+</ServiceLayout>

@@ -1,0 +1,23 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import RequestForm from "../../components/RequestForm.astro";
+---
+
+<ServiceLayout
+  title="Panteones"
+  kicker="Socios"
+  description="Un espacio de memoria y acompañamiento para las familias de la Sociedad."
+>
+  <div class="service-columns">
+    <div class="reading-panel">
+      <h2>Cómo consultar</h2>
+      <p>
+        Para consultar por mantenimiento, documentación o gestiones vinculadas a
+        los panteones, comunicate con la administración. Indicá tu número de
+        socio si lo conocés; los requisitos y valores se informan de manera
+        individual.
+      </p>
+    </div>
+    <RequestForm kind="panteones" title="Envianos tu consulta" />
+  </div>
+</ServiceLayout>

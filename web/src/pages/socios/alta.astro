@@ -1,0 +1,14 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import RequestForm from "../../components/RequestForm.astro";
+---
+
+<ServiceLayout
+  title="Solicitud de alta"
+  kicker="Socios"
+  description="Sumate a la Sociedad. Dejanos tus datos y te contactaremos para informarte los requisitos, la cuota social y los pasos para asociarte."
+>
+  <div class="narrow">
+    <RequestForm kind="alta" title="Solicitud de alta" />
+  </div>
+</ServiceLayout>

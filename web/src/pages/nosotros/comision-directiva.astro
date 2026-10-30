@@ -1,0 +1,25 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import { contactEmail } from "../../lib/navigation";
+---
+
+<ServiceLayout
+  title="Comisión directiva"
+  kicker="Quiénes somos"
+  description="Personas que acompañan la vida institucional y el trabajo cotidiano de la Sociedad."
+>
+  <div class="reading-panel">
+    <h2>Autoridades del período vigente</h2>
+    <p>
+      Estamos preparando la nómina actualizada de la comisión directiva, con sus
+      cargos y período de mandato.
+    </p>
+    <p>
+      Para comunicarte con la conducción de la institución, escribí a{" "}
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+    </p>
+    <a class="button" href="/contacto/">
+      Contactar a la Sociedad ↗
+    </a>
+  </div>
+</ServiceLayout>

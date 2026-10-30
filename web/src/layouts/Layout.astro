@@ -2,6 +2,7 @@
 import "../styles/global.css";
 import { getContent } from "../lib/content";
 import { safeUrl } from "../lib/events";
+import { navigation } from "../lib/navigation";
 const { settings } = await getContent();
 const {
   title,
@@ -10,12 +11,6 @@ const {
   noindex = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const links = [
-  ["/", "Inicio"],
-  ["/nosotros/", "Nosotros"],
-  ["/eventos/", "Eventos"],
-  ["/contacto/", "Contacto"],
-];
 ---
 
 <!doctype html>
@@ -62,14 +57,47 @@ const links = [
         Menú <span aria-hidden="true">☰</span>
       </button>
       <nav id="navigation" aria-label="Navegación principal">
-        {links.map(([href, label]) => (
-          <a
-            href={href}
-            aria-current={Astro.url.pathname === href ? "page" : undefined}
-          >
-            {label}
-          </a>
-        ))}
+        <a class="mobile-home" href="/">
+          Inicio
+        </a>
+        {navigation.map((item) =>
+          item.children ? (
+            <details class="nav-group">
+              <summary
+                class:list={{
+                  active: Astro.url.pathname.startsWith(item.href),
+                }}
+              >
+                {item.label}
+                <span aria-hidden="true">⌄</span>
+              </summary>
+              <div class="nav-dropdown">
+                <a class="nav-overview" href={item.href}>
+                  Ver {item.label.toLowerCase()}
+                </a>
+                {item.children.map(([href, label]) => (
+                  <a
+                    href={href}
+                    aria-current={
+                      Astro.url.pathname === href ? "page" : undefined
+                    }
+                  >
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </details>
+          ) : (
+            <a
+              href={item.href}
+              aria-current={
+                Astro.url.pathname === item.href ? "page" : undefined
+              }
+            >
+              {item.label}
+            </a>
+          ),
+        )}
       </nav>
     </header>
     <main id="contenido">
@@ -98,6 +126,8 @@ const links = [
         <div>
           <h2>Seguí en contacto</h2>
           <a href="/contacto/">Contactanos</a>
+          <a href="/eventos/">Agenda de eventos</a>
+          <a href="/privacidad/">Sobre tus datos</a>
           {safeUrl(settings.instagram) && (
             <a
               href={safeUrl(settings.instagram)}
@@ -128,19 +158,51 @@ const links = [
     <script>
       const button = document.querySelector<HTMLButtonElement>(".menu-toggle");
       const nav = document.querySelector<HTMLElement>("#navigation");
+      const groups = Array.from(
+        document.querySelectorAll<HTMLDetailsElement>(".nav-group"),
+      );
       button?.addEventListener("click", () => {
         const open = button.getAttribute("aria-expanded") !== "true";
         button.setAttribute("aria-expanded", String(open));
         nav?.classList.toggle("open", open);
+        if (!open) groups.forEach((g) => (g.open = false));
+      });
+      groups.forEach((group) =>
+        group.addEventListener("toggle", () => {
+          if (group.open)
+            groups.forEach((other) => {
+              if (other !== group) other.open = false;
+            });
+        }),
+      );
+      document.addEventListener("click", (event) => {
+        if (
+          event.target instanceof Node &&
+          !nav?.contains(event.target) &&
+          !button?.contains(event.target)
+        ) {
+          groups.forEach((g) => (g.open = false));
+          button?.setAttribute("aria-expanded", "false");
+          nav?.classList.remove("open");
+        }
       });
       document.addEventListener("keydown", (event) => {
-        if (
-          event.key === "Escape" &&
-          button?.getAttribute("aria-expanded") === "true"
-        ) {
+        if (event.key !== "Escape") return;
+        const openGroup = groups.find((g) => g.open);
+        if (openGroup) {
+          openGroup.open = false;
+          openGroup.querySelector("summary")?.focus();
+        } else if (button?.getAttribute("aria-expanded") === "true") {
           button.setAttribute("aria-expanded", "false");
           nav?.classList.remove("open");
           button.focus();
+        }
+      });
+      nav?.addEventListener("click", (event) => {
+        if (event.target instanceof Element && event.target.closest("a")) {
+          groups.forEach((g) => (g.open = false));
+          button?.setAttribute("aria-expanded", "false");
+          nav.classList.remove("open");
         }
       });
     </script>

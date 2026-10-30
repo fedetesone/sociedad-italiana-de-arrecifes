@@ -1,0 +1,23 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import RequestForm from "../../components/RequestForm.astro";
+---
+
+<ServiceLayout
+  title="Regularización de deudas"
+  kicker="Socios"
+  description="Conversemos sobre tu situación y los pasos para regularizarla."
+>
+  <div class="service-columns">
+    <div class="reading-panel">
+      <h2>Cómo consultar</h2>
+      <p>
+        Podés solicitar el detalle de tu estado de cuenta y consultar las
+        opciones de regularización vigentes. Los importes, medios de pago y
+        posibles acuerdos se confirman directamente con la administración. No
+        realices pagos a partir de datos recibidos por terceros.
+      </p>
+    </div>
+    <RequestForm kind="deudas" title="Envianos tu consulta" />
+  </div>
+</ServiceLayout>

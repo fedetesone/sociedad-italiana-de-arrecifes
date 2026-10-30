@@ -1,0 +1,29 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import { navigation } from "../../lib/navigation";
+const items = navigation[0].children!;
+const descriptions = [
+  "Acercate a la Sociedad y consultá cómo formar parte.",
+  "Solicitá la baja de tu asociación y recibí orientación sobre los pasos a seguir.",
+  "Consultá las condiciones del beneficio para alquilar nuestros espacios.",
+  "Información sobre gestiones y mantenimiento de panteones.",
+  "Acercanos tu consulta y conocé las fuentes consulares oficiales.",
+  "Consultá tu situación y las opciones vigentes para regularizarla.",
+];
+---
+
+<ServiceLayout
+  title="Ser parte de la Sociedad"
+  kicker="Socios"
+  description="Un lugar para compartir nuestras raíces y acompañarnos. Encontrá acá tus trámites y consultas."
+>
+  <div class="service-grid">
+    {items.map(([href, label], i) => (
+      <a class="service-card" href={href}>
+        <h2>{label}</h2>
+        <p>{descriptions[i]}</p>
+        <span aria-hidden="true">↗</span>
+      </a>
+    ))}
+  </div>
+</ServiceLayout>

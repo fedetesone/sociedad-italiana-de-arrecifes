@@ -1,0 +1,41 @@
+---
+import ServiceLayout from "../layouts/ServiceLayout.astro";
+import { contactEmail } from "../lib/navigation";
+---
+
+<ServiceLayout
+  title="Sobre tus datos"
+  kicker="Formularios de contacto"
+  description="Pedimos los datos necesarios para responder tu consulta o solicitud."
+>
+  <div class="reading-panel prose">
+    <h2>Quién recibe tu consulta</h2>
+    <p>
+      Los formularios están destinados a la Sociedad Italiana de S.M. "Voz de
+      Caprera", de Arrecifes, y se dirigen a {contactEmail}.
+    </p>
+    <h2>Cómo se envía</h2>
+    <p>
+      Usamos FormSubmit para procesar el formulario y enviarlo por correo. Al
+      enviarlo, tus datos pasan por ese servicio externo y por el servicio de
+      correo de la institución. FormSubmit informa que conserva los envíos
+      durante 30 días. Podés consultar su{" "}
+      <a href="https://formsubmit.co/privacy.pdf">política de privacidad</a> y{" "}
+      <a href="https://formsubmit.co/documentation">documentación</a>.
+    </p>
+    <h2>Qué información compartir</h2>
+    <p>
+      Incluí tu nombre, correo y el motivo de tu consulta. El teléfono y el
+      número de socio son opcionales. No envíes documentos de identidad,
+      partidas, datos bancarios ni documentación sensible mediante estos
+      formularios.
+    </p>
+    <h2>Consultas sobre tus datos</h2>
+    <p>
+      Para pedir una corrección o eliminación de la información enviada, o
+      consultar sobre su tratamiento, escribí a{" "}
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>. También podés usar
+      ese correo si preferís no completar un formulario.
+    </p>
+  </div>
+</ServiceLayout>

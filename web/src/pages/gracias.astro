@@ -1,0 +1,23 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { contactEmail } from "../lib/navigation";
+---
+
+<Layout title="Gracias por escribirnos" noindex>
+  <section class="wrap page-intro section">
+    <p class="section-kicker">Sigamos en contacto</p>
+    <h1>Gracias por escribirnos.</h1>
+    <p>
+      Una vez completado el envío, la institución podrá responderte al correo
+      que indicaste. Las altas, bajas, inscripciones y reservas requieren
+      confirmación de la administración.
+    </p>
+    <p>
+      Si necesitás retomar tu consulta, escribinos a{" "}
+      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+    </p>
+    <a class="button" href="/">
+      Volver al inicio
+    </a>
+  </section>
+</Layout>

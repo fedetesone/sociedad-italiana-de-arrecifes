@@ -1,0 +1,235 @@
+---
+import { contactEmail } from "../lib/navigation";
+interface Props {
+  kind:
+    | "alta"
+    | "baja"
+    | "escuela"
+    | "contacto"
+    | "salones"
+    | "deudas"
+    | "panteones"
+    | "ciudadania";
+  title?: string;
+}
+const { kind, title = "Escribinos" } = Astro.props;
+const subjects = {
+  alta: "Solicitud de alta de socio",
+  baja: "Solicitud de baja de socio",
+  escuela: "Solicitud de ingreso a la Escuela de Italiano",
+  contacto: "Consulta general",
+  salones: "Consulta de alquiler de salón",
+  deudas: "Regularización de deudas",
+  panteones: "Consulta sobre panteones",
+  ciudadania: "Consulta sobre ciudadanía italiana",
+};
+const id = `form-${kind}`;
+---
+
+<section class="form-panel" aria-labelledby={`${id}-title`}>
+  <h2 id={`${id}-title`}>{title}</h2>
+  <p>
+    Los campos con * son obligatorios. Te responderemos al correo que indiques.
+  </p>
+  <form
+    action={`https://formsubmit.co/${contactEmail}`}
+    method="POST"
+    class="request-form"
+  >
+    <input
+      type="hidden"
+      name="_subject"
+      value={`[Voz de Caprera] ${subjects[kind]}`}
+    />
+    <input type="hidden" name="_template" value="table" />
+    <input
+      type="hidden"
+      name="_next"
+      value={new URL("/gracias/", Astro.site).href}
+    />
+    <input
+      type="hidden"
+      name="_url"
+      value={new URL(Astro.url.pathname, Astro.site).href}
+    />
+    <input type="hidden" name="Trámite" value={subjects[kind]} />
+    <div class="form-honeypot" aria-hidden="true">
+      <label>
+        No completar
+        <input name="_honey" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
+    <div class="form-row">
+      <label for={`${id}-name`}>
+        Nombre y apellido *
+        <input
+          id={`${id}-name`}
+          name="Nombre y apellido"
+          autocomplete="name"
+          required
+          minlength="3"
+          maxlength="100"
+        />
+      </label>
+      <label for={`${id}-email`}>
+        Correo electrónico *
+        <input
+          id={`${id}-email`}
+          type="email"
+          name="email"
+          autocomplete="email"
+          required
+          maxlength="200"
+        />
+      </label>
+    </div>
+    <div class="form-row">
+      <label for={`${id}-phone`}>
+        Teléfono (opcional)
+        <input
+          id={`${id}-phone`}
+          type="tel"
+          name="Teléfono"
+          autocomplete="tel"
+          maxlength="40"
+        />
+      </label>
+      {["baja", "deudas", "panteones"].includes(kind) && (
+        <label for={`${id}-member`}>
+          Número de socio (si lo conocés)
+          <input id={`${id}-member`} name="Número de socio" maxlength="40" />
+        </label>
+      )}
+    </div>
+    {kind === "escuela" && (
+      <label for={`${id}-level`}>
+        ¿Estudiaste italiano antes? *
+        <select id={`${id}-level`} name="Experiencia en italiano" required>
+          <option value="">Elegí una opción</option>
+          <option>Quiero empezar desde cero</option>
+          <option>Tengo conocimientos previos</option>
+          <option>Busco perfeccionamiento</option>
+        </select>
+      </label>
+    )}
+    {kind === "escuela" && (
+      <label for={`${id}-course`}>
+        Nivel de interés *
+        <select id={`${id}-course`} name="Nivel de interés" required>
+          <option value="">Elegí una opción</option>
+          <option>Nivel 1</option>
+          <option>Nivel 2</option>
+          <option>Nivel 3</option>
+          <option>Nivel 4</option>
+          <option>Conversación</option>
+          <option>Necesito orientación</option>
+        </select>
+      </label>
+    )}
+    {kind === "salones" && (
+      <div class="form-row">
+        <label for={`${id}-room`}>
+          Espacio de interés *
+          <select id={`${id}-room`} name="Salón" required>
+            <option value="">Elegí un espacio</option>
+            <option>Sala Regina</option>
+            <option>Sala Ravenna</option>
+            <option>Patio de eventos</option>
+            <option>Quiero asesoramiento</option>
+          </select>
+        </label>
+        <label for={`${id}-date`}>
+          Fecha tentativa
+          <input id={`${id}-date`} type="date" name="Fecha tentativa" />
+        </label>
+      </div>
+    )}
+    {kind === "salones" && (
+      <div class="form-row">
+        <label for={`${id}-guests`}>
+          Cantidad aproximada de personas
+          <input
+            id={`${id}-guests`}
+            name="Cantidad de personas"
+            type="number"
+            min="1"
+            max="10000"
+          />
+        </label>
+        <label for={`${id}-member-status`}>
+          ¿Sos socio/a?
+          <select id={`${id}-member-status`} name="Es socio">
+            <option>Prefiero consultar</option>
+            <option>Sí</option>
+            <option>No</option>
+          </select>
+        </label>
+      </div>
+    )}
+    <label for={`${id}-message`}>
+      {kind === "baja" ? "Motivo de la solicitud (opcional)" : "Mensaje *"}
+      <textarea
+        id={`${id}-message`}
+        name="Mensaje"
+        rows="5"
+        required={kind !== "baja"}
+        minlength={kind === "baja" ? undefined : 10}
+        maxlength="3000"
+        placeholder={
+          kind === "escuela"
+            ? "Contanos qué te gustaría aprender y tus horarios disponibles."
+            : kind === "alta"
+              ? "Contanos que querés asociarte y cómo preferís que te contactemos."
+              : "Contanos en qué podemos ayudarte."
+        }
+      ></textarea>
+    </label>
+    <p class="form-help">
+      No incluyas documentos, datos bancarios ni información sensible. Esta
+      solicitud inicia una consulta; no confirma un alta, una baja, una
+      inscripción ni una reserva.
+    </p>
+    <label class="consent" for={`${id}-consent`}>
+      <input
+        id={`${id}-consent`}
+        type="checkbox"
+        name="Autorización de contacto"
+        value="Aceptada"
+        required
+      />
+      <span>
+        Autorizo el uso de mis datos para responder esta solicitud. Leí la{" "}
+        <a href="/privacidad/">información de privacidad</a>. *
+      </span>
+    </label>
+    <button type="submit" class="button">
+      {kind === "contacto" ? "Enviar consulta" : "Enviar solicitud"}{" "}
+      <span aria-hidden="true">↗</span>
+    </button>
+  </form>
+  <p class="form-help">
+    También podés escribir directamente a{" "}
+    <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+  </p>
+</section>
+
+<script>
+  // Keep return links on the actual deployment (including local previews).
+  document
+    .querySelectorAll<HTMLFormElement>(".request-form")
+    .forEach((form) => {
+      form.addEventListener("submit", () => {
+        const next = form.querySelector<HTMLInputElement>(
+          'input[name="_next"]',
+        );
+        const url = form.querySelector<HTMLInputElement>('input[name="_url"]');
+        if (next)
+          next.value = new URL("/gracias/", window.location.origin).href;
+        if (url)
+          url.value = new URL(
+            window.location.pathname,
+            window.location.origin,
+          ).href;
+      });
+    });
+</script>

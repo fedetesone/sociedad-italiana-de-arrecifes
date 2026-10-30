@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import RequestForm from "../components/RequestForm.astro";
 import { getContent } from "../lib/content";
 import { safeUrl } from "../lib/events";
 const { settings } = await getContent();
@@ -33,6 +34,11 @@ const { settings } = await getContent();
           <a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}>
             {settings.phone}
           </a>
+        </p>
+      )}
+      {!settings.phone && (
+        <p class="form-help">
+          Por el momento, comunicate con nosotros por correo electrónico.
         </p>
       )}
       {!settings.email && !settings.phone && (
@@ -78,4 +84,9 @@ const { settings } = await getContent();
       </a>
     </div>
   </section>
+  <div class="wrap service-body">
+    <div class="narrow">
+      <RequestForm kind="contacto" title="Envianos un mensaje" />
+    </div>
+  </div>
 </Layout>

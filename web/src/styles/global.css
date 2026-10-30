@@ -904,3 +904,452 @@ footer {
     transition: none !important;
   }
 }
+
+/* Navigation: a quiet second row gives the institutional name room to breathe. */
+.site-header {
+  height: auto;
+  min-height: 152px;
+  flex-wrap: wrap;
+  gap: 0;
+  padding-top: 18px;
+  padding-bottom: 0;
+}
+.site-header .brand {
+  margin-bottom: 17px;
+}
+#navigation {
+  width: 100%;
+  border-top: 1px solid #d8dccf;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 53px;
+}
+#navigation > a,
+.nav-group > summary {
+  font-size: 0.86rem;
+  font-weight: 500;
+  padding: 16px 5px;
+  cursor: pointer;
+}
+#navigation > a:last-child {
+  border: 0;
+  border-radius: 0;
+  padding: 16px 5px;
+}
+#navigation a[aria-current="page"],
+.nav-group > summary.active {
+  color: #8c382d;
+}
+.nav-group {
+  position: relative;
+}
+.nav-group > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.nav-group > summary::-webkit-details-marker {
+  display: none;
+}
+.nav-group > summary:focus-visible {
+  outline: 3px solid #b54838;
+  outline-offset: 3px;
+}
+.nav-group[open] > summary {
+  color: #8c382d;
+}
+.nav-group[open] > summary span {
+  transform: rotate(180deg);
+}
+.nav-dropdown {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 280px;
+  padding: 10px;
+  background: #fffdf7;
+  border: 1px solid #d8dccf;
+  box-shadow: 0 14px 28px #183e3514;
+  border-radius: 0 0 6px 6px;
+  z-index: 30;
+}
+.nav-dropdown a {
+  display: block;
+  border: 0;
+  border-radius: 3px;
+  padding: 12px 14px;
+  line-height: 1.4;
+}
+.nav-dropdown a:last-child {
+  border: 0;
+  padding: 12px 14px;
+}
+.nav-dropdown a:hover {
+  background: #eceee4;
+  text-decoration: none;
+}
+.nav-dropdown .nav-overview {
+  font-weight: 650;
+  border-bottom: 1px solid #d8dccf;
+  margin-bottom: 5px;
+}
+#navigation > .mobile-home {
+  display: none;
+}
+.service-intro {
+  padding-bottom: 42px;
+}
+.service-intro h1 {
+  max-width: 950px;
+}
+.service-body {
+  padding-bottom: 80px;
+}
+.service-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+.service-card {
+  display: block;
+  position: relative;
+  padding: 32px 52px 30px 30px;
+  border: 1px solid #d8dccf;
+  border-radius: 5px;
+  background: #f3f3eb;
+}
+.service-card:hover {
+  background: #eceee4;
+  text-decoration: none;
+  border-color: #8b9b83;
+}
+.service-card h2 {
+  font-size: 2rem;
+}
+.service-card p {
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+.service-card > span {
+  position: absolute;
+  top: 30px;
+  right: 25px;
+}
+.service-columns,
+.school-overview {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  align-items: start;
+  gap: 48px;
+}
+.reading-panel {
+  max-width: 760px;
+  margin-bottom: 42px;
+}
+.reading-panel a:not(.button) {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+.narrow {
+  max-width: 800px;
+  margin-inline: auto;
+}
+.form-panel {
+  border: 1px solid #d5dccc;
+  border-radius: 6px;
+  padding: 35px;
+  background: #f1f2e9;
+}
+.form-panel h2 {
+  font-size: 2.3rem;
+}
+.form-panel > p {
+  font-size: 0.9rem;
+}
+.request-form {
+  display: grid;
+  gap: 20px;
+}
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+.request-form label {
+  display: grid;
+  gap: 8px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+.request-form input:not([type="checkbox"]),
+.request-form select,
+.request-form textarea {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  padding: 12px;
+  background: #fffdf7;
+  border: 1px solid #8a9985;
+  border-radius: 4px;
+  font: inherit;
+  color: #253e35;
+}
+.request-form textarea {
+  resize: vertical;
+}
+.request-form input:focus-visible,
+.request-form select:focus-visible,
+.request-form textarea:focus-visible {
+  outline: 3px solid #b54838;
+  outline-offset: 3px;
+}
+.request-form .consent {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+}
+.consent input {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  accent-color: #183e35;
+}
+.consent a,
+.form-help a {
+  text-decoration: underline;
+  overflow-wrap: anywhere;
+}
+.request-form .button {
+  border: 0;
+  cursor: pointer;
+  justify-self: start;
+}
+.form-help {
+  font-size: 0.78rem;
+  line-height: 1.65;
+  margin: 0;
+}
+.form-panel > .form-help {
+  margin-top: 22px;
+}
+.form-honeypot {
+  display: none;
+}
+.school-overview {
+  grid-template-columns: 1.1fr 1fr;
+  margin-bottom: 50px;
+}
+.school-facts {
+  border-left: 3px solid #a9b69b;
+  padding-left: 30px;
+}
+.school-facts h2 {
+  font-size: 2rem;
+}
+.school-facts dl {
+  margin: 0;
+}
+.school-facts dl > div {
+  margin-bottom: 20px;
+}
+.school-facts dt {
+  font-weight: 650;
+  margin-bottom: 6px;
+}
+.school-facts dd {
+  margin: 0;
+  line-height: 1.6;
+  color: #566159;
+}
+.source-note {
+  font-size: 0.75rem;
+  margin: 24px 0 0;
+}
+.source-note a {
+  text-decoration: underline;
+}
+.room-list {
+  display: grid;
+  gap: 28px;
+}
+.room-panel {
+  scroll-margin-top: 24px;
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: 35px;
+  padding: 35px;
+  border: 1px solid #d8dccf;
+  border-radius: 6px;
+}
+.room-panel p {
+  max-width: 750px;
+}
+.room-monogram {
+  min-height: 180px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  border-radius: 75px 75px 3px 3px;
+  color: #d7dcc7;
+  background: #183e35;
+}
+.room-details {
+  font-size: 0.85rem;
+  font-weight: 550;
+}
+.benefit-banner {
+  margin: 42px 0;
+  padding: 30px;
+  background: #eceee4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+}
+.benefit-banner h2 {
+  font-size: 2.1rem;
+}
+.benefit-banner p {
+  margin: 0;
+}
+.benefit-banner > a {
+  flex-shrink: 0;
+}
+#consulta,
+#ingreso {
+  scroll-margin-top: 30px;
+}
+@media (max-width: 900px) {
+  .site-header {
+    min-height: 110px;
+    padding-block: 0;
+    flex-wrap: nowrap;
+    gap: 12px;
+    position: relative;
+  }
+  .site-header .brand {
+    margin: 0;
+  }
+  .site-header .menu-toggle {
+    display: flex;
+    flex-shrink: 0;
+    gap: 10px;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid #bdc6b4;
+    border-radius: 4px;
+    font-size: 0.8rem;
+  }
+  #navigation {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -20px;
+    right: -20px;
+    width: auto;
+    padding: 14px 20px;
+    z-index: 40;
+    background: #faf8f1;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+    max-height: calc(100dvh - 110px);
+    overflow: auto;
+    box-shadow: 0 15px 25px #183e3518;
+  }
+  #navigation.open {
+    display: flex;
+  }
+  #navigation > .mobile-home {
+    display: block;
+  }
+  #navigation > a,
+  #navigation > a:last-child,
+  .nav-group > summary {
+    padding: 14px 10px;
+  }
+  .nav-group > summary {
+    justify-content: space-between;
+  }
+  .nav-dropdown {
+    position: static;
+    width: auto;
+    border: 0;
+    box-shadow: none;
+    background: #eeeee4;
+    padding: 6px 10px;
+  }
+  .service-columns,
+  .school-overview {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .school-facts {
+    margin-top: 15px;
+  }
+}
+@media (max-width: 600px) {
+  .service-grid,
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .service-body {
+    padding-bottom: 48px;
+  }
+  .service-intro h1 {
+    font-size: 2.75rem;
+  }
+  .form-panel {
+    padding: 24px 20px;
+  }
+  .room-panel {
+    padding: 25px;
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .room-monogram {
+    min-height: 90px;
+    width: 90px;
+    font-size: 3rem;
+  }
+  .benefit-banner {
+    display: block;
+    padding: 25px;
+  }
+  .benefit-banner > a {
+    margin-top: 20px;
+  }
+  .school-overview {
+    margin-bottom: 35px;
+  }
+  .service-card {
+    padding: 27px 45px 27px 25px;
+  }
+}
+.level-list {
+  list-style: none;
+  padding: 0;
+  margin: 24px 0;
+  border-top: 1px solid #d8dccf;
+}
+.level-list li {
+  display: flex;
+  gap: 25px;
+  padding: 17px 0;
+  border-bottom: 1px solid #d8dccf;
+}
+.level-list strong {
+  min-width: 120px;
+}
+.level-list span {
+  color: #566159;
+}
+@media (max-width: 450px) {
+  .level-list li {
+    display: grid;
+    gap: 6px;
+  }
+}

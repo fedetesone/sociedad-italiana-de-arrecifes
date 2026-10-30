@@ -1,0 +1,43 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import EventCard from "../../components/EventCard.astro";
+import EmptyEvents from "../../components/EmptyEvents.astro";
+import { getContent } from "../../lib/content";
+import { splitEvents } from "../../lib/events";
+const { events } = await getContent();
+const { upcoming } = splitEvents(events);
+---
+
+<ServiceLayout
+  title="La Sociedad, hoy"
+  kicker="Quiénes somos · Actualidad"
+  description="La vida de la institución se construye en cada encuentro. Conocé la agenda y las propuestas para participar."
+>
+  <div class="service-grid">
+    <a class="service-card" href="/escuela-de-italiano/">
+      <h2>Escuela de italiano</h2>
+      <p>El idioma y la cultura, un puente entre generaciones.</p>
+    </a>
+    <a class="service-card" href="/salones/">
+      <h2>Espacios para encontrarnos</h2>
+      <p>Conocé las salas y el patio de la Sociedad.</p>
+    </a>
+  </div>
+  <section class="section">
+    <div class="section-heading">
+      <h2>Próximos encuentros</h2>
+      <a class="text-link" href="/eventos/">
+        Ver toda la agenda ↗
+      </a>
+    </div>
+    {upcoming.length ? (
+      <div class="events-grid">
+        {upcoming.slice(0, 3).map((event) => (
+          <EventCard event={event} />
+        ))}
+      </div>
+    ) : (
+      <EmptyEvents />
+    )}
+  </section>
+</ServiceLayout>

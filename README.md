@@ -76,11 +76,11 @@ Un sitio estático necesita reconstruirse cuando cambia el contenido. En Cloudfl
 
 ## Contenido y accesibilidad
 
-- Páginas: inicio, eventos, detalle por slug, nosotros, contacto y 404.
+- Menú: Socios (trámites y beneficios), Escuela de italiano, Alquiler de salones, Quiénes somos (historia, actualidad y comisión directiva) y Contacto. La agenda sigue disponible desde inicio, Actualidad y el pie de página.
 - Las fechas se muestran en `America/Argentina/Buenos_Aires`, independientemente de la zona del servidor.
 - Navegación móvil con estado expandido y cierre con Escape; enlace para saltar al contenido, foco visible y HTML semántico.
 - El texto enriquecido se renderiza escapado, con lista permitida de protocolos para enlaces. Las imágenes tienen texto alternativo editable.
-- Sin formularios que aparenten enviar mensajes: Contacto muestra únicamente los canales reales cargados en Sanity.
+- Formularios HTML reales enviados mediante FormSubmit, con CAPTCHA del proveedor y honeypot. Requieren activar el destinatario antes de recibir correos (ver abajo).
 - Fuentes locales (DM Sans y Newsreader); ninguna petición a Google Fonts. Imagen de portada almacenada localmente.
 - Metadata Open Graph, Twitter, URL canónica, sitemap, robots y cabeceras estáticas de seguridad.
 
@@ -123,3 +123,27 @@ Nunca subas `.env`, tokens ni URLs privadas de hooks. Los ejemplos `.env.example
 Verificada con Node 24: chequeo de Astro y TypeScript sin errores, cuatro pruebas unitarias aprobadas y builds del sitio y Studio correctos. Se probó además un evento temporal (sin publicarlo ni conservarlo) para verificar generación de su detalle, enlaces, fecha argentina y escape de HTML. La portada estática obtuvo 100 en accesibilidad, buenas prácticas y SEO en Lighthouse móvil local; estos resultados no sustituyen una revisión del contenido real ni una medición del despliegue final. `npm audit` no reportó vulnerabilidades al entregar.
 
 Los overrides de npm actualizan tres dependencias indirectas del CLI de Sanity (`js-yaml`, `smol-toml` y `undici`) dentro de sus versiones mayores para aplicar correcciones de seguridad. Revisalos al actualizar Sanity. `npm run format` aplica el formato de código, incluidos los archivos Astro.
+
+## Formularios de solicitudes y contacto
+
+Todos se envían por POST a **FormSubmit.co**, con destinatario fijo `soc.italiana.arrecifes@gmail.com`, sin servidor ni credenciales en el sitio. El asunto identifica el trámite y el campo `email` permite responder a quien consulta. No se suben documentos ni se almacenan solicitudes en Sanity. El destinatario se define en `web/src/lib/navigation.ts`; cambiar el email editorial en Sanity no cambia el receptor de los formularios.
+
+### Activación pendiente antes de habilitar el sitio al público
+
+1. Publicá el sitio en su dominio definitivo y configurá `PUBLIC_SITE_URL`.
+2. Enviá una solicitud identificada como prueba desde Contacto usando un correo propio.
+3. Abrí `soc.italiana.arrecifes@gmail.com`, revisá también Spam y confirmá el mensaje de activación enviado por FormSubmit. Si el proveedor pide confirmar otros formularios/orígenes, repetí la activación correspondiente.
+4. Probá alta, baja, ingreso a la escuela y contacto. Verificá destinatario, asunto, datos y respuesta al remitente. Comprobá también alquileres y las consultas de socios.
+5. Confirmá la llegada real de cada correo. **El envío a la casilla no fue probado ni activado durante el desarrollo**; se verificaron el destino POST, campos y validaciones sin enviar mensajes reales.
+
+Se mantiene el CAPTCHA predeterminado del proveedor; no deshabilitarlo con `_captcha=false`. El CAPTCHA y los errores de transporte pueden mostrarse en una página externa de FormSubmit. El retorno es `/gracias/`, pero visitar esa URL directamente no prueba la recepción de un correo. La pantalla evita afirmar que se completó un trámite. Las solicitudes no aprueban automáticamente altas, bajas, inscripciones o reservas.
+
+En desarrollo y vistas previas, JavaScript ajusta `_next` al origen actual. Sin JavaScript se usa `PUBLIC_SITE_URL`. No envíes datos reales desde previews hasta verificar el destino. Si el proveedor falla, cada formulario ofrece el correo directo.
+
+Documentación: [configuración](https://formsubmit.co/documentation), [activación y ayuda](https://formsubmit.co/help). Información pública sobre el tratamiento de datos: `/privacidad/`.
+
+## Contenidos pendientes
+
+Profesor confirmado por la institución: **Matias Costantini Reschia**. Oferta confirmada: **niveles 1, 2, 3 y 4, más Conversación**. La página de escuela es estática por ahora; no se asignaron equivalencias CEFR no confirmadas. Faltan aranceles, horarios, condiciones y porcentaje de bonificación, nómina y mandato de comisión directiva, y características de los salones. No se encontró un teléfono institucional suficientemente verificable: se muestra el correo indicado por la institución. El teléfono puede cargarse desde Sanity cuando se confirme.
+
+Fuentes y límites de los textos de referencia de salones: [docs/servicios-fuentes.md](docs/servicios-fuentes.md).

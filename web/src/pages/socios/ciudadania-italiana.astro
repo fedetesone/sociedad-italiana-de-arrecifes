@@ -1,0 +1,33 @@
+---
+import ServiceLayout from "../../layouts/ServiceLayout.astro";
+import RequestForm from "../../components/RequestForm.astro";
+---
+
+<ServiceLayout
+  title="Ciudadanía italiana"
+  kicker="Socios"
+  description="Un primer contacto para acercar tus consultas sobre ciudadanía."
+>
+  <div class="service-columns">
+    <div class="reading-panel">
+      <h2>Cómo consultar</h2>
+      <p>
+        Escribinos para consultar si la Sociedad cuenta con orientación o
+        actividades relacionadas. Los requisitos, turnos y resoluciones
+        corresponden a las autoridades italianas; esta consulta no inicia un
+        trámite consular.
+      </p>
+      <p>
+        <a
+          class="text-link"
+          href="https://consbuenosaires.esteri.it/es/servizi-consolari-e-visti/servizi-per-il-cittadino-straniero/cittadinanza/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Información oficial del Consulado de Italia ↗
+        </a>
+      </p>
+    </div>
+    <RequestForm kind="ciudadania" title="Envianos tu consulta" />
+  </div>
+</ServiceLayout>

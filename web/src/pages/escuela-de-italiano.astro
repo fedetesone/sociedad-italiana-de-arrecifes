@@ -1,0 +1,89 @@
+---
+import ServiceLayout from "../layouts/ServiceLayout.astro";
+import RequestForm from "../components/RequestForm.astro";
+---
+
+<ServiceLayout
+  title="El italiano se aprende. La cultura se comparte."
+  kicker="Escuela de italiano"
+  description="Un encuentro con la lengua, las tradiciones y la vida cotidiana de Italia, en Arrecifes."
+>
+  <div class="school-overview">
+    <div>
+      <h2>Un idioma que nos acerca</h2>
+      <p>
+        La Escuela de Italiano de Arrecifes, Ital, funciona en la Sociedad. Sus
+        publicaciones describen cursos de lengua y cultura italianas y
+        propuestas de perfeccionamiento para quienes quieren seguir aprendiendo.
+      </p>
+      <p>
+        El recorrido combina herramientas para comunicarse con el descubrimiento
+        del arte, la geografía y las tradiciones de Italia.
+      </p>
+      <a class="text-link" href="#ingreso">
+        Solicitar información de ingreso ↗
+      </a>
+    </div>
+    <div class="school-facts">
+      <h2>Antes de empezar</h2>
+      <dl>
+        <div>
+          <dt>Profesor/a</dt>
+          <dd>Matias Costantini Reschia.</dd>
+        </div>
+        <div>
+          <dt>Niveles</dt>
+          <dd>
+            Cuatro niveles de italiano y Conversación, la instancia más
+            avanzada.
+          </dd>
+        </div>
+        <div>
+          <dt>Aranceles</dt>
+          <dd>Consultá el costo vigente, matrícula y formas de pago.</dd>
+        </div>
+        <div>
+          <dt>Días y horarios</dt>
+          <dd>A confirmar según el grupo y los cupos disponibles.</dd>
+        </div>
+      </dl>
+    </div>
+  </div>
+  <section class="reading-panel">
+    <h2>Cinco etapas para seguir aprendiendo</h2>
+    <p>
+      La escuela ofrece cuatro niveles de italiano y una propuesta de
+      Conversación para el tramo más avanzado. Consultá con el profesor cuál
+      corresponde a tu recorrido.
+    </p>
+    <ol class="level-list">
+      <li>
+        <strong>Nivel 1</strong>
+        <span>El inicio del recorrido.</span>
+      </li>
+      <li>
+        <strong>Nivel 2</strong>
+        <span>Continuidad del aprendizaje.</span>
+      </li>
+      <li>
+        <strong>Nivel 3</strong>
+        <span>Una nueva etapa para profundizar.</span>
+      </li>
+      <li>
+        <strong>Nivel 4</strong>
+        <span>El cuarto nivel del recorrido.</span>
+      </li>
+      <li>
+        <strong>Conversación</strong>
+        <span>La propuesta más avanzada.</span>
+      </li>
+    </ol>
+    <p>
+      Los contenidos, horarios y criterios de ingreso se informan al consultar.
+      La solicitud no reserva una vacante.
+    </p>
+  </section>
+  <div class="narrow" id="ingreso">
+    <RequestForm kind="escuela" title="Solicitud de ingreso" />
+  </div>
+</ServiceLayout>

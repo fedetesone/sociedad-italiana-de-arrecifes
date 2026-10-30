@@ -18,6 +18,7 @@ export interface Settings {
   activities: { title: string; description: string }[];
 }
 const defaults: Settings = {
+  email: "soc.italiana.arrecifes@gmail.com",
   name: 'Sociedad Italiana de S.M. "Voz de Caprera"',
   intro:
     "Desde 1881, un lugar para encontrarnos, compartir nuestras raíces y seguir construyendo comunidad en Arrecifes.",

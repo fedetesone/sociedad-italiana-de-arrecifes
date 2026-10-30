@@ -1,0 +1,15 @@
+---
+import Layout from "./Layout.astro";
+const { title, kicker = "Sociedad Italiana", description } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <section class="wrap page-intro service-intro">
+    <p class="section-kicker">{kicker}</p>
+    <h1>{title}</h1>
+    <p>{description}</p>
+  </section>
+  <div class="wrap service-body">
+    <slot />
+  </div>
+</Layout>
