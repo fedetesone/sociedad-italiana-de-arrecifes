@@ -67,7 +67,6 @@ const id = `form-${kind}`;
           name="Nombre y apellido"
           autocomplete="name"
           required
-          minlength="3"
           maxlength="100"
         />
       </label>
@@ -173,8 +172,6 @@ const id = `form-${kind}`;
         name="Mensaje"
         rows="5"
         required={kind !== "baja"}
-        minlength={kind === "baja" ? undefined : 10}
-        maxlength="3000"
         placeholder={
           kind === "escuela"
             ? "Contanos qué te gustaría aprender y tus horarios disponibles."
@@ -206,6 +203,7 @@ const id = `form-${kind}`;
       {kind === "contacto" ? "Enviar consulta" : "Enviar solicitud"}{" "}
       <span aria-hidden="true">↗</span>
     </button>
+    <p class="form-help" role="status" aria-live="polite" data-form-status></p>
   </form>
   <p class="form-help">
     También podés escribir directamente a{" "}
@@ -214,22 +212,42 @@ const id = `form-${kind}`;
 </section>
 
 <script>
-  // Keep return links on the actual deployment (including local previews).
+  import { submitRequest } from "../lib/submit-request";
+
   document
     .querySelectorAll<HTMLFormElement>(".request-form")
     .forEach((form) => {
-      form.addEventListener("submit", () => {
-        const next = form.querySelector<HTMLInputElement>(
-          'input[name="_next"]',
-        );
-        const url = form.querySelector<HTMLInputElement>('input[name="_url"]');
-        if (next)
-          next.value = new URL("/gracias/", window.location.origin).href;
-        if (url)
-          url.value = new URL(
-            window.location.pathname,
-            window.location.origin,
-          ).href;
+      const button = form.querySelector<HTMLButtonElement>(
+        'button[type="submit"]',
+      )!;
+      const status = form.querySelector<HTMLElement>("[data-form-status]")!;
+      form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        if (button.disabled || !form.reportValidity()) return;
+        button.disabled = true;
+        form.setAttribute("aria-busy", "true");
+        status.textContent = "Enviando tu consulta…";
+        try {
+          const result = await submitRequest(
+            form.action,
+            new FormData(form),
+            window.location.href,
+          );
+          if (result === "activation") {
+            status.textContent =
+              "El formulario todavía necesita ser activado por la institución. Por favor, escribinos al correo que figura debajo.";
+          } else {
+            form.reset();
+            status.textContent =
+              "Tu consulta fue enviada para su entrega por correo. Te responderemos al email que indicaste. La solicitud requiere confirmación de la administración.";
+          }
+        } catch {
+          status.textContent =
+            "No pudimos confirmar el envío. Conservamos tus datos en el formulario. Podés intentar nuevamente o escribirnos al correo que figura debajo.";
+        } finally {
+          button.disabled = false;
+          form.removeAttribute("aria-busy");
+        }
       });
     });
 </script>

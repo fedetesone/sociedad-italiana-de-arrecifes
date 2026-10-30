@@ -80,7 +80,7 @@ Un sitio estático necesita reconstruirse cuando cambia el contenido. En Cloudfl
 - Las fechas se muestran en `America/Argentina/Buenos_Aires`, independientemente de la zona del servidor.
 - Navegación móvil con estado expandido y cierre con Escape; enlace para saltar al contenido, foco visible y HTML semántico.
 - El texto enriquecido se renderiza escapado, con lista permitida de protocolos para enlaces. Las imágenes tienen texto alternativo editable.
-- Formularios HTML reales enviados mediante FormSubmit, con CAPTCHA del proveedor y honeypot. Requieren activar el destinatario antes de recibir correos (ver abajo).
+- Formularios enviados mediante FormSubmit por AJAX, con honeypot y confirmación dentro del sitio. Requieren activar el destinatario antes de recibir correos (ver abajo).
 - Fuentes locales (DM Sans y Newsreader); ninguna petición a Google Fonts. Imagen de portada almacenada localmente.
 - Metadata Open Graph, Twitter, URL canónica, sitemap, robots y cabeceras estáticas de seguridad.
 
@@ -126,7 +126,7 @@ Los overrides de npm actualizan tres dependencias indirectas del CLI de Sanity (
 
 ## Formularios de solicitudes y contacto
 
-Todos se envían por POST a **FormSubmit.co**, con destinatario fijo `soc.italiana.arrecifes@gmail.com`, sin servidor ni credenciales en el sitio. El asunto identifica el trámite y el campo `email` permite responder a quien consulta. No se suben documentos ni se almacenan solicitudes en Sanity. El destinatario se define en `web/src/lib/navigation.ts`; cambiar el email editorial en Sanity no cambia el receptor de los formularios.
+Todos se envían por POST a **FormSubmit.co**, con destinatario fijo `soc.italiana.arrecifes@gmail.com`, sin servidor ni credenciales en el sitio. El asunto identifica el trámite y el nombre de quien consulta; `_replyto` permite responder a su email. Se conserva la plantilla `table` del proveedor. El correo de activación es propio de FormSubmit y no usa esta plantilla ni este asunto; no es una consulta recibida. No se suben documentos ni se almacenan solicitudes en Sanity. El destinatario se define en `web/src/lib/navigation.ts`; cambiar el email editorial en Sanity no cambia el receptor de los formularios.
 
 ### Activación pendiente antes de habilitar el sitio al público
 
@@ -136,9 +136,13 @@ Todos se envían por POST a **FormSubmit.co**, con destinatario fijo `soc.italia
 4. Probá alta, baja, ingreso a la escuela y contacto. Verificá destinatario, asunto, datos y respuesta al remitente. Comprobá también alquileres y las consultas de socios.
 5. Confirmá la llegada real de cada correo. **El envío a la casilla no fue probado ni activado durante el desarrollo**; se verificaron el destino POST, campos y validaciones sin enviar mensajes reales.
 
-Se mantiene el CAPTCHA predeterminado del proveedor; no deshabilitarlo con `_captcha=false`. El CAPTCHA y los errores de transporte pueden mostrarse en una página externa de FormSubmit. El retorno es `/gracias/`, pero visitar esa URL directamente no prueba la recepción de un correo. La pantalla evita afirmar que se completó un trámite. Las solicitudes no aprueban automáticamente altas, bajas, inscripciones o reservas.
+Con JavaScript, el envío usa el endpoint AJAX de FormSubmit: la confirmación y los errores aparecen en el formulario, sin redirección. El botón se deshabilita durante el envío; ante errores se conservan los campos y se ofrece contacto directo. La aceptación del proveedor no prueba recepción en Gmail. Una respuesta que indique activación pendiente se muestra como tal. Se conserva el honeypot; el flujo AJAX no presenta el CAPTCHA alojado del envío HTML, por lo que se debe revisar el spam antes de abrir el sitio al público.
 
-En desarrollo y vistas previas, JavaScript ajusta `_next` al origen actual. Sin JavaScript se usa `PUBLIC_SITE_URL`. No envíes datos reales desde previews hasta verificar el destino. Si el proveedor falla, cada formulario ofrece el correo directo.
+Sin JavaScript se mantiene el POST HTML y el retorno a `/gracias/` según `PUBLIC_SITE_URL`; ese flujo puede mostrar páginas de FormSubmit. No envíes datos reales desde previews hasta verificar el destino. Se valida el formato del email y los campos obligatorios; el mensaje no tiene mínimo ni máximo de caracteres.
+
+### Remitente y diseño de correo propios
+
+FormSubmit no documenta una opción para configurar el encabezado `From` ni una plantilla HTML completamente propia. El remitente continúa siendo el proveedor. Para personalización completa, la alternativa recomendada es una función de Cloudflare + Resend: dominio remitente verificado, API key como secreto del servidor, destinatario fijo y `Reply-To` del visitante. Requiere configurar el dominio y el servicio; no está implementada ni habilitada. La web pública puede seguir siendo estática. Esa función deberá validar datos y protección antispam del lado servidor. Guía: https://resend.com/docs/send-with-cloudflare-workers
 
 Documentación: [configuración](https://formsubmit.co/documentation), [activación y ayuda](https://formsubmit.co/help). Información pública sobre el tratamiento de datos: `/privacidad/`.
 
