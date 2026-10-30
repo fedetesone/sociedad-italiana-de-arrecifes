@@ -1,0 +1,50 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import EventCard from "../../components/EventCard.astro";
+import EmptyEvents from "../../components/EmptyEvents.astro";
+import { getContent } from "../../lib/content";
+import { splitEvents } from "../../lib/events";
+const { events } = await getContent();
+const { upcoming, past } = splitEvents(events);
+---
+
+<Layout
+  title="Eventos"
+  description="Encontrá los próximos encuentros y actividades de la Sociedad Italiana de Arrecifes."
+>
+  <div class="wrap page-intro">
+    <p class="section-kicker">Nuestra agenda</p>
+    <h1>
+      Siempre hay un motivo
+      <br />
+      para encontrarnos.
+    </h1>
+    <p>Cultura, tradiciones y momentos para compartir en Arrecifes.</p>
+  </div>
+  <section class="wrap section section-top">
+    <h2>Próximos eventos</h2>
+    {upcoming.length ? (
+      <div class="events-grid">
+        {upcoming.map((event) => (
+          <EventCard event={event} />
+        ))}
+      </div>
+    ) : (
+      <EmptyEvents />
+    )}
+  </section>
+  <section class="past-section">
+    <div class="wrap">
+      <h2>Encuentros que compartimos</h2>
+      {past.length ? (
+        <div class="events-grid">
+          {past.map((event) => (
+            <EventCard event={event} />
+          ))}
+        </div>
+      ) : (
+        <p>Acá vas a encontrar los eventos anteriores de nuestra agenda.</p>
+      )}
+    </div>
+  </section>
+</Layout>

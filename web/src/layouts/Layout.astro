@@ -1,0 +1,146 @@
+---
+import "../styles/global.css";
+import { getContent } from "../lib/content";
+import { safeUrl } from "../lib/events";
+const { settings } = await getContent();
+const {
+  title,
+  description = settings.intro,
+  image = "/images/social.jpg",
+  noindex = false,
+} = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const links = [
+  ["/", "Inicio"],
+  ["/nosotros/", "Nosotros"],
+  ["/eventos/", "Eventos"],
+  ["/contacto/", "Contacto"],
+];
+---
+
+<!doctype html>
+<html lang="es-AR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} | ${settings.name}` : settings.name}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta name="theme-color" content="#183e35" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title || settings.name} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:site_name" content={settings.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {noindex && <meta name="robots" content="noindex" />}
+  </head>
+  <body>
+    <a class="skip" href="#contenido">
+      Saltar al contenido
+    </a>
+    <div class="tricolor" aria-hidden="true"></div>
+    <header class="site-header wrap">
+      <a class="brand" href="/">
+        <span class="seal" aria-hidden="true">
+          SI<span>ARRECIFES</span>
+        </span>
+        <span>
+          Sociedad Italiana<small>de Arrecifes</small>
+        </span>
+      </a>
+      <button
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="navigation"
+      >
+        Menú <span aria-hidden="true">☰</span>
+      </button>
+      <nav id="navigation" aria-label="Navegación principal">
+        {links.map(([href, label]) => (
+          <a
+            href={href}
+            aria-current={Astro.url.pathname === href ? "page" : undefined}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </header>
+    <main id="contenido">
+      <slot />
+    </main>
+    <footer>
+      <div class="wrap footer-grid">
+        <div>
+          <a class="footer-title" href="/">
+            {settings.name}
+          </a>
+          <p>
+            Raíces italianas.
+            <br />
+            Un corazón en Arrecifes.
+          </p>
+        </div>
+        <div>
+          <h2>Nos encontramos</h2>
+          <p>{settings.address || "Arrecifes, Buenos Aires, Argentina"}</p>
+          {settings.email && (
+            <a href={`mailto:${settings.email}`}>{settings.email}</a>
+          )}
+          {settings.phone && <p>{settings.phone}</p>}
+        </div>
+        <div>
+          <h2>Seguí en contacto</h2>
+          <a href="/contacto/">Contactanos</a>
+          {safeUrl(settings.instagram) && (
+            <a
+              href={safeUrl(settings.instagram)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          )}
+          {safeUrl(settings.facebook) && (
+            <a
+              href={safeUrl(settings.facebook)}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Facebook
+            </a>
+          )}
+        </div>
+      </div>
+      <div class="wrap footer-bottom">
+        <span>
+          © {new Date().getFullYear()} {settings.name}
+        </span>
+        <span>Una asociación sin fines de lucro.</span>
+      </div>
+    </footer>
+    <script>
+      const button = document.querySelector<HTMLButtonElement>(".menu-toggle");
+      const nav = document.querySelector<HTMLElement>("#navigation");
+      button?.addEventListener("click", () => {
+        const open = button.getAttribute("aria-expanded") !== "true";
+        button.setAttribute("aria-expanded", String(open));
+        nav?.classList.toggle("open", open);
+      });
+      document.addEventListener("keydown", (event) => {
+        if (
+          event.key === "Escape" &&
+          button?.getAttribute("aria-expanded") === "true"
+        ) {
+          button.setAttribute("aria-expanded", "false");
+          nav?.classList.remove("open");
+          button.focus();
+        }
+      });
+    </script>
+  </body>
+</html>

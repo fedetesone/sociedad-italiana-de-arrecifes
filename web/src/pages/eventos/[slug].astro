@@ -1,0 +1,76 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import RichText from "../../components/RichText.astro";
+import { getContent } from "../../lib/content";
+import { eventDate, eventTime, safeUrl } from "../../lib/events";
+export async function getStaticPaths() {
+  const { events } = await getContent();
+  return events.map((event) => ({
+    params: { slug: event.slug },
+    props: { event },
+  }));
+}
+const { event } = Astro.props;
+const ticket = safeUrl(event.ticketUrl);
+const url = new URL(Astro.url.pathname, Astro.site).href;
+---
+
+<Layout title={event.title} description={event.summary} image={event.image}>
+  <article class="wrap section">
+    <a class="text-link" href="/eventos/">
+      ← Volver a eventos
+    </a>
+    <div class="event-detail">
+      <div>
+        <p class="section-kicker">
+          {event.category || "Un encuentro en la Sociedad"}
+        </p>
+        <h1>{event.title}</h1>
+        <p class="lead">{event.summary}</p>
+        <dl class="event-info">
+          <div>
+            <dt>Cuándo</dt>
+            <dd>
+              <time datetime={event.startsAt}>
+                {eventDate(event.startsAt)} · {eventTime(event.startsAt)} h
+              </time>
+              <small>Hora de Argentina</small>
+            </dd>
+          </div>
+          <div>
+            <dt>Dónde</dt>
+            <dd>{event.venue}</dd>
+          </div>
+        </dl>
+        {ticket && (
+          <a
+            class="button"
+            href={ticket}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Inscripción / entradas <span aria-hidden="true">↗</span>
+          </a>
+        )}
+        <div class="event-description">
+          <RichText value={event.body} />
+        </div>
+        <a
+          class="text-link"
+          href={`https://wa.me/?text=${encodeURIComponent(event.title + " — " + url)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Compartir por WhatsApp ↗
+        </a>
+      </div>
+      <img
+        class="event-poster"
+        src={event.image || "/images/event-placeholder.svg"}
+        alt={event.imageAlt || `Afiche de ${event.title}`}
+        width="800"
+        height="1000"
+      />
+    </div>
+  </article>
+</Layout>

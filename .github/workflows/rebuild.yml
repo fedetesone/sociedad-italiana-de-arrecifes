@@ -1,0 +1,19 @@
+name: Actualizar agenda estática
+on:
+  schedule:
+    - cron: "15 3 * * *"
+  workflow_dispatch:
+permissions: {}
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Solicitar despliegue de Cloudflare Pages
+        env:
+          DEPLOY_HOOK: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK }}
+        run: |
+          if [ -z "$DEPLOY_HOOK" ]; then
+            echo 'Configurá el secreto CLOUDFLARE_DEPLOY_HOOK para actualizar la agenda diariamente.'
+            exit 0
+          fi
+          curl --fail --silent --show-error --retry 2 -X POST "$DEPLOY_HOOK" > /dev/null

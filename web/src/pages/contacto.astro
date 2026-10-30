@@ -1,0 +1,81 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { getContent } from "../lib/content";
+import { safeUrl } from "../lib/events";
+const { settings } = await getContent();
+---
+
+<Layout title="Contacto">
+  <section class="wrap page-intro">
+    <p class="section-kicker">Estamos cerca</p>
+    <h1>
+      El próximo encuentro
+      <br />
+      empieza con un hola.
+    </h1>
+    <p>
+      Para conocer más sobre la Sociedad, consultar por actividades o compartir
+      una propuesta.
+    </p>
+  </section>
+  <section class="wrap contact-grid section section-top">
+    <div class="contact-panel">
+      <h2>Contactanos</h2>
+      {settings.email && (
+        <p>
+          <span>Correo electrónico</span>
+          <a href={`mailto:${settings.email}`}>{settings.email}</a>
+        </p>
+      )}
+      {settings.phone && (
+        <p>
+          <span>Teléfono</span>
+          <a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}>
+            {settings.phone}
+          </a>
+        </p>
+      )}
+      {!settings.email && !settings.phone && (
+        <p>
+          Pronto vamos a compartir nuestros canales de contacto en este espacio.
+        </p>
+      )}
+      {safeUrl(settings.instagram) && (
+        <p>
+          <a
+            href={safeUrl(settings.instagram)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram ↗
+          </a>
+        </p>
+      )}
+      {safeUrl(settings.facebook) && (
+        <p>
+          <a
+            href={safeUrl(settings.facebook)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Facebook ↗
+          </a>
+        </p>
+      )}
+    </div>
+    <div>
+      <h2>En Arrecifes, nuestra casa</h2>
+      <p>
+        {settings.address || "Arrecifes, provincia de Buenos Aires, Argentina."}
+      </p>
+      {settings.hours && <p>Horarios: {settings.hours}</p>}
+      <p>
+        Un espacio para la cultura italiana y para todas las personas que
+        quieran ser parte.
+      </p>
+      <a class="text-link" href="/eventos/">
+        Conocé la agenda ↗
+      </a>
+    </div>
+  </section>
+</Layout>

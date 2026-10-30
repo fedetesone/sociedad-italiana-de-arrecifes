@@ -1,0 +1,148 @@
+---
+import Layout from "../layouts/Layout.astro";
+import EventCard from "../components/EventCard.astro";
+import EmptyEvents from "../components/EmptyEvents.astro";
+import { getContent } from "../lib/content";
+import { splitEvents } from "../lib/events";
+const { settings, events } = await getContent();
+const { upcoming } = splitEvents(events);
+---
+
+<Layout>
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="location">
+        <span></span> Arrecifes, Buenos Aires
+      </p>
+      <h1>
+        La cultura nos une.
+        <br />
+        La comunidad
+        <br />
+        nos hace crecer.
+      </h1>
+      <p class="hero-description">
+        Somos la Sociedad Italiana de Arrecifes. Un encuentro entre nuestras
+        raíces y todo lo que está por venir.
+      </p>
+      <div class="hero-actions">
+        <a class="button" href="/eventos/">
+          Descubrí nuestros encuentros <span aria-hidden="true">↗</span>
+        </a>
+        <a class="quiet-link" href="/nosotros/">
+          Conocé nuestra historia
+        </a>
+      </div>
+      <div class="hero-note">
+        <span class="small-tricolor" aria-hidden="true"></span> De Italia a
+        Arrecifes. De generación en generación.
+      </div>
+    </div>
+    <figure class="hero-photo">
+      <img
+        src={settings.heroImage || "/images/italia.jpg"}
+        alt={
+          settings.heroAlt ||
+          "Fachadas de colores junto al mar en un pueblo de Italia"
+        }
+        width="1100"
+        height="1350"
+        fetchpriority="high"
+      />
+      <figcaption>
+        {settings.heroImage
+          ? "Nuestra identidad, un punto de encuentro."
+          : "Italia, siempre cerca."}
+        <span>
+          {settings.heroImage
+            ? "Sociedad Italiana de Arrecifes"
+            : "Paisajes de nuestras raíces"}
+        </span>
+      </figcaption>
+      <div class="photo-stamp" aria-hidden="true">
+        Raíces que
+        <br />
+        <em>nos unen</em>
+      </div>
+    </figure>
+  </section>
+  <section class="intro-section">
+    <div class="wrap intro-grid">
+      <p class="section-kicker">Nuestra casa, tu casa</p>
+      <div>
+        <h2>
+          Una historia compartida.
+          <br />
+          Una comunidad que sigue.
+        </h2>
+        <p>{settings.intro}</p>
+        <a class="text-link" href="/nosotros/">
+          Conocé la Sociedad <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+      <span class="line-flower" aria-hidden="true">
+        ✳
+      </span>
+    </div>
+  </section>
+  <section class="wrap section">
+    <div class="section-heading">
+      <div>
+        <p class="section-kicker">La agenda de la Sociedad</p>
+        <h2>Nos volvemos a encontrar</h2>
+      </div>
+      <a class="text-link" href="/eventos/">
+        Ver todos los eventos <span aria-hidden="true">↗</span>
+      </a>
+    </div>
+    {upcoming.length ? (
+      <div class="events-grid">
+        {upcoming.slice(0, 3).map((event) => (
+          <EventCard event={event} />
+        ))}
+      </div>
+    ) : (
+      <EmptyEvents />
+    )}
+  </section>
+  <section class="activities-section">
+    <div class="wrap">
+      <div class="section-heading">
+        <div>
+          <p class="section-kicker">Lo que nos mueve</p>
+          <h2>La tradición se vive, se comparte.</h2>
+        </div>
+        <p>
+          Hay muchas maneras de sentirnos cerca.
+          <br />Y siempre lugar para una más.
+        </p>
+      </div>
+      <div class="activities-grid">
+        {settings.activities.map((activity, i) => (
+          <article>
+            <span class="activity-symbol" aria-hidden="true">
+              {["✺", "❋", "✳"][i % 3]}
+            </span>
+            <h3>{activity.title}</h3>
+            <p>{activity.description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+  <section class="wrap invitation">
+    <p class="section-kicker">Seamos parte</p>
+    <h2>
+      Las puertas están abiertas.
+      <br />
+      Las ideas, también.
+    </h2>
+    <p>
+      Si querés acercarte a la Sociedad, proponer una actividad o conocer más,
+      nos encantará encontrarnos.
+    </p>
+    <a class="button" href="/contacto/">
+      Ponete en contacto <span aria-hidden="true">↗</span>
+    </a>
+  </section>
+</Layout>

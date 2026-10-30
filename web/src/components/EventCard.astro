@@ -1,0 +1,34 @@
+---
+import { eventDate, eventTime, type Event } from "../lib/events";
+const { event } = Astro.props as { event: Event };
+---
+
+<article class="event-card">
+  <a href={`/eventos/${event.slug}/`} tabindex="-1" aria-hidden="true">
+    <img
+      src={event.image || "/images/event-placeholder.svg"}
+      alt=""
+      loading="lazy"
+      width="640"
+      height="440"
+    />
+  </a>
+  <div class="event-card-body">
+    <p class="event-date">
+      <time datetime={event.startsAt}>{eventDate(event.startsAt)}</time> ·{" "}
+      {eventTime(event.startsAt)} h
+    </p>
+    <h3>
+      <a href={`/eventos/${event.slug}/`}>{event.title}</a>
+    </h3>
+    <p>{event.summary}</p>
+    <p class="venue">{event.venue}</p>
+    <a
+      class="text-link"
+      href={`/eventos/${event.slug}/`}
+      aria-label={`Conocer más sobre ${event.title}`}
+    >
+      Conocer más <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</article>
