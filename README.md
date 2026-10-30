@@ -1,6 +1,6 @@
-# Sociedad Italiana de Arrecifes
+# Sociedad Italiana de S.M. "Voz de Caprera"
 
-Sitio institucional en español argentino. Astro + TypeScript, Tailwind CSS 4, Sanity Studio y alojamiento estático en Cloudflare Pages. Monorepo npm: `web/` contiene el sitio público y `studio/` el administrador independiente.
+Sitio institucional en español argentino de la Sociedad Italiana de Socorros Mutuos "Voz de Caprera", Arrecifes. Astro + TypeScript, Tailwind CSS 4, Sanity Studio y alojamiento estático en Cloudflare Pages. Monorepo npm: `web/` contiene el sitio público y `studio/` el administrador independiente.
 
 ## Requisitos y desarrollo
 
@@ -15,7 +15,7 @@ npm run build          # web/dist
 npm run dev:studio     # http://localhost:3333 (requiere configurar Sanity)
 ```
 
-El sitio funciona sin Sanity con textos institucionales de base y una agenda vacía. No se publican eventos de ejemplo ni datos de contacto inventados. La fotografía de Italia es ilustrativa; reemplazarla con imágenes propias desde el Studio. La reseña histórica debe revisarse y completarse por la institución antes del lanzamiento oficial.
+El sitio funciona sin Sanity con textos institucionales de base y una agenda vacía. No se publican eventos de ejemplo ni datos de contacto inventados. La fotografía de Italia es ilustrativa; reemplazarla con imágenes propias desde el Studio. La reseña histórica incorpora datos contrastados y enlaces a fuentes públicas; el detalle de la investigación está en [docs/historia-fuentes.md](docs/historia-fuentes.md). La institución puede ampliarla desde Sanity.
 
 ## Configurar Sanity (plan gratuito)
 

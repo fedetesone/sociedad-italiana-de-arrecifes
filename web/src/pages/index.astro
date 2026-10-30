@@ -22,8 +22,8 @@ const { upcoming } = splitEvents(events);
         nos hace crecer.
       </h1>
       <p class="hero-description">
-        Somos la Sociedad Italiana de Arrecifes. Un encuentro entre nuestras
-        raíces y todo lo que está por venir.
+        Somos la Sociedad Italiana de S.M. "Voz de Caprera". Un encuentro entre
+        nuestras raíces y todo lo que está por venir.
       </p>
       <div class="hero-actions">
         <a class="button" href="/eventos/">
@@ -54,9 +54,7 @@ const { upcoming } = splitEvents(events);
           ? "Nuestra identidad, un punto de encuentro."
           : "Italia, siempre cerca."}
         <span>
-          {settings.heroImage
-            ? "Sociedad Italiana de Arrecifes"
-            : "Paisajes de nuestras raíces"}
+          {settings.heroImage ? settings.name : "Paisajes de nuestras raíces"}
         </span>
       </figcaption>
       <div class="photo-stamp" aria-hidden="true">

@@ -9,7 +9,7 @@ if (!projectId)
   );
 export default defineConfig({
   name: "sociedad-italiana",
-  title: "Sociedad Italiana de Arrecifes",
+  title: 'Sociedad Italiana de S.M. "Voz de Caprera"',
   projectId,
   dataset: process.env.SANITY_STUDIO_DATASET || "production",
   plugins: [

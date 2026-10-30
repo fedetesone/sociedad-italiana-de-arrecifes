@@ -1,13 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import RichText from "../components/RichText.astro";
+import { institutionalHistory } from "../lib/history";
 import { getContent } from "../lib/content";
 const { settings } = await getContent();
 ---
 
 <Layout title="Nosotros">
   <section class="wrap page-intro">
-    <p class="section-kicker">Sociedad Italiana de Arrecifes</p>
+    <p class="section-kicker">
+      Sociedad Italiana de Socorros Mutuos "Voz de Caprera"
+    </p>
     <h1>
       Raíces que nos unen.
       <br />
@@ -35,23 +38,11 @@ const { settings } = await getContent();
     </figure>
     <div>
       <h2>Nuestra historia</h2>
-      {settings.history?.length ? (
-        <RichText value={settings.history} />
-      ) : (
-        <div class="prose">
-          <p>
-            La Sociedad Italiana de Arrecifes es una asociación cultural y
-            comunitaria sin fines de lucro, con raíces italianas y una identidad
-            profundamente ligada a Arrecifes.
-          </p>
-          <p>
-            La memoria de quienes nos precedieron y el encuentro entre
-            generaciones dan sentido a nuestra institución. Cada historia
-            familiar, cada tradición y cada nuevo vínculo forman parte de ese
-            patrimonio compartido.
-          </p>
-        </div>
-      )}
+      <RichText
+        value={
+          settings.history?.length ? settings.history : institutionalHistory
+        }
+      />
       <h2 class="mt-12">Nuestro propósito</h2>
       <p class="lead">{settings.mission}</p>
       <a class="text-link" href="/contacto/">

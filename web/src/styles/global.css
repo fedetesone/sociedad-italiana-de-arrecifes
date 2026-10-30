@@ -96,38 +96,41 @@ a:hover {
   align-items: center;
   gap: 15px;
   font-family: var(--font-serif);
-  font-size: 1.65rem;
+  font-size: 1.4rem;
   line-height: 1.05;
   letter-spacing: -0.025em;
 }
 .brand:hover {
   text-decoration: none;
 }
+.brand-name {
+  display: block;
+}
+.brand-dedication {
+  display: block;
+  margin-top: 4px;
+}
 .brand small {
   display: block;
   font-family: var(--font-sans);
-  font-size: 0.73rem;
-  letter-spacing: 0.08em;
-  margin-top: 8px;
+  font-size: 1.05rem;
+  font-weight: 550;
+  letter-spacing: 0.035em;
+  margin-top: 9px;
 }
-.seal {
-  border: 1px solid #486153;
-  outline: 1px solid #486153;
-  outline-offset: 4px;
-  width: 62px;
-  height: 62px;
+.brand-logo {
+  width: 82px;
+  height: 82px;
+  flex-shrink: 0;
+  overflow: hidden;
   border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.9rem;
+  background: white;
 }
-.seal span {
-  font-family: var(--font-sans);
-  font-size: 6px;
-  letter-spacing: 1.5px;
-  margin-top: 5px;
+.brand-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.45) translateY(-4%);
 }
 nav {
   display: flex;
@@ -682,22 +685,24 @@ footer {
     height: 95px;
     position: relative;
   }
+  .site-header {
+    gap: 12px;
+    height: 112px;
+  }
   .brand {
-    font-size: 1.35rem;
-    gap: 13px;
+    font-size: clamp(0.86rem, 3.45vw, 1.2rem);
+    gap: 10px;
   }
-  .seal {
-    height: 48px;
-    width: 48px;
-    font-size: 1.6rem;
-  }
-  .seal span {
-    font-size: 5px;
+  .brand-logo {
+    width: 54px;
+    height: 54px;
   }
   .brand small {
-    font-size: 0.65rem;
+    font-size: 0.93rem;
+    margin-top: 7px;
   }
   .menu-toggle {
+    flex-shrink: 0;
     display: flex;
     gap: 10px;
     border: 1px solid #bdc6b4;
@@ -709,7 +714,7 @@ footer {
   nav {
     display: none;
     position: absolute;
-    top: 86px;
+    top: 103px;
     left: -20px;
     right: -20px;
     z-index: 20;

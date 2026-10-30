@@ -150,7 +150,7 @@ const siteSettings = defineType({
       name: "name",
       title: "Nombre de la institución",
       type: "string",
-      initialValue: "Sociedad Italiana de Arrecifes",
+      initialValue: 'Sociedad Italiana de S.M. "Voz de Caprera"',
       validation: (r) => r.required(),
     }),
     defineField({

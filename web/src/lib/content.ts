@@ -18,9 +18,9 @@ export interface Settings {
   activities: { title: string; description: string }[];
 }
 const defaults: Settings = {
-  name: "Sociedad Italiana de Arrecifes",
+  name: 'Sociedad Italiana de S.M. "Voz de Caprera"',
   intro:
-    "Un lugar para encontrarnos, compartir nuestras raíces y seguir construyendo comunidad en Arrecifes.",
+    "Desde 1881, un lugar para encontrarnos, compartir nuestras raíces y seguir construyendo comunidad en Arrecifes.",
   mission:
     "Acercar la cultura italiana a nuestra comunidad, cuidar la memoria compartida y abrir espacios de encuentro entre generaciones.",
   activities: [
