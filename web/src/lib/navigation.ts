@@ -1,5 +1,13 @@
 export const navigation = [
-  { label: "Eventos", href: "/eventos/" },
+  {
+    label: "Quiénes somos",
+    href: "/nosotros/",
+    children: [
+      ["/nosotros/", "Historia"],
+      ["/nosotros/actualidad/", "Actualidad"],
+      ["/nosotros/comision-directiva/", "Comisión directiva"],
+    ],
+  },
   {
     label: "Socios",
     href: "/socios/",
@@ -13,6 +21,7 @@ export const navigation = [
     ],
   },
   { label: "Escuela de italiano", href: "/escuela-de-italiano/" },
+  { label: "Eventos", href: "/eventos/" },
   {
     label: "Alquiler de salones",
     href: "/salones/",
@@ -20,15 +29,6 @@ export const navigation = [
       ["/salones/#regina", "Sala Regina"],
       ["/salones/#ravenna", "Sala Ravenna"],
       ["/salones/#patio", "Patio de eventos"],
-    ],
-  },
-  {
-    label: "Quiénes somos",
-    href: "/nosotros/",
-    children: [
-      ["/nosotros/", "Historia"],
-      ["/nosotros/actualidad/", "Actualidad"],
-      ["/nosotros/comision-directiva/", "Comisión directiva"],
     ],
   },
   { label: "Contacto", href: "/contacto/" },
