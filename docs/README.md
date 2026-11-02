@@ -161,7 +161,13 @@ Datos de referencia confirmados:
 
 El correo visible aparece en el pie, en Contacto y junto a cada formulario como alternativa para escribir directamente. **Cambiarlo en Sanity no cambia el destinatario de los formularios.** Para que las solicitudes lleguen a otra casilla, tiene que intervenir la persona responsable del sitio.
 
+Contacto también muestra los datos del **Consulado General de Italia en Rosario**, cuya circunscripción incluye Arrecifes. Esa sección requiere ayuda técnica para actualizarse; no se modifica con los datos de la Sociedad en Sanity. Verificá teléfonos, horarios y autoridades en las [fuentes oficiales documentadas](servicios-fuentes.md#consulado-general-de-italia-en-rosario). El formulario de la web sigue dirigido a la Sociedad.
+
+Las secciones de **INAES** y **Municipalidad de Arrecifes** también se actualizan con ayuda técnica. Sus datos y enlaces deben revisarse en los [sitios oficiales de referencia](servicios-fuentes.md#inaes-y-municipalidad-de-arrecifes); no se editan desde Sanity.
+
 Algunos campos tienen información de respaldo. Vaciar un campo no siempre lo elimina de la web; por ejemplo, si borrás la historia, vuelve a mostrarse la reseña incluida en el sitio. Consultá si necesitás retirar por completo una sección.
+
+La reseña de respaldo incluye una síntesis de la publicación del 120.º aniversario aportada por la institución. Antes de ampliar o corregir fechas, consultá las [fuentes históricas y las fotografías del archivo](historia-fuentes.md). Los servicios mencionados en ese material histórico no acreditan prestaciones vigentes.
 
 ## 9. Subir fotos y afiches
 

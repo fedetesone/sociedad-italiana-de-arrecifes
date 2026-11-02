@@ -8,43 +8,41 @@ const { settings } = await getContent();
 ---
 
 <Layout title="Nosotros">
-  <section class="wrap page-intro">
-    <p class="section-kicker">
-      Sociedad Italiana de Socorros Mutuos "Voz de Caprera"
-    </p>
-    <h1>
-      Raíces que nos unen.
-      <br />
-      Historias que continúan.
-    </h1>
-    <p>{settings.intro}</p>
-  </section>
-  <section class="wrap about-grid section-top section">
-    <figure>
-      <img
-        class="about-photo"
-        src={settings.aboutImage || "/images/italia.jpg"}
-        alt={
-          settings.aboutAlt ||
-          "Paisaje costero de Italia, referencia de nuestras raíces culturales"
-        }
-        width="1000"
-        height="1100"
-      />
-      <figcaption>
-        {settings.aboutImage
-          ? "Nuestra comunidad en imágenes."
-          : "Italia: el paisaje de una identidad compartida."}
-      </figcaption>
-    </figure>
-    <div>
-      <h2>Nuestra historia</h2>
+  <section
+    class="wrap about-section section"
+    aria-labelledby="nuestra-historia"
+  >
+    <article class="about-story">
+      <p class="section-kicker">
+        Sociedad Italiana de Socorros Mutuos "Voz de Caprera"
+      </p>
+      <h1 id="nuestra-historia">Nuestra historia</h1>
+      <figure class="about-figure">
+        <img
+          class="about-photo"
+          class:list={{ "about-photo-navona": !settings.aboutImage }}
+          src={settings.aboutImage || "/images/piazza-navona.jpg"}
+          alt={
+            settings.aboutAlt ||
+            "Piazza Navona, en Roma, con una fuente en primer plano y una iglesia con cúpula al fondo"
+          }
+          width="1200"
+          height="1200"
+        />
+        <figcaption>
+          {settings.aboutImage
+            ? "Nuestra comunidad en imágenes."
+            : "Piazza Navona, Roma. Una mirada a nuestras raíces italianas."}
+        </figcaption>
+      </figure>
       <RichText
         value={
           settings.history?.length ? settings.history : institutionalHistory
         }
       />
-      <h2 class="mt-12">Nuestro propósito</h2>
+    </article>
+    <div class="about-purpose">
+      <h2>Nuestro propósito</h2>
       <p class="lead">{settings.mission}</p>
       <a class="text-link" href="/contacto/">
         Acercate a la Sociedad ↗

@@ -37,69 +37,71 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <a class="skip" href="#contenido">
       Saltar al contenido
     </a>
-    <header class="site-header wrap">
-      <a class="brand" href="/">
-        <span class="brand-logo" aria-hidden="true">
-          <img src="/images/logo-sia.jpg" alt="" width="1118" height="1118" />
-        </span>
-        <span class="brand-name">
-          Sociedad Italiana de S.M.
-          <span class="brand-dedication">"Voz de Caprera"</span>
-          <small>Arrecifes</small>
-        </span>
-      </a>
-      <button
-        class="menu-toggle"
-        aria-expanded="false"
-        aria-controls="navigation"
-      >
-        Menú <span aria-hidden="true">☰</span>
-      </button>
-      <div class="tricolor" aria-hidden="true"></div>
-      <nav id="navigation" aria-label="Navegación principal">
-        <a class="mobile-home" href="/">
-          Inicio
+    <div class="header-shell">
+      <header class="site-header wrap">
+        <a class="brand" href="/">
+          <span class="brand-logo" aria-hidden="true">
+            <img src="/images/logo-sia.jpg" alt="" width="1118" height="1118" />
+          </span>
+          <span class="brand-name">
+            Sociedad Italiana de S.M.
+            <span class="brand-dedication">"Voz de Caprera"</span>
+            <small>Arrecifes</small>
+          </span>
         </a>
-        {navigation.map((item) =>
-          item.children ? (
-            <details class="nav-group">
-              <summary
-                class:list={{
-                  active: Astro.url.pathname.startsWith(item.href),
-                }}
+        <button
+          class="menu-toggle"
+          aria-expanded="false"
+          aria-controls="navigation"
+        >
+          Menú <span aria-hidden="true">☰</span>
+        </button>
+        <div class="tricolor" aria-hidden="true"></div>
+        <nav id="navigation" aria-label="Navegación principal">
+          <a class="mobile-home" href="/">
+            Inicio
+          </a>
+          {navigation.map((item) =>
+            item.children ? (
+              <details class="nav-group">
+                <summary
+                  class:list={{
+                    active: Astro.url.pathname.startsWith(item.href),
+                  }}
+                >
+                  {item.label}
+                  <span aria-hidden="true">⌄</span>
+                </summary>
+                <div class="nav-dropdown">
+                  <a class="nav-overview" href={item.href}>
+                    Ver {item.label.toLowerCase()}
+                  </a>
+                  {item.children.map(([href, label]) => (
+                    <a
+                      href={href}
+                      aria-current={
+                        Astro.url.pathname === href ? "page" : undefined
+                      }
+                    >
+                      {label}
+                    </a>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <a
+                href={item.href}
+                aria-current={
+                  Astro.url.pathname === item.href ? "page" : undefined
+                }
               >
                 {item.label}
-                <span aria-hidden="true">⌄</span>
-              </summary>
-              <div class="nav-dropdown">
-                <a class="nav-overview" href={item.href}>
-                  Ver {item.label.toLowerCase()}
-                </a>
-                {item.children.map(([href, label]) => (
-                  <a
-                    href={href}
-                    aria-current={
-                      Astro.url.pathname === href ? "page" : undefined
-                    }
-                  >
-                    {label}
-                  </a>
-                ))}
-              </div>
-            </details>
-          ) : (
-            <a
-              href={item.href}
-              aria-current={
-                Astro.url.pathname === item.href ? "page" : undefined
-              }
-            >
-              {item.label}
-            </a>
-          ),
-        )}
-      </nav>
-    </header>
+              </a>
+            ),
+          )}
+        </nav>
+      </header>
+    </div>
     <main id="contenido">
       <slot />
     </main>

@@ -253,4 +253,8 @@ Profesor: **Matias Costantini Reschia**. Escuela: **cuatro niveles más Conversa
 
 Fuentes: [historia](docs/historia-fuentes.md) y [servicios](docs/servicios-fuentes.md). El proyecto conserva los overrides de dependencias indirectas de Sanity; revisarlos al actualizar paquetes. `npm run format` aplica Prettier.
 
+La sección de referencia consular de `/contacto/` se mantiene en `web/src/components/contact/ConsulateInfo.astro`, con datos y enlaces oficiales del Consulado de Rosario. Es contenido estático independiente de los contactos de la Sociedad en Sanity; no cambia el destino ni el flujo del formulario. Las fuentes y la fecha de consulta figuran en `docs/servicios-fuentes.md`.
+
+Las secciones de INAES y Municipalidad de Arrecifes se mantienen en `web/src/components/contact/PublicInstitutions.astro`, con el mismo criterio de contenido estático y fuentes oficiales documentadas.
+
 Referencias técnicas: [adaptador oficial Astro](https://docs.astro.build/en/guides/integrations-guide/cloudflare/), [Astro en Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/), [rate limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/), [verificación Turnstile](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/) y [API Resend](https://resend.com/docs/api-reference/emails/send-email).

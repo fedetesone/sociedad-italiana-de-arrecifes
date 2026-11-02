@@ -2,6 +2,8 @@
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/forms/ContactForm.astro";
+import ConsulateInfo from "../components/contact/ConsulateInfo.astro";
+import PublicInstitutions from "../components/contact/PublicInstitutions.astro";
 import { getContent } from "../lib/content";
 import { safeUrl } from "../lib/events/utils";
 const { settings } = await getContent();
@@ -85,6 +87,10 @@ const { settings } = await getContent();
       </a>
     </div>
   </section>
+  <div class="wrap">
+    <ConsulateInfo />
+    <PublicInstitutions />
+  </div>
   <div class="wrap service-body">
     <div class="narrow">
       <ContactForm />
