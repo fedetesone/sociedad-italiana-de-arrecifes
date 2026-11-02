@@ -31,3 +31,5 @@ No se incorporaron nombres de fundadores ni una fecha de inauguración de la sed
 El nombre oficial y el logo fueron proporcionados por el usuario. Las fotos de Italia siguen siendo ilustrativas, no imágenes de la sede. Para ampliar la reseña serían útiles el acta fundacional, estatutos y archivo fotográfico de la institución.
 
 La fotografía de Piazza Navona, Roma, usada como imagen de respaldo en «Nuestra historia», fue aportada por el usuario el 2 de noviembre de 2026 (`web/public/images/piazza-navona.jpg`). Se encuadra mediante CSS según el ancho de pantalla; no representa la sede de Arrecifes.
+
+La imagen nocturna de Sala Regina usada como respaldo de la portada fue aportada por el usuario el 2 de noviembre de 2026 (`web/public/images/sala-regina-portada.png`). Se conserva el archivo recibido y se adapta el encuadre con CSS.

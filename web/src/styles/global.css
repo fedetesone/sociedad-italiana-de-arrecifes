@@ -165,9 +165,10 @@ nav a:last-child {
 }
 .hero {
   display: grid;
-  grid-template-columns: 1.12fr 1fr;
-  align-items: center;
-  gap: 50px;
+  width: min(1360px, calc(100% - 112px));
+  grid-template-columns: 0.95fr 1.1fr;
+  align-items: start;
+  gap: 40px;
   padding-top: 28px;
   padding-bottom: 56px;
 }
@@ -246,47 +247,43 @@ nav a:last-child {
 }
 .hero-photo {
   position: relative;
+  width: calc(100% + 80px);
+  margin-left: -80px;
   padding-bottom: 4px;
 }
+.hero-copy {
+  position: relative;
+  z-index: 1;
+}
 .hero-photo > img {
-  height: 500px;
   width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
-  border-radius: 190px 190px 5px 5px;
+  border-radius: 20px;
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    #0004 5%,
+    #000b 12%,
+    #000 22%
+  );
+}
+.hero-photo-regina {
+  object-position: left center;
 }
 .hero-photo figcaption {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
+  text-align: right;
   gap: 15px;
   font-size: 0.7rem;
   margin-top: 14px;
+  padding-left: 80px;
 }
 .hero-photo figcaption span {
   color: #60685c;
   font-size: 0.65rem;
-}
-.photo-stamp {
-  position: absolute;
-  bottom: 68px;
-  left: -39px;
-  width: 120px;
-  height: 120px;
-  background: #faf8f1;
-  border-radius: 50%;
-  outline: 1px solid #d2d1bf;
-  outline-offset: -8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  font-size: 0.85rem;
-  line-height: 1.25;
-  transform: rotate(-11deg);
-}
-.photo-stamp em {
-  font-family: var(--font-serif);
-  font-size: 1.5rem;
-  font-weight: 400;
 }
 .intro-section {
   background: #eeeee4;
@@ -669,9 +666,6 @@ footer {
     padding-top: 40px;
     padding-bottom: 64px;
   }
-  .hero-photo > img {
-    height: 540px;
-  }
 }
 @media (max-width: 1050px) {
   .wrap {
@@ -680,8 +674,12 @@ footer {
   .hero {
     gap: 30px;
   }
-  .hero-photo > img {
-    height: 440px;
+  .hero-photo {
+    width: 100%;
+    margin-left: 0;
+  }
+  .hero-photo figcaption {
+    padding-left: 0;
   }
   .hero-actions {
     gap: 18px;
@@ -774,19 +772,6 @@ footer {
   .hero-note {
     margin-top: 28px;
     font-size: 0.75rem;
-  }
-  .hero-photo {
-    margin-left: 25px;
-  }
-  .hero-photo > img {
-    height: clamp(320px, 85vw, 420px);
-    border-radius: 160px 160px 4px 4px;
-  }
-  .photo-stamp {
-    left: -25px;
-    width: 105px;
-    height: 105px;
-    bottom: 55px;
   }
   .hero-photo figcaption {
     font-size: 0.65rem;

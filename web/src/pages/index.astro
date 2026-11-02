@@ -41,28 +41,22 @@ const upcoming = await getUpcomingEvents(3);
     </div>
     <figure class="hero-photo">
       <img
-        src={settings.heroImage || "/images/italia.jpg"}
+        class:list={{ "hero-photo-regina": !settings.heroImage }}
+        src={settings.heroImage || "/images/sala-regina-portada.png"}
         alt={
           settings.heroAlt ||
-          "Fachadas de colores junto al mar en un pueblo de Italia"
+          "Fachada de Sala Regina de noche, con su cartel e iluminación con los colores de Italia"
         }
-        width="1100"
-        height="1350"
+        width="1671"
+        height="941"
         fetchpriority="high"
       />
       <figcaption>
         {settings.heroImage
           ? "Nuestra identidad, un punto de encuentro."
-          : "Italia, siempre cerca."}
-        <span>
-          {settings.heroImage ? settings.name : "Paisajes de nuestras raíces"}
-        </span>
+          : "Frente de la Sala Regina, Arrecifes, Buenos Aires."}
+        {settings.heroImage && <span>{settings.name}</span>}
       </figcaption>
-      <div class="photo-stamp" aria-hidden="true">
-        Raíces que
-        <br />
-        <em>nos unen</em>
-      </div>
     </figure>
   </section>
   <section class="intro-section">
