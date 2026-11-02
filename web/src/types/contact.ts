@@ -4,11 +4,6 @@ export interface ContactMessage {
   subject: string;
   message: string;
 }
-export interface ContactInput extends ContactMessage {
-  consent: true;
-  website: string;
-  turnstileToken: string;
-}
 export type ContactResponse =
   | { ok: true; status: "accepted" | "simulated"; message: string }
   | {

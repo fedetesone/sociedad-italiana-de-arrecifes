@@ -1,6 +1,11 @@
 ---
-import { contactEmail } from "../../lib/navigation";
-const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
+import { getContent } from "../../lib/content";
+import { isTestKey } from "../../lib/server/config";
+const { settings } = await getContent();
+const configuredKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
+// The API rejects test keys outside astro dev, so do not offer a form that cannot send.
+const sitekey =
+  import.meta.env.DEV || !isTestKey(configuredKey) ? configuredKey : "";
 ---
 
 <section class="form-panel" aria-labelledby="contact-title">
@@ -128,7 +133,7 @@ const sitekey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
   </form>
   <p class="form-help">
     También podés escribir directamente a{" "}
-    <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+    <a href={`mailto:${settings.email}`}>{settings.email}</a>.
   </p>
 </section>
 {sitekey && (

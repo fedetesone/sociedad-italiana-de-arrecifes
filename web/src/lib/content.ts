@@ -2,8 +2,9 @@ import { fetchSanityContent } from "./sanity/data";
 import type { Settings } from "../types/content";
 import { isValidEvent } from "./events/utils";
 import type { Event } from "../types/event";
+import { contactEmail } from "./navigation";
 const defaults: Settings = {
-  email: "soc.italiana.arrecifes@gmail.com",
+  email: contactEmail,
   address: "España 694, Arrecifes, Buenos Aires",
   phone: "2478 610004",
   name: 'Sociedad Italiana de S.M. "Voz de Caprera"',

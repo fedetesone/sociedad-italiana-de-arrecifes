@@ -12,9 +12,13 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
+      - run: npx prettier --check .
       - run: npm run check
       - run: npm test
+      # Sin Sanity ni URL pública: este build se verifica pero no se despliega.
       - run: npm run build
+        env:
+          ALLOW_MISSING_BUILD_CONFIG: "1"
       - run: npm run verify:build
       # ID de prueba sintácticamente válido. No se realizan solicitudes al dataset.
       - run: npm run build:studio

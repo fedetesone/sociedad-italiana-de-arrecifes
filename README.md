@@ -44,7 +44,7 @@ studio/                 Administrador y esquemas Sanity
 scripts/                Verificación de salida estática
 ```
 
-`lib/content.ts` reúne datos institucionales y eventos para la compilación; conserva los textos de respaldo existentes. Si Sanity está configurado pero falla, el build falla: no reemplaza silenciosamente contenido publicado por datos vacíos. No se inventan eventos.
+`lib/content.ts` reúne datos institucionales y eventos para la compilación; conserva los textos de respaldo existentes. Si Sanity está configurado pero falla, el build falla: no reemplaza silenciosamente contenido publicado por datos vacíos. `astro build` también falla si faltan `PUBLIC_SITE_URL` o `PUBLIC_SANITY_PROJECT_ID`, salvo con `ALLOW_MISSING_BUILD_CONFIG=1`, pensado solo para builds que no se despliegan (CI o pruebas locales sin CMS). No se inventan eventos.
 
 ## Desarrollo local, sin dominio ni cuenta de email
 
@@ -73,13 +73,13 @@ El modo mock solo funciona en `astro dev` y con una URL de loopback (`localhost`
 ```sh
 npm run check          # Genera tipos de Workers; revisa Astro y Studio
 npm test               # Pruebas sin enviar correos reales
-npm run build          # web/dist/client + web/dist/server
+npm run build          # web/dist/client + web/dist/server; sin Sanity: ALLOW_MISSING_BUILD_CONFIG=1 npm run build
 npm run verify:build   # Comprueba páginas estáticas y API runtime
 npm run preview        # Runtime workerd con el build de producción
 npm run dev:studio     # Requiere configurar Sanity
 ```
 
-`preview` usa las restricciones de producción: las claves dummy y el proveedor mock se rechazan con 503 incluso en localhost. Usá `dev` para la prueba local de email. La vista previa permite comprobar que las páginas estáticas funcionan y que el endpoint falla de manera segura sin credenciales.
+`preview` usa las restricciones de producción: las claves dummy y el proveedor mock se rechazan con 503 incluso en localhost. Con una site key de prueba, el build fuera de `dev` no muestra el widget y el formulario queda deshabilitado. Usá `dev` para la prueba local de email. La vista previa permite comprobar que las páginas estáticas funcionan y que el endpoint falla de manera segura sin credenciales.
 
 ## Variables de compilación y secretos de ejecución
 
@@ -88,7 +88,7 @@ npm run dev:studio     # Requiere configurar Sanity
 | Variable                    | Dónde va                                  | Uso                                                                                  |
 | --------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |
 | `PUBLIC_SITE_URL`           | `web/.env` / variables de Workers Builds  | URL pública definitiva para metadatos y sitemap; localmente `http://localhost:4321`  |
-| `PUBLIC_SANITY_PROJECT_ID`  | Compilación                               | ID público de Sanity; vacío permite desarrollar sin CMS                              |
+| `PUBLIC_SANITY_PROJECT_ID`  | Compilación                               | ID público de Sanity; vacío solo en `dev` o con `ALLOW_MISSING_BUILD_CONFIG=1`       |
 | `PUBLIC_SANITY_DATASET`     | Compilación                               | `production`                                                                         |
 | `PUBLIC_TURNSTILE_SITE_KEY` | Compilación y navegador                   | Clave pública del widget; clave real para despliegues públicos                       |
 | `EMAIL_PROVIDER`            | Runtime: `.dev.vars` / `wrangler.jsonc`   | `mock` local; `resend` en producción                                                 |
@@ -138,7 +138,7 @@ Los errores usan `{ "ok": false, "error": { "code": "…", "message": "…", "fi
 
 Los formularios de socios, escuela y salones **siguen usando FormSubmit**, con asunto por trámite, Reply-To, honeypot y respuesta dentro del sitio. Se preservó su comportamiento; esta refactorización migra solo `/contacto` a Resend. FormSubmit requiere activar el destinatario y comprobar recepción desde el sitio publicado. Los trámites no se guardan en Sanity ni se aprueban automáticamente.
 
-Cambiar el correo visible en Sanity no cambia `EMAIL_TO` ni el destinatario de FormSubmit, definido en `web/src/lib/navigation.ts`. La [guía de administración](docs/README.md) explica esta diferencia.
+Cambiar el correo visible en Sanity actualiza los enlaces "escribinos" del sitio, pero no cambia `EMAIL_TO` ni el destinatario de FormSubmit, definido en `web/src/lib/navigation.ts` (también es el valor de respaldo del correo visible). La [guía de administración](docs/README.md) explica esta diferencia.
 
 ## Sanity: configuración y eventos
 

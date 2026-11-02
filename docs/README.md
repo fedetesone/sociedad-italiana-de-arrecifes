@@ -159,7 +159,7 @@ Datos de referencia confirmados:
 - **Teléfono:** 2478 610004.
 - **Correo:** soc.italiana.arrecifes@gmail.com.
 
-**Cambiar el correo visible en Sanity no cambia el destinatario de los formularios.** Para que las solicitudes lleguen a otra casilla, tiene que intervenir la persona responsable del sitio.
+El correo visible aparece en el pie, en Contacto y junto a cada formulario como alternativa para escribir directamente. **Cambiarlo en Sanity no cambia el destinatario de los formularios.** Para que las solicitudes lleguen a otra casilla, tiene que intervenir la persona responsable del sitio.
 
 Algunos campos tienen información de respaldo. Vaciar un campo no siempre lo elimina de la web; por ejemplo, si borrás la historia, vuelve a mostrarse la reseña incluida en el sitio. Consultá si necesitás retirar por completo una sección.
 

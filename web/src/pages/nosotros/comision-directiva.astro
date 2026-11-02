@@ -1,7 +1,8 @@
 ---
 export const prerender = true;
 import ServiceLayout from "../../layouts/ServiceLayout.astro";
-import { contactEmail } from "../../lib/navigation";
+import { getContent } from "../../lib/content";
+const { settings } = await getContent();
 ---
 
 <ServiceLayout
@@ -17,7 +18,7 @@ import { contactEmail } from "../../lib/navigation";
     </p>
     <p>
       Para comunicarte con la conducción de la institución, escribí a{" "}
-      <a href={`mailto:${contactEmail}`}>{contactEmail}</a>.
+      <a href={`mailto:${settings.email}`}>{settings.email}</a>.
     </p>
     <a class="button" href="/contacto/">
       Contactar a la Sociedad ↗

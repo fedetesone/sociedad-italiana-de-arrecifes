@@ -1,7 +1,7 @@
-import type { Event } from "../types/event";
+import type { Event } from "../../types/event";
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { splitEvents, eventDate, eventTime, safeUrl } from "./events/utils.ts";
+import { splitEvents, eventDate, eventTime, safeUrl } from "./utils";
 const event = (id: string, startsAt: string, endsAt?: string): Event => ({
   _id: id,
   title: id,
