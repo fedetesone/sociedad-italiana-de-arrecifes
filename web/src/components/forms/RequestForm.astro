@@ -8,7 +8,7 @@ interface Props {
   title?: string;
 }
 const { kind, title = "Escribinos" } = Astro.props;
-const { settings, school } = await getContent();
+const { settings, school, rooms } = await getContent();
 // Editable in Sanity, so the server validates the chosen level as plain text.
 const levels = [
   ...school.levels.map((level) => level.name),
@@ -215,9 +215,11 @@ const errorId = (field: string) => `${id}-${field}-error`;
               aria-describedby={errorId("room")}
             >
               <option value="">Elegí un espacio</option>
-              {options.room.map((option) => (
-                <option>{option}</option>
-              ))}
+              {[...rooms.map((room) => room.name), "Quiero asesoramiento"].map(
+                (option) => (
+                  <option>{option}</option>
+                ),
+              )}
             </select>
             <span id={errorId("room")} data-error="room" class="field-error" />
           </label>

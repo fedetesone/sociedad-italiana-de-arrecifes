@@ -1,6 +1,6 @@
 import { sanityClient } from "./client";
 import { contentQuery } from "./queries";
-import type { Board, School, Settings } from "../../types/content";
+import type { Board, Room, School, Settings } from "../../types/content";
 import type { Event } from "../../types/event";
 
 /**
@@ -13,6 +13,7 @@ export async function fetchSanityContent() {
     settings: Partial<Settings> | null;
     school: Partial<School> | null;
     board: Partial<Board> | null;
+    venues: { rooms: Room[] | null } | null;
     events: Event[];
   }>(contentQuery);
 }

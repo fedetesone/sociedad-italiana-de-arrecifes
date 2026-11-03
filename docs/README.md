@@ -48,7 +48,7 @@ Al entrar al administrador vas a encontrar dos secciones: **La institución** y 
 | Tarjetas de Cultura y comunidad del inicio                                        | La institución    |
 | Dirección, teléfono, horarios, correo visible y redes sociales                    | La institución    |
 
-**Todavía requieren ayuda técnica:** información de los salones, bonificaciones, panteones, ciudadanía, deudas, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
+**Todavía requieren ayuda técnica:** bonificaciones, panteones, ciudadanía, deudas, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
 
 El nombre editable se usa en partes del sitio, como el pie de página; la marca del encabezado y algunos títulos están definidos en el diseño. Para cambiar el nombre en todo el sitio, pedí ayuda técnica.
 
@@ -191,6 +191,16 @@ En el menú del administrador, abrí **Escuela de italiano**. Es un documento ú
 
 Presioná **Publicar** y comprobá la página Escuela de italiano después de unos minutos.
 
+### Alquiler de salones
+
+Abrí **Alquiler de salones** en el menú del administrador. Mientras no cargues espacios, la web muestra los textos actuales de Sala Regina, Sala Ravenna y Patio de eventos.
+
+1. En **Espacios**, agregá uno por cada salón. Si cargás alguno, la web muestra solo los que estén en la lista: cargá los tres.
+2. Cada espacio tiene **Nombre**, **Etiqueta** (frase corta sobre el nombre), **Descripción**, **Capacidad**, **Equipamiento y servicios**, **Tarifas** y **Foto del espacio** (con su descripción). Usá solo datos confirmados por la institución.
+3. Arrastrá los espacios para ordenarlos. El orden y los nombres se usan también en el submenú «Alquiler de salones» y en las opciones del formulario de consulta.
+4. Si cambiás el nombre de un espacio, cambia también su enlace del menú.
+5. Presioná **Publicar** y revisá la página Alquiler de salones.
+
 ### Comisión directiva
 
 Abrí **Comisión directiva** en el menú del administrador. Cargá solo nombres y cargos confirmados por la institución.
@@ -245,17 +255,17 @@ No compartas la contraseña de una cuenta para dar acceso. Si alguien deja de co
 
 ## 12. Si algo no funciona
 
-| Problema                                        | Qué hacer                                                                                                                                                   |
-| ----------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| No puedo entrar                                 | Revisá el correo con el que iniciaste sesión y si aceptaste la invitación. Pedí revisión de permisos.                                                       |
-| No puedo publicar                               | Revisá los campos marcados con errores. Si no aparece el botón o está bloqueado por permisos, consultá al administrador.                                    |
-| Publiqué pero no veo el cambio                  | Esperá unos minutos, recargá y verificá que estés en el dominio público correcto. Si persiste, avisá a soporte para revisar la actualización en Cloudflare. |
-| La hora aparece corrida                         | Revisá la zona horaria del selector y corregí el inicio y la finalización. La web muestra hora argentina.                                                   |
-| Un enlace de evento dejó de abrir               | Revisá si se cambió la Dirección de la página o se despublicó. Pedí ayuda para recuperar el enlace compartido.                                              |
-| No llegan las consultas                         | Revisá Spam y la casilla destinataria. Pedí revisar Resend y una prueba de entrega; el mensaje de confirmación de la web no garantiza que Gmail lo recibió. |
-| El evento sigue en Próximos después de terminar | Pedí revisar la actualización diaria del sitio. No hace falta borrarlo.                                                                                     |
-| Edité algo por error                            | Si ya estaba publicado, corregilo y publicá otra vez. Si necesitás recuperar una versión, pedí ayuda; no borres el documento.                               |
-| Quiero editar salones                           | Solicitá el cambio al responsable técnico; esa página todavía no se edita desde Sanity. La Escuela y la Comisión directiva se editan en Sanity (sección 8). |
+| Problema                                          | Qué hacer                                                                                                                                                                   |
+| ------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| No puedo entrar                                   | Revisá el correo con el que iniciaste sesión y si aceptaste la invitación. Pedí revisión de permisos.                                                                       |
+| No puedo publicar                                 | Revisá los campos marcados con errores. Si no aparece el botón o está bloqueado por permisos, consultá al administrador.                                                    |
+| Publiqué pero no veo el cambio                    | Esperá unos minutos, recargá y verificá que estés en el dominio público correcto. Si persiste, avisá a soporte para revisar la actualización en Cloudflare.                 |
+| La hora aparece corrida                           | Revisá la zona horaria del selector y corregí el inicio y la finalización. La web muestra hora argentina.                                                                   |
+| Un enlace de evento dejó de abrir                 | Revisá si se cambió la Dirección de la página o se despublicó. Pedí ayuda para recuperar el enlace compartido.                                                              |
+| No llegan las consultas                           | Revisá Spam y la casilla destinataria. Pedí revisar Resend y una prueba de entrega; el mensaje de confirmación de la web no garantiza que Gmail lo recibió.                 |
+| El evento sigue en Próximos después de terminar   | Pedí revisar la actualización diaria del sitio. No hace falta borrarlo.                                                                                                     |
+| Edité algo por error                              | Si ya estaba publicado, corregilo y publicá otra vez. Si necesitás recuperar una versión, pedí ayuda; no borres el documento.                                               |
+| Quiero editar bonificaciones o trámites de socios | Solicitá el cambio al responsable técnico; esas páginas todavía no se editan desde Sanity. La Escuela, los Salones y la Comisión directiva se editan en Sanity (sección 8). |
 
 Cuando pidas ayuda, indicá qué página o evento estabas editando, qué intentaste hacer, a qué hora y qué mensaje apareció. Podés adjuntar una captura sin contraseñas ni datos privados.
 

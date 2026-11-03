@@ -77,6 +77,7 @@ test("rejects unknown forms, fields from other forms and invalid procedure data"
     { ...valid.alta, city: "Arrecifes\nBcc: spam@example.org" },
     { ...valid.escuela, level: "Nivel 1\nBcc: spam@example.org" },
     { ...valid.escuela, level: "a".repeat(61) },
+    { ...valid.salones, room: "Sala Regina\nBcc: spam@example.org" },
     { ...valid.salones, guests: "0" },
     { ...valid.salones, guests: "10001" },
     { ...valid.salones, date: "20/03/2027" },

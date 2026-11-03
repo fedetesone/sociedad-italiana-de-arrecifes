@@ -2,61 +2,74 @@
 export const prerender = true;
 import ServiceLayout from "../layouts/ServiceLayout.astro";
 import RequestForm from "../components/forms/RequestForm.astro";
-const rooms = [
-  {
-    id: "regina",
-    name: "Sala Regina",
-    tag: "Cultura y encuentros",
-    text: "Una sala vinculada a la vida cultural de Arrecifes. Hay registros de conciertos y actividades musicales realizadas en este espacio de la Sociedad.",
-    source:
-      "https://minutoarrecifes.com.ar/2016/05/eden-presenta-en-arrecifes-musica-con-energia-su-ciclo-de-clinicas-musicales-y-conciertos/",
-    label: "Referencia: ciclo Música con Energía",
-  },
-  {
-    id: "ravenna",
-    name: "Sala Ravenna",
-    tag: "Reuniones y vida institucional",
-    text: "Un espacio de la Sociedad que ha sido sede de encuentros institucionales. Su nombre también figura en la documentación municipal sobre el mantenimiento del edificio.",
-    source: "https://sibom.slyt.gba.gob.ar/bulletins/4651.pdf#page=19",
-    label: "Referencia: documentación municipal de Sala Ravenna",
-  },
-  {
-    id: "patio",
-    name: "Patio de eventos",
-    tag: "Encuentros al aire libre",
-    text: "El patio descubierto forma parte de los espacios de encuentro de la institución. Las convocatorias de la Sociedad documentan su uso para reuniones de asociados.",
-    source:
-      "https://diarioimagen.com.ar/asamblea-general-ordinaria-s-i-s-m-voz-de-caprera-2/",
-    label: "Referencia: asamblea en el patio de la Sociedad",
-  },
-];
+import { getContent, roomId } from "../lib/content";
+const { rooms } = await getContent();
+const names = new Intl.ListFormat("es-AR", { type: "conjunction" }).format(
+  rooms.map((room) => room.name),
+);
 ---
 
 <ServiceLayout
   title="Un lugar para cada encuentro"
   kicker="Alquiler de salones"
-  description="Sala Regina, Sala Ravenna y Patio de eventos. Contanos qué estás organizando y consultá por el espacio más adecuado."
+  description={`${names}. Contanos qué estás organizando y consultá por el espacio más adecuado.`}
 >
   <div class="room-list">
     {rooms.map((room) => (
-      <article class="room-panel" id={room.id}>
-        <div class="room-monogram" aria-hidden="true">
-          {room.id === "patio" ? "✳" : room.name.split(" ")[1].slice(0, 1)}
-        </div>
+      <article class="room-panel" id={roomId(room.name)}>
+        {room.image ? (
+          <img
+            class="room-photo"
+            src={room.image}
+            alt={room.imageAlt || ""}
+            loading="lazy"
+            width="300"
+            height="360"
+          />
+        ) : (
+          <div class="room-monogram" aria-hidden="true">
+            {room.name.startsWith("Sala ") ? room.name[5] : "✳"}
+          </div>
+        )}
         <div>
-          <p class="section-kicker">{room.tag}</p>
+          {room.tag && <p class="section-kicker">{room.tag}</p>}
           <h2>{room.name}</h2>
-          <p>{room.text}</p>
-          <p class="room-details">
-            Capacidad, equipamiento, accesibilidad, tarifas y disponibilidad:
-            consultar.
-          </p>
+          {room.description && <p class="multiline">{room.description}</p>}
+          {room.capacity || room.features || room.rates ? (
+            <dl class="room-facts">
+              {room.capacity && (
+                <div>
+                  <dt>Capacidad</dt>
+                  <dd>{room.capacity}</dd>
+                </div>
+              )}
+              {room.features && (
+                <div>
+                  <dt>Equipamiento y servicios</dt>
+                  <dd class="multiline">{room.features}</dd>
+                </div>
+              )}
+              {room.rates && (
+                <div>
+                  <dt>Tarifas</dt>
+                  <dd class="multiline">{room.rates}</dd>
+                </div>
+              )}
+            </dl>
+          ) : (
+            <p class="room-details">
+              Capacidad, equipamiento, accesibilidad, tarifas y disponibilidad:
+              consultar.
+            </p>
+          )}
           <a class="text-link" href="#consulta">
             Consultar este espacio ↗
           </a>
-          <p class="source-note">
-            <a href={room.source}>{room.label}</a>
-          </p>
+          {room.source && (
+            <p class="source-note">
+              <a href={room.source.href}>{room.source.label}</a>
+            </p>
+          )}
         </div>
       </article>
     ))}

@@ -3,7 +3,7 @@ import { structureTool } from "sanity/structure";
 import { esESLocale } from "@sanity/locale-es-es";
 import { schemaTypes } from "./schemaTypes";
 // One fixed document each: no create, duplicate, delete or unpublish.
-const singletons = ["siteSettings", "school", "board"];
+const singletons = ["siteSettings", "school", "board", "venues"];
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID;
 if (!projectId)
   throw new Error(
@@ -35,6 +35,9 @@ export default defineConfig({
             S.listItem()
               .title("Comisión directiva")
               .child(S.document().schemaType("board").documentId("board")),
+            S.listItem()
+              .title("Alquiler de salones")
+              .child(S.document().schemaType("venues").documentId("venues")),
             S.documentTypeListItem("event").title("Eventos"),
           ]),
     }),

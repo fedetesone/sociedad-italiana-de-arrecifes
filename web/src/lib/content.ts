@@ -1,5 +1,5 @@
 import { fetchSanityContent } from "./sanity/data";
-import type { Board, School, Settings } from "../types/content";
+import type { Board, Room, School, Settings } from "../types/content";
 import { isValidEvent } from "./events/utils";
 import type { Event } from "../types/event";
 import { contactEmail } from "./navigation";
@@ -50,11 +50,53 @@ const schoolDefaults: School = {
   ],
   note: "Los contenidos, horarios y criterios de ingreso se informan al consultar. La solicitud no reserva una vacante.",
 };
+// Initial texts based on documented historical uses (docs/servicios-fuentes.md).
+const roomDefaults: Room[] = [
+  {
+    name: "Sala Regina",
+    tag: "Cultura y encuentros",
+    description:
+      "Una sala vinculada a la vida cultural de Arrecifes. Hay registros de conciertos y actividades musicales realizadas en este espacio de la Sociedad.",
+    source: {
+      href: "https://minutoarrecifes.com.ar/2016/05/eden-presenta-en-arrecifes-musica-con-energia-su-ciclo-de-clinicas-musicales-y-conciertos/",
+      label: "Referencia: ciclo Música con Energía",
+    },
+  },
+  {
+    name: "Sala Ravenna",
+    tag: "Reuniones y vida institucional",
+    description:
+      "Un espacio de la Sociedad que ha sido sede de encuentros institucionales. Su nombre también figura en la documentación municipal sobre el mantenimiento del edificio.",
+    source: {
+      href: "https://sibom.slyt.gba.gob.ar/bulletins/4651.pdf#page=19",
+      label: "Referencia: documentación municipal de Sala Ravenna",
+    },
+  },
+  {
+    name: "Patio de eventos",
+    tag: "Encuentros al aire libre",
+    description:
+      "El patio descubierto forma parte de los espacios de encuentro de la institución. Las convocatorias de la Sociedad documentan su uso para reuniones de asociados.",
+    source: {
+      href: "https://diarioimagen.com.ar/asamblea-general-ordinaria-s-i-s-m-voz-de-caprera-2/",
+      label: "Referencia: asamblea en el patio de la Sociedad",
+    },
+  },
+];
+/** Anchor for a room, shared by the rooms page and the menu: "Sala Regina" → "sala-regina". */
+export const roomId = (name: string) =>
+  name
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "");
 let content:
   | Promise<{
       settings: Settings;
       school: School;
       board: Board;
+      rooms: Room[];
       events: Event[];
     }>
   | undefined;
@@ -74,11 +116,18 @@ async function load() {
   // No board defaults: authorities are only published from confirmed data.
   const board: Board = { groups: [] };
   if (!data)
-    return { settings: defaults, school: schoolDefaults, board, events: [] };
+    return {
+      settings: defaults,
+      school: schoolDefaults,
+      board,
+      rooms: roomDefaults,
+      events: [],
+    };
   return {
     settings: { ...defaults, ...filled(data.settings) } as Settings,
     school: { ...schoolDefaults, ...filled(data.school) } as School,
     board: { ...board, ...filled(data.board) } as Board,
+    rooms: data.venues?.rooms?.length ? data.venues.rooms : roomDefaults,
     events: data.events.filter(isValidEvent),
   };
 }

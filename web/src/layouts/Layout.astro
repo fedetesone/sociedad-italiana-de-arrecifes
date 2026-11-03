@@ -1,9 +1,20 @@
 ---
 import "../styles/global.css";
-import { getContent } from "../lib/content";
+import { getContent, roomId } from "../lib/content";
 import { safeUrl } from "../lib/events/utils";
 import { navigation } from "../lib/navigation";
-const { settings } = await getContent();
+const { settings, rooms } = await getContent();
+const menu = navigation.map((item) =>
+  item.href === "/salones/"
+    ? {
+        ...item,
+        children: rooms.map((room) => [
+          `/salones/#${roomId(room.name)}`,
+          room.name,
+        ]),
+      }
+    : item,
+);
 const {
   title,
   description = settings.intro,
@@ -63,7 +74,7 @@ const socialImage = new URL(image, Astro.site);
           <a class="mobile-home" href="/">
             Inicio
           </a>
-          {navigation.map((item) =>
+          {menu.map((item) =>
             item.children ? (
               <details class="nav-group">
                 <summary

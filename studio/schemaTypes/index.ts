@@ -433,4 +433,84 @@ const board = defineType({
   ],
   preview: { prepare: () => ({ title: "Comisión directiva" }) },
 });
-export const schemaTypes = [richText, event, siteSettings, school, board];
+const venues = defineType({
+  name: "venues",
+  title: "Alquiler de salones",
+  type: "document",
+  description:
+    "Si no hay espacios cargados, la web muestra los textos actuales.",
+  fields: [
+    defineField({
+      name: "rooms",
+      title: "Espacios",
+      description:
+        "Cada espacio tiene su recuadro en la página, su enlace en el menú y su opción en el formulario de consulta. Arrastrá para ordenar.",
+      type: "array",
+      validation: (r) => r.max(8),
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "room",
+          title: "Espacio",
+          fields: [
+            defineField({
+              name: "name",
+              title: "Nombre",
+              description: "Por ejemplo: Sala Regina.",
+              type: "string",
+              validation: (r) => r.required().max(60),
+            }),
+            defineField({
+              name: "tag",
+              title: "Etiqueta",
+              description:
+                "Frase corta sobre el nombre, por ejemplo: Cultura y encuentros.",
+              type: "string",
+              validation: (r) => r.max(60),
+            }),
+            defineField({
+              name: "description",
+              title: "Descripción",
+              type: "text",
+              rows: 3,
+              validation: (r) => r.max(600),
+            }),
+            defineField({
+              name: "capacity",
+              title: "Capacidad",
+              description: "Por ejemplo: hasta 120 personas.",
+              type: "string",
+              validation: (r) => r.max(80),
+            }),
+            defineField({
+              name: "features",
+              title: "Equipamiento y servicios",
+              type: "text",
+              rows: 3,
+            }),
+            defineField({
+              name: "rates",
+              title: "Tarifas",
+              description: "Solo valores confirmados por la institución.",
+              type: "text",
+              rows: 2,
+            }),
+            imageField("image", "Foto del espacio"),
+          ],
+          preview: {
+            select: { title: "name", subtitle: "tag", media: "image" },
+          },
+        }),
+      ],
+    }),
+  ],
+  preview: { prepare: () => ({ title: "Alquiler de salones" }) },
+});
+export const schemaTypes = [
+  richText,
+  event,
+  siteSettings,
+  school,
+  board,
+  venues,
+];

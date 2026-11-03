@@ -34,3 +34,15 @@ export interface Board {
   }[];
   note?: string;
 }
+
+export interface Room {
+  name: string;
+  tag?: string;
+  description?: string;
+  capacity?: string;
+  features?: string;
+  rates?: string;
+  image?: string;
+  imageAlt?: string;
+  source?: { href: string; label: string };
+}

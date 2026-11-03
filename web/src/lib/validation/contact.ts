@@ -27,12 +27,6 @@ export const options = {
     "Tengo conocimientos previos",
     "Busco perfeccionamiento",
   ],
-  room: [
-    "Sala Regina",
-    "Sala Ravenna",
-    "Patio de eventos",
-    "Quiero asesoramiento",
-  ],
   memberStatus: ["Prefiero consultar", "Sí", "No"],
 } as const;
 
@@ -77,7 +71,8 @@ export const contactSchema = z.discriminatedUnion("kind", [
   }),
   form("salones", {
     phone,
-    room: choice(options.room),
+    // Rooms come from Sanity at build time, like school levels.
+    room: line(60, "el espacio de interés"),
     date: z
       .union([z.literal(""), z.iso.date("Ingresá una fecha válida.")])
       .optional(),

@@ -22,15 +22,8 @@ export const navigation = [
   },
   { label: "Escuela de italiano", href: "/escuela-de-italiano/" },
   { label: "Eventos", href: "/eventos/" },
-  {
-    label: "Alquiler de salones",
-    href: "/salones/",
-    children: [
-      ["/salones/#regina", "Sala Regina"],
-      ["/salones/#ravenna", "Sala Ravenna"],
-      ["/salones/#patio", "Patio de eventos"],
-    ],
-  },
+  // Children come from the rooms in Sanity (see Layout.astro).
+  { label: "Alquiler de salones", href: "/salones/", children: [] },
   { label: "Contacto", href: "/contacto/" },
 ];
 export const contactEmail = "soc.italiana.arrecifes@gmail.com";
