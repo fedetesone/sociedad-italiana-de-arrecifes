@@ -10,8 +10,13 @@
     "directory": "./dist",
     "run_worker_first": ["/api/*"],
   },
+  // Public, non-secret settings. Keys go in Cloudflare as Secret type, never here.
   "vars": {
     "EMAIL_PROVIDER": "resend",
+    // Resend test mode until the .com.ar domain is verified.
+    "EMAIL_FROM": "Sociedad Italiana <onboarding@resend.dev>",
+    "EMAIL_TO": "soc.italiana.arrecifes@gmail.com",
+    "CONTACT_ORIGIN": "https://sociedad-italiana-de-arrecifes.soc-italiana-arrecifes.workers.dev",
   },
   "ratelimits": [
     {

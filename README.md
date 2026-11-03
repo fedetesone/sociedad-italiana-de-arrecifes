@@ -94,9 +94,9 @@ npm run dev:studio     # Requiere configurar Sanity
 | `EMAIL_PROVIDER`            | Runtime: `.dev.vars` / `wrangler.jsonc`   | `mock` local; `resend` en producción                                                 |
 | `TURNSTILE_SECRET_KEY`      | Runtime: `.dev.vars` / secreto Cloudflare | Verificación del token en el servidor                                                |
 | `RESEND_API_KEY`            | Secreto runtime Cloudflare                | Credencial de envío; nunca se publica                                                |
-| `EMAIL_FROM`                | Secreto o binding runtime                 | Remitente fijo, por ejemplo `Sociedad Italiana <contacto@dominio-verificado.com.ar>` |
-| `EMAIL_TO`                  | Secreto o binding runtime                 | Casilla fija receptora, normalmente `soc.italiana.arrecifes@gmail.com`               |
-| `CONTACT_ORIGIN`            | Secreto o binding runtime                 | Origen HTTPS autorizado, sin barra final, por ejemplo la URL `workers.dev`           |
+| `EMAIL_FROM`                | Runtime: `vars` en `web/wrangler.jsonc`   | Remitente fijo, por ejemplo `Sociedad Italiana <contacto@dominio-verificado.com.ar>` |
+| `EMAIL_TO`                  | Runtime: `vars` en `web/wrangler.jsonc`   | Casilla fija receptora, normalmente `soc.italiana.arrecifes@gmail.com`               |
+| `CONTACT_ORIGIN`            | Runtime: `vars` en `web/wrangler.jsonc`   | Origen HTTPS autorizado, sin barra final, por ejemplo la URL `workers.dev`           |
 | `CONTACT_RATE_LIMITER`      | Binding en `web/wrangler.jsonc`           | Cinco intentos por minuto y por IP en cada ubicación de Cloudflare                   |
 
 No comitear `.env`, `.dev.vars`, tokens, contraseñas ni URLs de deploy hooks. Las plantillas de ejemplo contienen únicamente valores públicos o claves de prueba oficiales. `worker-configuration.d.ts` se genera automáticamente con `npm run check` y no se versiona.
@@ -214,7 +214,7 @@ Si existe un proyecto Pages previo, mantenelo hasta verificar Workers. La integr
 1. Creá un widget Turnstile en Cloudflare y autorizá el hostname exacto de la URL temporal `workers.dev` (sin protocolo ni ruta).
 2. Colocá la **site key real** en `PUBLIC_TURNSTILE_SITE_KEY` y recompilá.
 3. Guardá la **secret key real** en el Worker.
-4. Configurá `CONTACT_ORIGIN` con el origen HTTPS autorizado completo, sin barra final.
+4. Configurá `CONTACT_ORIGIN` en `web/wrangler.jsonc` con el origen HTTPS autorizado completo, sin barra final.
 
 Las claves locales de ejemplo son las oficiales: site key `1x00000000000000000000AA` y secret key `1x0000000000000000000000000000000AA`. No se aceptan para la API de producción. [Pruebas oficiales](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).
 
@@ -223,17 +223,14 @@ Las claves locales de ejemplo son las oficiales: site key `1x0000000000000000000
 1. Conectá el dominio al Worker en Cloudflare y verificá HTTPS. Actualizá `PUBLIC_SITE_URL` y `CONTACT_ORIGIN`; agregá el nuevo hostname al widget Turnstile y recompilá.
 2. Creá o usá la cuenta institucional en Resend. Agregá el dominio remitente y copiá los registros DNS que indique Resend. No inventes registros ni reemplaces los de recepción de correo existentes.
 3. Esperá que Resend indique dominio verificado y creá una API key con permiso de envío.
-4. Desde `web/`, configurá los bindings mediante los comandos siguientes. Cada comando pide el valor de manera interactiva; no pongas claves en archivos versionados:
+4. Cargá las dos claves como secretos del Worker, desde `web/` con los comandos siguientes o en el panel con tipo **Secret**. Las variables de tipo Text del panel se borran en cada deploy. No pongas claves en archivos versionados:
 
 ```sh
 npx wrangler secret put RESEND_API_KEY
 npx wrangler secret put TURNSTILE_SECRET_KEY
-npx wrangler secret put EMAIL_FROM
-npx wrangler secret put EMAIL_TO
-npx wrangler secret put CONTACT_ORIGIN
 ```
 
-5. Usá como `EMAIL_FROM` un remitente del dominio verificado, por ejemplo `Sociedad Italiana <contacto@tu-dominio.com.ar>`, y como `EMAIL_TO` la casilla institucional. `EMAIL_PROVIDER` ya está establecido en `resend` en Wrangler.
+5. En `web/wrangler.jsonc`, cambiá `EMAIL_FROM` por un remitente del dominio verificado, por ejemplo `Sociedad Italiana <contacto@tu-dominio.com.ar>`, y `CONTACT_ORIGIN` por el origen del dominio. `EMAIL_TO` es la casilla institucional. Son valores públicos, no secretos; se publican con un push. Mientras no haya dominio, el sitio usa el modo de prueba de Resend: remitente `onboarding@resend.dev` y entrega solo a la casilla de la cuenta de Resend, que debe coincidir con `EMAIL_TO`.
 6. Probá una consulta desde el sitio público. Comprobá el asunto, contenido, destinatario y que Responder vaya al visitante. Revisá los eventos de entrega de Resend y la bandeja/Spam: **202 significa aceptado por Resend, no entregado en Gmail**.
 7. Actualizá los enlaces de la guía de administración y verificá también los formularios de trámites que continúan en FormSubmit.
 
