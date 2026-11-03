@@ -28,6 +28,7 @@ const formNames: Record<FormKind, string> = {
 const labels = {
   name: "Nombre",
   email: "Email",
+  subject: "Asunto",
   phone: "Teléfono",
   memberNumber: "Número de socio",
   address: "Domicilio",
@@ -48,10 +49,9 @@ export async function sendContactEmail(
   local: boolean,
   send: typeof fetch = fetch,
 ): Promise<"accepted" | "simulated"> {
-  const topic =
-    contact.kind === "contacto" ? contact.subject : formNames[contact.kind];
+  const form = formNames[contact.kind];
   // "[Contacto] <asunto>" or "[Solicitud de alta] <nombre>".
-  const subject = `[${formNames[contact.kind]}] ${contact.kind === "contacto" ? contact.subject : contact.name}`;
+  const subject = `[${form}] ${contact.kind === "contacto" ? contact.subject : contact.name}`;
   const values = contact as Partial<Record<keyof typeof labels, string>>;
   const rows = Object.entries(labels).flatMap(([key, label]) => {
     const value = values[key as keyof typeof labels];
@@ -63,7 +63,7 @@ export async function sendContactEmail(
   });
   const message = contact.message || "";
   const text =
-    `Nueva consulta desde la web\n\n${topic}\n\n${rows.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\n${message}`.trimEnd();
+    `${form}, enviado desde la web\n\n${rows.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\n${message}`.trimEnd();
   if (env.EMAIL_PROVIDER === "mock" && local) {
     console.info("[EMAIL LOCAL — NO ENVIADO]\n" + text);
     return "simulated";
@@ -88,7 +88,7 @@ export async function sendContactEmail(
       reply_to: contact.email,
       subject,
       text,
-      html: `<div style="font-family:Arial,sans-serif;color:#254e3f;max-width:640px"><h1 style="font-size:24px">Nueva consulta</h1><h2 style="font-size:18px">${escapeHtml(topic)}</h2><p>${rows.map(([label, value]) => `<strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}`).join("<br>")}</p>${message ? `<p style="white-space:pre-wrap;color:#222">${escapeHtml(message)}</p>` : ""}<hr><p>Sociedad Italiana de S.M. “Voz de Caprera” · Arrecifes</p></div>`,
+      html: `<div style="font-family:Arial,sans-serif;color:#254e3f;max-width:640px"><h1 style="font-size:24px">${escapeHtml(form)}</h1><p>${rows.map(([label, value]) => `<strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}`).join("<br>")}</p>${message ? `<p style="white-space:pre-wrap;color:#222">${escapeHtml(message)}</p>` : ""}<hr><p>Sociedad Italiana de S.M. “Voz de Caprera” · Arrecifes</p></div>`,
     }),
     signal: AbortSignal.timeout(10000),
   });

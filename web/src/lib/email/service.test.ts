@@ -28,6 +28,7 @@ test("Resend uses fixed addresses, reply-to and escaped HTML", async () => {
     assert.ok(body.html.includes("&lt;img"));
     assert.ok(!body.html.includes("<script>"));
     assert.ok(body.text.includes(contact.message));
+    assert.ok(body.text.includes("Asunto: Sala & patio"));
     return Response.json({ id: "email-test-id" });
   };
   assert.equal(await sendContactEmail(contact, env, false, send), "accepted");
@@ -61,6 +62,8 @@ test("procedure emails name the procedure and requester, list filled fields only
   const send: typeof fetch = async (_url, init) => {
     const body = JSON.parse(String(init?.body));
     assert.equal(body.subject, "[Solicitud de alta] Ana <script>");
+    assert.ok(body.text.startsWith("Solicitud de alta, enviado desde la web"));
+    assert.ok(body.html.includes(">Solicitud de alta</h1>"));
     assert.ok(body.text.includes("Domicilio: España 694"));
     assert.ok(body.text.includes("Código postal: 2740"));
     assert.ok(!body.text.includes("Teléfono"));
