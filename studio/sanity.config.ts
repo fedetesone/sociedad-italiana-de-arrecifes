@@ -15,6 +15,7 @@ export default defineConfig({
   plugins: [
     esESLocale(),
     structureTool({
+      title: "Contenido",
       structure: (S) =>
         S.list()
           .title("Contenido")

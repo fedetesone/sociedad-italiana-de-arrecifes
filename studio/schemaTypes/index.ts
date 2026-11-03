@@ -153,7 +153,20 @@ const event = defineType({
       by: [{ field: "startsAt", direction: "desc" }],
     },
   ],
-  preview: { select: { title: "title", subtitle: "startsAt", media: "image" } },
+  preview: {
+    select: { title: "title", startsAt: "startsAt", media: "image" },
+    prepare: ({ title, startsAt, media }) => ({
+      title,
+      media,
+      subtitle: startsAt
+        ? new Intl.DateTimeFormat("es-AR", {
+            timeZone: "America/Argentina/Buenos_Aires",
+            dateStyle: "long",
+            timeStyle: "short",
+          }).format(new Date(startsAt))
+        : "Sin fecha",
+    }),
+  },
 });
 const siteSettings = defineType({
   name: "siteSettings",
@@ -197,6 +210,8 @@ const siteSettings = defineType({
       of: [
         defineArrayMember({
           type: "object",
+          name: "activity",
+          title: "Actividad",
           fields: [
             defineField({
               name: "title",
@@ -230,7 +245,10 @@ const siteSettings = defineType({
       name: "phone",
       title: "Teléfono",
       type: "string",
-      validation: (r) => r.regex(/^\+?[\d\s()-]{6,30}$/, { name: "teléfono" }),
+      validation: (r) =>
+        r
+          .regex(/^\+?[\d\s()-]{6,30}$/)
+          .error("Usá solo números, espacios, guiones o paréntesis."),
     }),
     defineField({
       name: "instagram",
