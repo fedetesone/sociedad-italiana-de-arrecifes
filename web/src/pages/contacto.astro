@@ -4,8 +4,8 @@ import Layout from "../layouts/Layout.astro";
 import ContactForm from "../components/forms/ContactForm.astro";
 import ConsulateInfo from "../components/contact/ConsulateInfo.astro";
 import PublicInstitutions from "../components/contact/PublicInstitutions.astro";
+import ContactLinks from "../components/contact/ContactLinks.astro";
 import { getContent } from "../lib/content";
-import { safeUrl } from "../lib/events/utils";
 const { settings } = await getContent();
 ---
 
@@ -15,7 +15,7 @@ const { settings } = await getContent();
     <h1>
       El próximo encuentro
       <br />
-      empieza con un hola.
+      empieza con un “ciao”.
     </h1>
     <p>
       Para conocer más sobre la Sociedad, consultar por actividades o compartir
@@ -25,20 +25,12 @@ const { settings } = await getContent();
   <section class="wrap contact-grid section section-top">
     <div class="contact-panel">
       <h2>Contactanos</h2>
-      {settings.email && (
-        <p>
-          <span>Correo electrónico</span>
-          <a href={`mailto:${settings.email}`}>{settings.email}</a>
-        </p>
-      )}
-      {settings.phone && (
-        <p>
-          <span>Teléfono</span>
-          <a href={`tel:${settings.phone.replace(/[^+\d]/g, "")}`}>
-            {settings.phone}
-          </a>
-        </p>
-      )}
+      <ContactLinks
+        email={settings.email}
+        phone={settings.phone}
+        instagram={settings.instagram}
+        facebook={settings.facebook}
+      />
       {!settings.phone && (
         <p class="form-help">
           Por el momento, comunicate con nosotros por correo electrónico.
@@ -47,28 +39,6 @@ const { settings } = await getContent();
       {!settings.email && !settings.phone && (
         <p>
           Pronto vamos a compartir nuestros canales de contacto en este espacio.
-        </p>
-      )}
-      {safeUrl(settings.instagram) && (
-        <p>
-          <a
-            href={safeUrl(settings.instagram)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Instagram ↗
-          </a>
-        </p>
-      )}
-      {safeUrl(settings.facebook) && (
-        <p>
-          <a
-            href={safeUrl(settings.facebook)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Facebook ↗
-          </a>
         </p>
       )}
     </div>

@@ -6,7 +6,9 @@ import { contactEmail } from "./navigation";
 const defaults: Settings = {
   email: contactEmail,
   address: "España 694, Arrecifes, Buenos Aires",
-  phone: "2478 610004",
+  phone: "+54 2478 610004",
+  facebook: "https://www.facebook.com/profile.php?id=100069104318651",
+  instagram: "https://www.instagram.com/soc.italiana.arrecifes/",
   name: 'Sociedad Italiana de S.M. "Voz de Caprera"',
   intro:
     "Desde 1881, un lugar para encontrarnos, compartir nuestras raíces y seguir construyendo comunidad en Arrecifes.",

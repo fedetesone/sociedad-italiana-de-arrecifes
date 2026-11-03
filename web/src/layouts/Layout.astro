@@ -7,10 +7,11 @@ const { settings } = await getContent();
 const {
   title,
   description = settings.intro,
-  image = "/images/social.jpg",
+  image = settings.heroImage || "/images/sala-regina-portada.png",
   noindex = false,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -28,9 +29,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title || settings.name} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(image, Astro.site)} />
+    <meta property="og:image" content={socialImage} />
     <meta property="og:site_name" content={settings.name} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={socialImage} />
     {noindex && <meta name="robots" content="noindex" />}
   </head>
   <body>

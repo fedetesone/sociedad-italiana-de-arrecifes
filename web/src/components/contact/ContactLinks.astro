@@ -1,0 +1,132 @@
+---
+import { safeUrl } from "../../lib/events/utils";
+interface Props {
+  email?: string;
+  phone?: string;
+  instagram?: string;
+  facebook?: string;
+}
+const { email, phone, instagram, facebook } = Astro.props;
+const phoneDigits = phone?.replace(/\D/g, "");
+// Local Argentine mobile numbers need the country code and mobile prefix.
+const whatsappNumber =
+  phoneDigits?.length === 10 ? `549${phoneDigits}` : phoneDigits;
+const links = [
+  { kind: "email", text: email, href: email ? `mailto:${email}` : undefined },
+  {
+    kind: "phone",
+    text: phone,
+    href: whatsappNumber ? `https://wa.me/${whatsappNumber}` : undefined,
+  },
+  { kind: "instagram", text: "Instagram", href: safeUrl(instagram) },
+  { kind: "facebook", text: "Facebook", href: safeUrl(facebook) },
+].filter(({ href }) => href);
+---
+
+<ul class="contact-links">
+  {links.map(({ kind, text, href }) => {
+    const external = kind !== "email";
+    return (
+      <li>
+        <a
+          href={href}
+          aria-label={
+            kind === "phone"
+              ? `WhatsApp: ${phone} (se abre en otra pestaña)`
+              : undefined
+          }
+          target={external ? "_blank" : undefined}
+          rel={external ? "noopener noreferrer" : undefined}
+        >
+          <svg
+            class:list={["contact-icon", kind]}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            {kind === "email" && (
+              <>
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 6 9 7 9-7" />
+              </>
+            )}
+            {kind === "phone" && (
+              <>
+                <path d="M20.5 11.5a9 9 0 0 1-13.3 7.9L3 21l1.5-4.3a9 9 0 1 1 16-5.2Z" />
+                <path d="m8 7 2 3-1 1c1 2 2 3 4 4l1-1 3 2c-1 2-3 2-5 1-3-1.5-5.5-4-6-7 0-1 .5-2 2-3Z" />
+              </>
+            )}
+            {kind === "instagram" && (
+              <>
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle
+                  cx="17.4"
+                  cy="6.6"
+                  r="1"
+                  fill="currentColor"
+                  stroke="none"
+                />
+              </>
+            )}
+            {kind === "facebook" && (
+              <path
+                fill="currentColor"
+                stroke="none"
+                d="M13.8 22v-9h3l.5-3.5h-3.5V7.3c0-1 .3-1.7 1.8-1.7h1.9V2.5a24 24 0 0 0-2.8-.2c-2.8 0-4.7 1.7-4.7 4.8v2.4H7V13h3v9z"
+              />
+            )}
+          </svg>
+          <span>{text}</span>
+          {external && <span class="sr-only">(se abre en otra pestaña)</span>}
+        </a>
+      </li>
+    );
+  })}
+</ul>
+
+<style>
+  .contact-links {
+    display: grid;
+    gap: 10px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  a {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    max-width: 100%;
+    min-height: 32px;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+  a > span:not(.sr-only) {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .contact-icon {
+    width: 1.1em;
+    height: 1.1em;
+    flex-shrink: 0;
+  }
+  .email {
+    color: #183e35;
+  }
+  .phone {
+    color: #237c47;
+  }
+  .instagram {
+    color: #b33775;
+  }
+  .facebook {
+    color: #1664c5;
+  }
+</style>

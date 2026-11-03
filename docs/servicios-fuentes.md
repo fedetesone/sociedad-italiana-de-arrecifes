@@ -7,7 +7,7 @@ Consultadas el 30 de octubre de 2026. Los datos proporcionados por la instituci�
 - **Patio**: [convocatoria institucional publicada en 2021](https://diarioimagen.com.ar/asamblea-general-ordinaria-s-i-s-m-voz-de-caprera-2/). Confirma el espacio descubierto. No acredita habilitación, capacidad o servicios actuales.
 - **Escuela Ital**: [recopilación de publicaciones](https://www.schoolandcollegelistings.com/AR/Arrecifes/128793957282410/Ital). Solo se utilizó contexto general de enseñanza de lengua y cultura; profesor y oferta de cuatro niveles más Conversación fueron informados directamente por el usuario. No se publicaron aranceles ni equivalencias de niveles.
 - **Ciudadanía**: se enlaza al [Consulado General de Italia en Rosario](https://consrosario.esteri.it/es/servizi-consolari-e-visti/servizi-per-il-cittadino-straniero/cittadinanza_n/), cuya circunscripción incluye Arrecifes. Enlace corregido el 2/11/2026; no se reproducen requisitos legales cambiantes ni se prometen servicios consulares de la Sociedad.
-- **Dirección y teléfono**: confirmados directamente por la institución el 30/10/2026: España 694, Arrecifes, Buenos Aires; 2478 610004.
+- **Dirección y teléfono**: confirmados directamente por la institución el 30/10/2026: España 694, Arrecifes, Buenos Aires. Teléfono corregido por el usuario el 02/11/2026: +54 2478 610004.
 
 Las descripciones de salones son textos iniciales basados en usos históricos. Se requieren datos de la institución para completar tarifas, capacidad, accesibilidad, mobiliario, instalaciones y condiciones de uso. Las bonificaciones y deudas se presentan como consultas, sin inventar porcentajes o planes.
 
@@ -33,3 +33,9 @@ Fuentes oficiales consultadas el 2 de noviembre de 2026 para las secciones de `w
 - [Municipalidad de Arrecifes](https://arrecifes.gob.ar/): dirección Ricardo Gutiérrez 730, Arrecifes, Buenos Aires, publicada en el pie de página. El enlace «Centro de Atención al Vecino» dirige a WhatsApp con el número +54 9 2478 404096; se conserva ese destino con `wa.me`. La navegación ofrece accesos a Rentas, licencias de conducir y turnos del hospital. No se publican teléfono fijo, correo ni horarios municipales sin confirmación en las fuentes consultadas.
 
 Estas secciones ofrecen contactos externos; no modifican el destinatario ni el funcionamiento del formulario de la Sociedad.
+
+## Redes sociales de la Sociedad
+
+Enlaces confirmados por el usuario el 2 de noviembre de 2026: [Facebook](https://www.facebook.com/profile.php?id=100069104318651) e [Instagram](https://www.instagram.com/soc.italiana.arrecifes/). Se incorporan como valores de respaldo en `web/src/lib/content.ts`; los campos publicados en Sanity conservan prioridad. Contacto los presenta en `web/src/components/contact/ContactLinks.astro`, y el pie de página utiliza los mismos datos.
+
+A pedido del usuario, el número de la Sociedad en «Contactanos» enlaza a WhatsApp mediante `https://wa.me/542478610004`.

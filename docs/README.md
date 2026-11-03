@@ -145,7 +145,7 @@ El responsable técnico debe mantener activa la actualización diaria. Por eso e
 | Presentación institucional | Introducción del inicio y de Quiénes somos; máximo 400 caracteres       |
 | Nuestra historia           | Reseña en Quiénes somos; usá fechas y datos confirmados                 |
 | Nuestro propósito          | Misión institucional en Quiénes somos                                   |
-| Foto de portada            | Imagen principal del inicio                                             |
+| Foto de portada            | Imagen principal del inicio y vista previa al compartir el sitio        |
 | Fotografía institucional   | Imagen de Quiénes somos                                                 |
 | Cultura y comunidad        | Tarjetas del inicio; entre 1 y 6 si se carga la lista                   |
 | Dirección y teléfono       | Contacto y pie de página                                                |
@@ -156,8 +156,14 @@ El responsable técnico debe mantener activa la actualización diaria. Por eso e
 Datos de referencia confirmados:
 
 - **Dirección:** España 694, Arrecifes, Buenos Aires.
-- **Teléfono:** 2478 610004.
+- **Teléfono:** +54 2478 610004.
 - **Correo:** soc.italiana.arrecifes@gmail.com.
+- **Instagram:** [@soc.italiana.arrecifes](https://www.instagram.com/soc.italiana.arrecifes/).
+- **Facebook:** [perfil de la Sociedad](https://www.facebook.com/profile.php?id=100069104318651).
+
+En «Contactanos», el teléfono abre WhatsApp. Para cambiarlo en Sanity, usá el número internacional completo confirmado por la institución. El teléfono del pie de página sigue siendo un enlace para llamar.
+
+Las redes se muestran con íconos pequeños junto al correo y al teléfono, dentro de «Contactanos» y como enlaces en el pie de página. Los campos de Sanity permiten actualizar sus direcciones; cuando no hay valores publicados, se usan los enlaces de referencia confirmados.
 
 El correo visible aparece en el pie, en Contacto y junto a cada formulario como alternativa para escribir directamente. **Cambiarlo en Sanity no cambia el destinatario de los formularios.** Para que las solicitudes lleguen a otra casilla, tiene que intervenir la persona responsable del sitio.
 
