@@ -44,5 +44,4 @@ export interface Room {
   rates?: string;
   image?: string;
   imageAlt?: string;
-  source?: { href: string; label: string };
 }

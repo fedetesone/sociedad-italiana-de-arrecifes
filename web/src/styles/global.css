@@ -1209,13 +1209,6 @@ footer {
   line-height: 1.6;
   color: #566159;
 }
-.source-note {
-  font-size: 0.75rem;
-  margin: 24px 0 0;
-}
-.source-note a {
-  text-decoration: underline;
-}
 .room-list {
   display: grid;
   gap: 28px;
