@@ -15,3 +15,14 @@ export interface Settings {
   mission: string;
   activities: { title: string; description: string }[];
 }
+
+export interface School {
+  intro: string;
+  teacher: string;
+  fees: string;
+  schedule: string;
+  levelsTitle: string;
+  levelsIntro: string;
+  levels: { name: string; description?: string }[];
+  note: string;
+}

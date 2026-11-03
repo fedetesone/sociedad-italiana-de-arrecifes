@@ -27,14 +27,6 @@ export const options = {
     "Tengo conocimientos previos",
     "Busco perfeccionamiento",
   ],
-  level: [
-    "Nivel 1",
-    "Nivel 2",
-    "Nivel 3",
-    "Nivel 4",
-    "Conversación",
-    "Necesito orientación",
-  ],
   room: [
     "Sala Regina",
     "Sala Ravenna",
@@ -79,7 +71,8 @@ export const contactSchema = z.discriminatedUnion("kind", [
   form("escuela", {
     phone,
     experience: choice(options.experience),
-    level: choice(options.level),
+    // Levels come from Sanity at build time; validate shape, not membership.
+    level: line(60, "el nivel de interés"),
     message: message(),
   }),
   form("salones", {

@@ -48,7 +48,7 @@ Al entrar al administrador vas a encontrar dos secciones: **La institución** y 
 | Tarjetas de Cultura y comunidad del inicio                                        | La institución    |
 | Dirección, teléfono, horarios, correo visible y redes sociales                    | La institución    |
 
-**Todavía requieren ayuda técnica:** textos y aranceles de la Escuela de italiano, información de los salones, bonificaciones, panteones, ciudadanía, deudas, comisión directiva, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
+**Todavía requieren ayuda técnica:** información de los salones, bonificaciones, panteones, ciudadanía, deudas, comisión directiva, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
 
 El nombre editable se usa en partes del sitio, como el pie de página; la marca del encabezado y algunos títulos están definidos en el diseño. Para cambiar el nombre en todo el sitio, pedí ayuda técnica.
 
@@ -175,6 +175,22 @@ Algunos campos tienen información de respaldo. Vaciar un campo no siempre lo el
 
 La reseña de respaldo incluye una síntesis de la publicación del 120.º aniversario aportada por la institución. Antes de ampliar o corregir fechas, consultá las [fuentes históricas y las fotografías del archivo](historia-fuentes.md). Los servicios mencionados en ese material histórico no acreditan prestaciones vigentes.
 
+### Escuela de italiano
+
+En el menú del administrador, abrí **Escuela de italiano**. Es un documento único, como La institución: los campos que dejes vacíos muestran el texto actual de la web.
+
+| Campo                            | Dónde aparece o para qué sirve                                                          |
+| -------------------------------- | --------------------------------------------------------------------------------------- |
+| Presentación                     | Texto de "Un idioma que nos acerca"; separá los párrafos con una línea en blanco        |
+| Profesor/a                       | Recuadro "Antes de empezar"                                                             |
+| Aranceles                        | Recuadro "Antes de empezar"; usá solo valores confirmados por la institución            |
+| Días y horarios                  | Recuadro "Antes de empezar"                                                             |
+| Título y presentación de niveles | Encabezado y texto de la sección de niveles; revisalos si cambia la cantidad de niveles |
+| Niveles                          | Lista de niveles y opciones de "Nivel de interés" en el formulario de ingreso           |
+| Aclaración final                 | Texto debajo de la lista de niveles                                                     |
+
+Presioná **Publicar** y comprobá la página Escuela de italiano después de unos minutos.
+
 ## 9. Subir fotos y afiches
 
 1. Abrí el campo de imagen correspondiente.
@@ -227,7 +243,7 @@ No compartas la contraseña de una cuenta para dar acceso. Si alguien deja de co
 | No llegan las consultas                         | Revisá Spam y la casilla destinataria. Pedí revisar Resend y una prueba de entrega; el mensaje de confirmación de la web no garantiza que Gmail lo recibió. |
 | El evento sigue en Próximos después de terminar | Pedí revisar la actualización diaria del sitio. No hace falta borrarlo.                                                                                     |
 | Edité algo por error                            | Si ya estaba publicado, corregilo y publicá otra vez. Si necesitás recuperar una versión, pedí ayuda; no borres el documento.                               |
-| Quiero editar escuela, salones o comisión       | Solicitá el cambio al responsable técnico; esas páginas todavía no se editan desde Sanity.                                                                  |
+| Quiero editar salones o comisión                | Solicitá el cambio al responsable técnico; esas páginas todavía no se editan desde Sanity. La Escuela se edita en Sanity (sección 8).                       |
 
 Cuando pidas ayuda, indicá qué página o evento estabas editando, qué intentaste hacer, a qué hora y qué mensaje apareció. Podés adjuntar una captura sin contraseñas ni datos privados.
 

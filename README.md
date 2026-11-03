@@ -105,7 +105,7 @@ En producción, si faltan remitente, destinatario, API key, origen, clave Turnst
 
 ## Contacto y correo
 
-`POST /api/contact` recibe todos los formularios del sitio. Acepta JSON con `kind` (`contacto`, `alta`, `baja`, `escuela`, `salones`, `deudas`, `panteones` o `ciudadania`), `name`, `email`, `consent: true`, `website: ""`, `turnstileToken` y los campos propios de ese formulario, definidos en `web/src/lib/validation/contact.ts` (por ejemplo `subject` en contacto o `address`, `city` y `postalCode` en alta). Cada formulario tiene un esquema estricto: rechaza campos desconocidos o de otro formulario, incluidos destinatarios enviados por el cliente. Las opciones de los desplegables se validan contra la misma lista que usa el formulario.
+`POST /api/contact` recibe todos los formularios del sitio. Acepta JSON con `kind` (`contacto`, `alta`, `baja`, `escuela`, `salones`, `deudas`, `panteones` o `ciudadania`), `name`, `email`, `consent: true`, `website: ""`, `turnstileToken` y los campos propios de ese formulario, definidos en `web/src/lib/validation/contact.ts` (por ejemplo `subject` en contacto o `address`, `city` y `postalCode` en alta). Cada formulario tiene un esquema estricto: rechaza campos desconocidos o de otro formulario, incluidos destinatarios enviados por el cliente. Las opciones de los desplegables se validan contra la misma lista que usa el formulario, salvo el nivel de la escuela: sale de Sanity al compilar y se valida como texto de una línea.
 
 - Nombre: 1–100 caracteres; asunto: 1–140; mensaje: 1–5000 (opcional solo en baja). Se aceptan mensajes cortos.
 - Email válido, consentimiento obligatorio, token máximo 2048 caracteres.
@@ -165,7 +165,7 @@ El nuevo campo **Estado → Cancelado** quita el evento de la agenda, conserva s
 
 En **Workers Builds**, creá un **Deploy Hook** para el Worker conectado al repositorio y a `main`. La URL es secreta. Si antes se usaba Pages, reemplazá el hook de Pages por el de Workers en ambos lugares siguientes:
 
-- **Sanity Manage → API → Webhooks:** URL del hook, método POST, dataset `production`, eventos create/update/delete; filtro `(_type == "event" || _type == "siteSettings") && !(_id in path("drafts.**"))`.
+- **Sanity Manage → API → Webhooks:** URL del hook, método POST, dataset `production`, eventos create/update/delete; filtro `_type in ["event", "siteSettings", "school"] && !(_id in path("drafts.**"))`. Si se agrega otro tipo editable, sumarlo al filtro o sus cambios no recompilan la web.
 - **GitHub → Settings → Secrets and variables → Actions:** guardá la URL como `CLOUDFLARE_DEPLOY_HOOK`. El workflow `rebuild.yml` hace un POST diario a las 00:15 de Argentina y también admite ejecución manual.
 
 Sin el secreto, el workflow informa que falta configuración y no publica. Los cambios de fecha no se reflejan hasta la próxima compilación; GitHub puede retrasar tareas o deshabilitarlas en repositorios públicos inactivos. Comprobá publicaciones, cancelaciones, despublicaciones y actualización diaria después de migrar. [Deploy Hooks de Workers](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/).
@@ -246,7 +246,7 @@ La entrega real necesita credenciales y dominio verificado. La publicación en C
 
 ## Contenido institucional y mantenimiento
 
-Profesor: **Matias Costantini Reschia**. Escuela: **cuatro niveles más Conversación**. Dirección: **España 694, Arrecifes, Buenos Aires**. Teléfono: **2478 610004**. Faltan aranceles, horarios, condiciones de bonificaciones, nómina y mandato de comisión y detalles de salones. Escuela y servicios siguen siendo páginas estáticas editadas en código. La fotografía de Italia es ilustrativa; reemplazarla por fotografías propias desde Sanity.
+Profesor: **Matias Costantini Reschia**. Escuela: **cuatro niveles más Conversación**. Dirección: **España 694, Arrecifes, Buenos Aires**. Teléfono: **2478 610004**. Faltan aranceles, horarios, condiciones de bonificaciones, nómina y mandato de comisión y detalles de salones. La Escuela de italiano se edita en Sanity (documento único "Escuela de italiano", con respaldo en `web/src/lib/content.ts`); los demás servicios siguen siendo páginas estáticas editadas en código. La fotografía de Italia es ilustrativa; reemplazarla por fotografías propias desde Sanity.
 
 Fuentes: [historia](docs/historia-fuentes.md) y [servicios](docs/servicios-fuentes.md). El proyecto conserva los overrides de dependencias indirectas de Sanity; revisarlos al actualizar paquetes. `npm run format` aplica Prettier.
 

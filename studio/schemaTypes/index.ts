@@ -264,4 +264,83 @@ const siteSettings = defineType({
     }),
   ],
 });
-export const schemaTypes = [richText, event, siteSettings];
+const school = defineType({
+  name: "school",
+  title: "Escuela de italiano",
+  type: "document",
+  description: "Los campos vacíos usan el texto que hoy muestra la web.",
+  fields: [
+    defineField({
+      name: "intro",
+      title: "Presentación",
+      description: "Separá los párrafos con una línea en blanco.",
+      type: "text",
+      rows: 6,
+    }),
+    defineField({ name: "teacher", title: "Profesor/a", type: "string" }),
+    defineField({
+      name: "fees",
+      title: "Aranceles",
+      description: "Costo, matrícula y formas de pago vigentes.",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "schedule",
+      title: "Días y horarios",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "levelsTitle",
+      title: "Título de la sección de niveles",
+      description: "Si cambiás la cantidad de niveles, revisá este título.",
+      type: "string",
+      validation: (r) => r.max(80),
+    }),
+    defineField({
+      name: "levelsIntro",
+      title: "Presentación de los niveles",
+      type: "text",
+      rows: 3,
+    }),
+    defineField({
+      name: "levels",
+      title: "Niveles",
+      description:
+        'También son las opciones de "Nivel de interés" en el formulario de ingreso.',
+      type: "array",
+      validation: (r) => r.max(12),
+      of: [
+        defineArrayMember({
+          type: "object",
+          name: "level",
+          title: "Nivel",
+          fields: [
+            defineField({
+              name: "name",
+              title: "Nombre",
+              type: "string",
+              validation: (r) => r.required().max(60),
+            }),
+            defineField({
+              name: "description",
+              title: "Descripción breve",
+              type: "string",
+              validation: (r) => r.max(200),
+            }),
+          ],
+          preview: { select: { title: "name", subtitle: "description" } },
+        }),
+      ],
+    }),
+    defineField({
+      name: "note",
+      title: "Aclaración final",
+      type: "text",
+      rows: 2,
+    }),
+  ],
+  preview: { prepare: () => ({ title: "Escuela de italiano" }) },
+});
+export const schemaTypes = [richText, event, siteSettings, school];

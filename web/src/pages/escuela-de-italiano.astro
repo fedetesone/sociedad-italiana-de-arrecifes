@@ -2,6 +2,11 @@
 export const prerender = true;
 import ServiceLayout from "../layouts/ServiceLayout.astro";
 import RequestForm from "../components/forms/RequestForm.astro";
+import { getContent } from "../lib/content";
+const { school } = await getContent();
+const levelNames = new Intl.ListFormat("es-AR", { type: "conjunction" }).format(
+  school.levels.map((level) => level.name),
+);
 ---
 
 <ServiceLayout
@@ -12,15 +17,9 @@ import RequestForm from "../components/forms/RequestForm.astro";
   <div class="school-overview">
     <div>
       <h2>Un idioma que nos acerca</h2>
-      <p>
-        La Escuela de Italiano de Arrecifes, Ital, funciona en la Sociedad. Sus
-        publicaciones describen cursos de lengua y cultura italianas y
-        propuestas de perfeccionamiento para quienes quieren seguir aprendiendo.
-      </p>
-      <p>
-        El recorrido combina herramientas para comunicarse con el descubrimiento
-        del arte, la geografía y las tradiciones de Italia.
-      </p>
+      {school.intro.split(/\n\s*\n/).map((paragraph) => (
+        <p class="multiline">{paragraph}</p>
+      ))}
       <a class="text-link" href="#ingreso">
         Solicitar información de ingreso ↗
       </a>
@@ -30,61 +29,42 @@ import RequestForm from "../components/forms/RequestForm.astro";
       <dl>
         <div>
           <dt>Profesor/a</dt>
-          <dd>Matias Costantini Reschia.</dd>
+          <dd>{school.teacher}</dd>
         </div>
         <div>
           <dt>Niveles</dt>
-          <dd>
-            Cuatro niveles de italiano y Conversación, la instancia más
-            avanzada.
-          </dd>
+          <dd>{levelNames}.</dd>
         </div>
         <div>
           <dt>Aranceles</dt>
-          <dd>Consultá el costo vigente, matrícula y formas de pago.</dd>
+          <dd class="multiline">{school.fees}</dd>
         </div>
         <div>
           <dt>Días y horarios</dt>
-          <dd>A confirmar según el grupo y los cupos disponibles.</dd>
+          <dd class="multiline">{school.schedule}</dd>
         </div>
       </dl>
     </div>
   </div>
   <section class="reading-panel">
-    <h2>Cinco etapas para seguir aprendiendo</h2>
-    <p>
-      La escuela ofrece cuatro niveles de italiano y una propuesta de
-      Conversación para el tramo más avanzado. Consultá con el profesor cuál
-      corresponde a tu recorrido.
-    </p>
+    <h2>{school.levelsTitle}</h2>
+    <p class="multiline">{school.levelsIntro}</p>
     <ol class="level-list">
-      <li>
-        <strong>Nivel 1</strong>
-        <span>El inicio del recorrido.</span>
-      </li>
-      <li>
-        <strong>Nivel 2</strong>
-        <span>Continuidad del aprendizaje.</span>
-      </li>
-      <li>
-        <strong>Nivel 3</strong>
-        <span>Una nueva etapa para profundizar.</span>
-      </li>
-      <li>
-        <strong>Nivel 4</strong>
-        <span>El cuarto nivel del recorrido.</span>
-      </li>
-      <li>
-        <strong>Conversación</strong>
-        <span>La propuesta más avanzada.</span>
-      </li>
+      {school.levels.map((level) => (
+        <li>
+          <strong>{level.name}</strong>
+          {level.description && <span>{level.description}</span>}
+        </li>
+      ))}
     </ol>
-    <p>
-      Los contenidos, horarios y criterios de ingreso se informan al consultar.
-      La solicitud no reserva una vacante.
-    </p>
+    <p class="multiline">{school.note}</p>
   </section>
   <div class="narrow" id="ingreso">
     <RequestForm kind="escuela" title="Solicitud de ingreso" />
   </div>
 </ServiceLayout>
+<style>
+  .multiline {
+    white-space: pre-line;
+  }
+</style>
