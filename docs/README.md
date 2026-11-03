@@ -191,7 +191,7 @@ No cargues documentos de identidad, información bancaria, padrones ni material 
 Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configurada por la institución, normalmente **soc.italiana.arrecifes@gmail.com**. Todos los formularios (contacto, socios, escuela y salones) se envían por Resend. Si el envío todavía no está habilitado, la página lo informa y ofrece escribir por correo directamente.
 
 1. Abrí la casilla de correo.
-2. Buscá asuntos que comiencen con **[Voz de Caprera]**. En Contacto, el asunto incluye lo que escribió la persona en el campo Asunto. En los trámites incluye el tipo de solicitud y el nombre.
+2. El asunto empieza con el nombre del formulario entre corchetes. En Contacto sigue lo que escribió la persona en el campo Asunto, por ejemplo **[Contacto] Consulta por cursos**. En los trámites sigue el nombre de quien lo envía, por ejemplo **[Solicitud de alta] Ana Pérez**. Todos llegan del remitente **Sociedad Italiana**.
 3. Leé los datos y usá **Responder**: está preparado para responder al correo que indicó la persona.
 4. Revisá que el destinatario sea correcto antes de enviar la respuesta.
 5. Respondé según el trámite y los procedimientos de la institución.

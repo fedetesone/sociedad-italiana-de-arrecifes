@@ -114,7 +114,7 @@ En producción, si faltan remitente, destinatario, API key, origen, clave Turnst
 - Turnstile se verifica en servidor, incluyendo hostname y acción `contact` en producción. Tokens vencidos o reutilizados se rechazan.
 - Honeypot complementario y rate limit de Workers. Si el limitador o Turnstile no están disponibles, no se envía correo.
 - El límite es aproximado y por ubicación de Cloudflare, no una cuota global estricta. No usa una base de datos. El `namespace_id` debe ser único respecto de otros limitadores de la misma cuenta si no se quieren compartir contadores.
-- El servicio fija `from` y `to` desde el servidor, y usa el email del visitante como `reply_to`. El asunto incluye `[Voz de Caprera]`.
+- El servicio fija `from` y `to` desde el servidor, y usa el email del visitante como `reply_to`. El asunto es `[<formulario>] <asunto>` en Contacto y `[<formulario>] <nombre>` en los trámites, por ejemplo `[Solicitud de alta] Ana Pérez`.
 - Email con texto plano y HTML escapado; no se interpreta HTML del visitante ni se permiten saltos de línea en encabezados.
 - Los errores no exponen respuestas del proveedor, credenciales ni contenido. No se registran datos de solicitudes en producción.
 

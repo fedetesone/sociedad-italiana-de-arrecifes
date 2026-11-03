@@ -13,14 +13,16 @@ const escapeHtml = (text: string) =>
       ]!,
   );
 
-const procedures: Record<Exclude<FormKind, "contacto">, string> = {
-  alta: "Solicitud de alta de socio",
-  baja: "Solicitud de baja de socio",
-  escuela: "Solicitud de ingreso a la Escuela de Italiano",
-  salones: "Consulta de alquiler de salón",
+// Form names as shown in the site navigation; used as the subject tag.
+const formNames: Record<FormKind, string> = {
+  contacto: "Contacto",
+  alta: "Solicitud de alta",
+  baja: "Solicitud de baja",
+  escuela: "Escuela de italiano",
+  salones: "Alquiler de salones",
   deudas: "Regularización de deudas",
-  panteones: "Consulta sobre panteones",
-  ciudadania: "Consulta sobre ciudadanía italiana",
+  panteones: "Panteones",
+  ciudadania: "Ciudadanía italiana",
 };
 // Order of rows in the email. Empty optional fields are omitted.
 const labels = {
@@ -47,9 +49,9 @@ export async function sendContactEmail(
   send: typeof fetch = fetch,
 ): Promise<"accepted" | "simulated"> {
   const topic =
-    contact.kind === "contacto" ? contact.subject : procedures[contact.kind];
-  const subject =
-    contact.kind === "contacto" ? topic : `${topic} — ${contact.name}`;
+    contact.kind === "contacto" ? contact.subject : formNames[contact.kind];
+  // "[Contacto] <asunto>" or "[Solicitud de alta] <nombre>".
+  const subject = `[${formNames[contact.kind]}] ${contact.kind === "contacto" ? contact.subject : contact.name}`;
   const values = contact as Partial<Record<keyof typeof labels, string>>;
   const rows = Object.entries(labels).flatMap(([key, label]) => {
     const value = values[key as keyof typeof labels];
@@ -84,7 +86,7 @@ export async function sendContactEmail(
       from: env.EMAIL_FROM,
       to: [env.EMAIL_TO],
       reply_to: contact.email,
-      subject: `[Voz de Caprera] ${subject}`,
+      subject,
       text,
       html: `<div style="font-family:Arial,sans-serif;color:#254e3f;max-width:640px"><h1 style="font-size:24px">Nueva consulta</h1><h2 style="font-size:18px">${escapeHtml(topic)}</h2><p>${rows.map(([label, value]) => `<strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}`).join("<br>")}</p>${message ? `<p style="white-space:pre-wrap;color:#222">${escapeHtml(message)}</p>` : ""}<hr><p>Sociedad Italiana de S.M. “Voz de Caprera” · Arrecifes</p></div>`,
     }),

@@ -24,7 +24,7 @@ test("Resend uses fixed addresses, reply-to and escaped HTML", async () => {
     assert.equal(body.from, env.EMAIL_FROM);
     assert.deepEqual(body.to, [env.EMAIL_TO]);
     assert.equal(body.reply_to, contact.email);
-    assert.equal(body.subject, "[Voz de Caprera] Sala & patio");
+    assert.equal(body.subject, "[Contacto] Sala & patio");
     assert.ok(body.html.includes("&lt;img"));
     assert.ok(!body.html.includes("<script>"));
     assert.ok(body.text.includes(contact.message));
@@ -60,10 +60,7 @@ test("mock logs only locally and never delivers; production refuses mock", async
 test("procedure emails name the procedure and requester, list filled fields only", async () => {
   const send: typeof fetch = async (_url, init) => {
     const body = JSON.parse(String(init?.body));
-    assert.equal(
-      body.subject,
-      "[Voz de Caprera] Solicitud de alta de socio — Ana <script>",
-    );
+    assert.equal(body.subject, "[Solicitud de alta] Ana <script>");
     assert.ok(body.text.includes("Domicilio: España 694"));
     assert.ok(body.text.includes("Código postal: 2740"));
     assert.ok(!body.text.includes("Teléfono"));
