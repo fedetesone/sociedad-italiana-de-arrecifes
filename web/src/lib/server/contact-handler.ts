@@ -1,7 +1,7 @@
 import { z } from "zod";
 import type { ContactBindings, ContactResponse } from "../../types/contact";
 import { contactSchema } from "../validation/contact";
-import { contactConfigured } from "./config";
+import { contactConfigProblem } from "./config";
 import { verifyTurnstile } from "../security/turnstile";
 import { sendContactEmail } from "../email/service";
 
@@ -56,12 +56,16 @@ export async function handleContact(
   const local =
     options.development &&
     ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname);
-  if (!contactConfigured(env, local, options.sitekey))
+  const problem = contactConfigProblem(env, local, options.sitekey);
+  if (problem) {
+    // Setting names only, never values.
+    console.warn(`Contact form disabled: ${problem}`);
     return error(
       503,
       "NOT_CONFIGURED",
       "El formulario no está disponible por el momento. Escribinos por correo electrónico.",
     );
+  }
   const expectedOrigin = local ? url.origin : env.CONTACT_ORIGIN;
   if (
     request.headers.get("Origin") !== expectedOrigin ||

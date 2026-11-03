@@ -98,7 +98,8 @@ test("JSON-only, malformed JSON, actual body size limits and structured validati
       .fields.email.length,
   );
 });
-test("fails closed without config, with mock provider or official test keys in production", async () => {
+test("fails closed without config, with mock provider or official test keys in production", async (t) => {
+  const warn = t.mock.method(console, "warn", () => {});
   for (const patch of [
     { EMAIL_PROVIDER: "mock" },
     { RESEND_API_KEY: undefined },
@@ -133,6 +134,9 @@ test("fails closed without config, with mock provider or official test keys in p
     ).status,
     503,
   );
+  const logged = warn.mock.calls.map((call) => String(call.arguments[0]));
+  assert.ok(logged.some((line) => line.includes("CONTACT_ORIGIN")));
+  assert.ok(logged.every((line) => !line.includes(env.RESEND_API_KEY!)));
 });
 test("honeypot and recipient injection never call external services", async () => {
   let calls = 0;
