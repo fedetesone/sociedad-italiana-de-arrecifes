@@ -1,9 +1,8 @@
-export interface ContactMessage {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-}
+import type { z } from "zod";
+import type { contactSchema } from "../lib/validation/contact";
+
+export type ContactInput = z.infer<typeof contactSchema>;
+export type FormKind = ContactInput["kind"];
 export type ContactResponse =
   | { ok: true; status: "accepted" | "simulated"; message: string }
   | {

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { handleContact } from "./contact-handler";
 import type { ContactBindings } from "../../types/contact";
 const body = {
+  kind: "contacto",
   name: "Ana",
   email: "ana@example.org",
   subject: "Consulta",

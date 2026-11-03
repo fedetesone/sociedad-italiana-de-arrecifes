@@ -2,10 +2,14 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { sendContactEmail } from "./service";
 const contact = {
+  kind: "contacto" as const,
   name: "Ana <script>",
   email: "ana@example.org",
   subject: "Sala & patio",
   message: '<img src=x onerror="alert(1)">',
+  consent: true as const,
+  website: "",
+  turnstileToken: "token",
 };
 const env = {
   EMAIL_PROVIDER: "resend",
@@ -52,4 +56,28 @@ test("mock logs only locally and never delivers; production refuses mock", async
     sendContactEmail(contact, { EMAIL_PROVIDER: "mock" }, false, send),
   );
   assert.equal(log.mock.callCount(), 1);
+});
+test("procedure emails name the procedure and requester, list filled fields only", async () => {
+  const send: typeof fetch = async (_url, init) => {
+    const body = JSON.parse(String(init?.body));
+    assert.equal(
+      body.subject,
+      "[Voz de Caprera] Solicitud de alta de socio — Ana <script>",
+    );
+    assert.ok(body.text.includes("Domicilio: España 694"));
+    assert.ok(body.text.includes("Código postal: 2740"));
+    assert.ok(!body.text.includes("Teléfono"));
+    assert.ok(body.html.includes("Ana &lt;script&gt;"));
+    return Response.json({ id: "email-test-id" });
+  };
+  const { subject: _subject, ...base } = contact;
+  const alta = {
+    ...base,
+    kind: "alta" as const,
+    phone: "",
+    address: "España 694",
+    city: "Arrecifes",
+    postalCode: "2740",
+  };
+  assert.equal(await sendContactEmail(alta, env, false, send), "accepted");
 });

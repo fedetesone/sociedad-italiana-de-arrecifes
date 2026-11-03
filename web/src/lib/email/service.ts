@@ -1,4 +1,8 @@
-import type { ContactBindings, ContactMessage } from "../../types/contact";
+import type {
+  ContactBindings,
+  ContactInput,
+  FormKind,
+} from "../../types/contact";
 
 const escapeHtml = (text: string) =>
   text.replace(
@@ -9,14 +13,55 @@ const escapeHtml = (text: string) =>
       ]!,
   );
 
+const procedures: Record<Exclude<FormKind, "contacto">, string> = {
+  alta: "Solicitud de alta de socio",
+  baja: "Solicitud de baja de socio",
+  escuela: "Solicitud de ingreso a la Escuela de Italiano",
+  salones: "Consulta de alquiler de salón",
+  deudas: "Regularización de deudas",
+  panteones: "Consulta sobre panteones",
+  ciudadania: "Consulta sobre ciudadanía italiana",
+};
+// Order of rows in the email. Empty optional fields are omitted.
+const labels = {
+  name: "Nombre",
+  email: "Email",
+  phone: "Teléfono",
+  memberNumber: "Número de socio",
+  address: "Domicilio",
+  city: "Localidad",
+  postalCode: "Código postal",
+  experience: "Experiencia en italiano",
+  level: "Nivel de interés",
+  room: "Espacio",
+  date: "Fecha tentativa",
+  guests: "Cantidad de personas",
+  memberStatus: "¿Es socio/a?",
+};
+
 /** Only this module knows the email provider. No recipients come from request data. */
 export async function sendContactEmail(
-  contact: ContactMessage,
+  contact: ContactInput,
   env: ContactBindings,
   local: boolean,
   send: typeof fetch = fetch,
 ): Promise<"accepted" | "simulated"> {
-  const text = `Nueva consulta desde la web\n\nNombre: ${contact.name}\nEmail: ${contact.email}\nAsunto: ${contact.subject}\n\n${contact.message}`;
+  const topic =
+    contact.kind === "contacto" ? contact.subject : procedures[contact.kind];
+  const subject =
+    contact.kind === "contacto" ? topic : `${topic} — ${contact.name}`;
+  const values = contact as Partial<Record<keyof typeof labels, string>>;
+  const rows = Object.entries(labels).flatMap(([key, label]) => {
+    const value = values[key as keyof typeof labels];
+    if (!value) return [];
+    // Dates arrive as validated YYYY-MM-DD; show them as DD/MM/YYYY.
+    return [
+      [label, key === "date" ? value.split("-").reverse().join("/") : value],
+    ] as const;
+  });
+  const message = contact.message || "";
+  const text =
+    `Nueva consulta desde la web\n\n${topic}\n\n${rows.map(([label, value]) => `${label}: ${value}`).join("\n")}\n\n${message}`.trimEnd();
   if (env.EMAIL_PROVIDER === "mock" && local) {
     console.info("[EMAIL LOCAL — NO ENVIADO]\n" + text);
     return "simulated";
@@ -39,9 +84,9 @@ export async function sendContactEmail(
       from: env.EMAIL_FROM,
       to: [env.EMAIL_TO],
       reply_to: contact.email,
-      subject: `[Voz de Caprera] ${contact.subject}`,
+      subject: `[Voz de Caprera] ${subject}`,
       text,
-      html: `<div style="font-family:Arial,sans-serif;color:#254e3f;max-width:640px"><h1 style="font-size:24px">Nueva consulta</h1><p><strong>Nombre:</strong> ${escapeHtml(contact.name)}<br><strong>Email:</strong> ${escapeHtml(contact.email)}</p><h2 style="font-size:18px">${escapeHtml(contact.subject)}</h2><p style="white-space:pre-wrap;color:#222">${escapeHtml(contact.message)}</p><hr><p>Sociedad Italiana de S.M. “Voz de Caprera” · Arrecifes</p></div>`,
+      html: `<div style="font-family:Arial,sans-serif;color:#254e3f;max-width:640px"><h1 style="font-size:24px">Nueva consulta</h1><h2 style="font-size:18px">${escapeHtml(topic)}</h2><p>${rows.map(([label, value]) => `<strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}`).join("<br>")}</p>${message ? `<p style="white-space:pre-wrap;color:#222">${escapeHtml(message)}</p>` : ""}<hr><p>Sociedad Italiana de S.M. “Voz de Caprera” · Arrecifes</p></div>`,
     }),
     signal: AbortSignal.timeout(10000),
   });

@@ -17,7 +17,7 @@
 
 ## Contacto y seguridad
 
-- `/contacto` usa `POST /api/contact` + Zod + Turnstile verificado en servidor + honeypot + binding de rate limit. Los demás trámites aún usan FormSubmit: no migrarlos por accidente.
+- Todos los formularios (`/contacto` y trámites) usan `POST /api/contact` con `kind` + esquema Zod estricto por formulario + Turnstile verificado en servidor + honeypot + binding de rate limit. No volver a servicios de terceros como FormSubmit.
 - Remitente y destinatario salen del servidor; visitante solo aporta Reply-To. Rechazar campos desconocidos, limitar cuerpo/campos, escapar HTML y evitar saltos de línea en encabezados.
 - Producción falla cerrada si falta configuración/protección; no aceptar claves Turnstile dummy ni mock. Mock únicamente en `astro dev` sobre loopback y con aviso explícito de **no enviado**.
 - No registrar mensajes, IP, tokens ni errores crudos del proveedor en producción. No enviar correos reales durante tests. Aceptación de Resend no equivale a entrega en bandeja.

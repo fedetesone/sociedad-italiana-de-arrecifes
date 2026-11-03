@@ -1,7 +1,7 @@
 ---
 export const prerender = true;
 import Layout from "../layouts/Layout.astro";
-import ContactForm from "../components/forms/ContactForm.astro";
+import RequestForm from "../components/forms/RequestForm.astro";
 import ConsulateInfo from "../components/contact/ConsulateInfo.astro";
 import PublicInstitutions from "../components/contact/PublicInstitutions.astro";
 import ContactLinks from "../components/contact/ContactLinks.astro";
@@ -63,7 +63,7 @@ const { settings } = await getContent();
   </div>
   <div class="wrap service-body">
     <div class="narrow">
-      <ContactForm />
+      <RequestForm kind="contacto" title="Escribile a la Sociedad" />
     </div>
   </div>
 </Layout>

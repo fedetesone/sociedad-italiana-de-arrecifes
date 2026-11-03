@@ -1,29 +1,21 @@
 ---
-import { contactEmail } from "../../lib/navigation";
 import { getContent } from "../../lib/content";
+import { isTestKey } from "../../lib/server/config";
+import { options } from "../../lib/validation/contact";
+import type { FormKind } from "../../types/contact";
 interface Props {
-  kind:
-    | "alta"
-    | "baja"
-    | "escuela"
-    | "salones"
-    | "deudas"
-    | "panteones"
-    | "ciudadania";
+  kind: FormKind;
   title?: string;
 }
 const { kind, title = "Escribinos" } = Astro.props;
 const { settings } = await getContent();
-const subjects = {
-  alta: "Solicitud de alta de socio",
-  baja: "Solicitud de baja de socio",
-  escuela: "Solicitud de ingreso a la Escuela de Italiano",
-  salones: "Consulta de alquiler de salón",
-  deudas: "Regularización de deudas",
-  panteones: "Consulta sobre panteones",
-  ciudadania: "Consulta sobre ciudadanía italiana",
-};
+const configuredKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY || "";
+// The API rejects test keys outside astro dev, so do not offer a form that cannot send.
+const sitekey =
+  import.meta.env.DEV || !isTestKey(configuredKey) ? configuredKey : "";
 const id = `form-${kind}`;
+const contact = kind === "contacto";
+const errorId = (field: string) => `${id}-${field}-error`;
 ---
 
 <section class="form-panel" aria-labelledby={`${id}-title`}>
@@ -32,44 +24,24 @@ const id = `form-${kind}`;
     Los campos con * son obligatorios. Te responderemos al correo que indiques.
   </p>
   <form
-    action={`https://formsubmit.co/${contactEmail}`}
-    method="POST"
+    id={id}
     class="request-form"
-    data-formsubmit
+    action="/api/contact"
+    method="post"
+    data-kind={kind}
   >
-    <input
-      type="hidden"
-      name="_subject"
-      value={`[Voz de Caprera] ${subjects[kind]}`}
-    />
-    <input type="hidden" name="_template" value="table" />
-    <input
-      type="hidden"
-      name="_next"
-      value={new URL("/gracias/", Astro.site).href}
-    />
-    <input
-      type="hidden"
-      name="_url"
-      value={new URL(Astro.url.pathname, Astro.site).href}
-    />
-    <input type="hidden" name="Trámite" value={subjects[kind]} />
-    <div class="form-honeypot" aria-hidden="true">
-      <label>
-        No completar
-        <input name="_honey" tabindex="-1" autocomplete="off" />
-      </label>
-    </div>
     <div class="form-row">
       <label for={`${id}-name`}>
         Nombre y apellido *
         <input
           id={`${id}-name`}
-          name="Nombre y apellido"
+          name="name"
           autocomplete="name"
           required
           maxlength="100"
+          aria-describedby={errorId("name")}
         />
+        <span id={errorId("name")} data-error="name" class="field-error"></span>
       </label>
       <label for={`${id}-email`}>
         Correo electrónico *
@@ -79,39 +51,81 @@ const id = `form-${kind}`;
           name="email"
           autocomplete="email"
           required
-          maxlength="200"
+          maxlength="254"
+          aria-describedby={errorId("email")}
         />
+        <span
+          id={errorId("email")}
+          data-error="email"
+          class="field-error"
+        ></span>
       </label>
     </div>
-    <div class="form-row">
-      <label for={`${id}-phone`}>
-        Teléfono (opcional)
+    {contact ? (
+      <label for={`${id}-subject`}>
+        Asunto *
         <input
-          id={`${id}-phone`}
-          type="tel"
-          name="Teléfono"
-          autocomplete="tel"
-          maxlength="40"
+          id={`${id}-subject`}
+          name="subject"
+          required
+          maxlength="140"
+          aria-describedby={errorId("subject")}
+        />
+        <span
+          id={errorId("subject")}
+          data-error="subject"
+          class="field-error"
         />
       </label>
-      {["baja", "deudas", "panteones"].includes(kind) && (
-        <label for={`${id}-member`}>
-          Número de socio (si lo conocés)
-          <input id={`${id}-member`} name="Número de socio" maxlength="40" />
+    ) : (
+      <div class="form-row">
+        <label for={`${id}-phone`}>
+          Teléfono (opcional)
+          <input
+            id={`${id}-phone`}
+            type="tel"
+            name="phone"
+            autocomplete="tel"
+            maxlength="40"
+            aria-describedby={errorId("phone")}
+          />
+          <span id={errorId("phone")} data-error="phone" class="field-error" />
         </label>
-      )}
-    </div>
+        {["baja", "deudas", "panteones"].includes(kind) && (
+          <label for={`${id}-member`}>
+            Número de socio (si lo conocés)
+            <input
+              id={`${id}-member`}
+              name="memberNumber"
+              maxlength="40"
+              aria-describedby={errorId("memberNumber")}
+            />
+            <span
+              id={errorId("memberNumber")}
+              data-error="memberNumber"
+              class="field-error"
+            />
+          </label>
+        )}
+      </div>
+    )}
     {kind === "alta" && (
       <>
         <label for={`${id}-address`}>
           Domicilio *
           <input
             id={`${id}-address`}
-            name="Domicilio"
+            name="address"
             autocomplete="street-address"
             placeholder="Calle, número y piso o departamento, si corresponde"
             required
             maxlength="200"
+            aria-describedby={errorId("address")}
+          />
+          <span
+            id={errorId("address")}
+            data-error="address"
+            class="field-error"
           />
         </label>
         <div class="form-row">
@@ -119,97 +133,147 @@ const id = `form-${kind}`;
             Localidad *
             <input
               id={`${id}-city`}
-              name="Localidad"
+              name="city"
               autocomplete="address-level2"
               required
               maxlength="100"
+              aria-describedby={errorId("city")}
             />
+            <span id={errorId("city")} data-error="city" class="field-error" />
           </label>
           <label for={`${id}-postal-code`}>
             Código postal *
             <input
               id={`${id}-postal-code`}
-              name="Código postal"
+              name="postalCode"
               autocomplete="postal-code"
               required
               maxlength="20"
+              aria-describedby={errorId("postalCode")}
+            />
+            <span
+              id={errorId("postalCode")}
+              data-error="postalCode"
+              class="field-error"
             />
           </label>
         </div>
       </>
     )}
     {kind === "escuela" && (
-      <label for={`${id}-level`}>
-        ¿Estudiaste italiano antes? *
-        <select id={`${id}-level`} name="Experiencia en italiano" required>
-          <option value="">Elegí una opción</option>
-          <option>Quiero empezar desde cero</option>
-          <option>Tengo conocimientos previos</option>
-          <option>Busco perfeccionamiento</option>
-        </select>
-      </label>
-    )}
-    {kind === "escuela" && (
-      <label for={`${id}-course`}>
-        Nivel de interés *
-        <select id={`${id}-course`} name="Nivel de interés" required>
-          <option value="">Elegí una opción</option>
-          <option>Nivel 1</option>
-          <option>Nivel 2</option>
-          <option>Nivel 3</option>
-          <option>Nivel 4</option>
-          <option>Conversación</option>
-          <option>Necesito orientación</option>
-        </select>
-      </label>
-    )}
-    {kind === "salones" && (
-      <div class="form-row">
-        <label for={`${id}-room`}>
-          Espacio de interés *
-          <select id={`${id}-room`} name="Salón" required>
-            <option value="">Elegí un espacio</option>
-            <option>Sala Regina</option>
-            <option>Sala Ravenna</option>
-            <option>Patio de eventos</option>
-            <option>Quiero asesoramiento</option>
+      <>
+        <label for={`${id}-experience`}>
+          ¿Estudiaste italiano antes? *
+          <select
+            id={`${id}-experience`}
+            name="experience"
+            required
+            aria-describedby={errorId("experience")}
+          >
+            <option value="">Elegí una opción</option>
+            {options.experience.map((option) => (
+              <option>{option}</option>
+            ))}
           </select>
-        </label>
-        <label for={`${id}-date`}>
-          Fecha tentativa
-          <input id={`${id}-date`} type="date" name="Fecha tentativa" />
-        </label>
-      </div>
-    )}
-    {kind === "salones" && (
-      <div class="form-row">
-        <label for={`${id}-guests`}>
-          Cantidad aproximada de personas
-          <input
-            id={`${id}-guests`}
-            name="Cantidad de personas"
-            type="number"
-            min="1"
-            max="10000"
+          <span
+            id={errorId("experience")}
+            data-error="experience"
+            class="field-error"
           />
         </label>
-        <label for={`${id}-member-status`}>
-          ¿Sos socio/a?
-          <select id={`${id}-member-status`} name="Es socio">
-            <option>Prefiero consultar</option>
-            <option>Sí</option>
-            <option>No</option>
+        <label for={`${id}-level`}>
+          Nivel de interés *
+          <select
+            id={`${id}-level`}
+            name="level"
+            required
+            aria-describedby={errorId("level")}
+          >
+            <option value="">Elegí una opción</option>
+            {options.level.map((option) => (
+              <option>{option}</option>
+            ))}
           </select>
+          <span id={errorId("level")} data-error="level" class="field-error" />
         </label>
-      </div>
+      </>
+    )}
+    {kind === "salones" && (
+      <>
+        <div class="form-row">
+          <label for={`${id}-room`}>
+            Espacio de interés *
+            <select
+              id={`${id}-room`}
+              name="room"
+              required
+              aria-describedby={errorId("room")}
+            >
+              <option value="">Elegí un espacio</option>
+              {options.room.map((option) => (
+                <option>{option}</option>
+              ))}
+            </select>
+            <span id={errorId("room")} data-error="room" class="field-error" />
+          </label>
+          <label for={`${id}-date`}>
+            Fecha tentativa
+            <input
+              id={`${id}-date`}
+              type="date"
+              name="date"
+              aria-describedby={errorId("date")}
+            />
+            <span id={errorId("date")} data-error="date" class="field-error" />
+          </label>
+        </div>
+        <div class="form-row">
+          <label for={`${id}-guests`}>
+            Cantidad aproximada de personas
+            <input
+              id={`${id}-guests`}
+              name="guests"
+              type="number"
+              min="1"
+              max="10000"
+              step="1"
+              aria-describedby={errorId("guests")}
+            />
+            <span
+              id={errorId("guests")}
+              data-error="guests"
+              class="field-error"
+            />
+          </label>
+          <label for={`${id}-member-status`}>
+            ¿Sos socio/a?
+            <select
+              id={`${id}-member-status`}
+              name="memberStatus"
+              aria-describedby={errorId("memberStatus")}
+            >
+              {options.memberStatus.map((option) => (
+                <option>{option}</option>
+              ))}
+            </select>
+            <span
+              id={errorId("memberStatus")}
+              data-error="memberStatus"
+              class="field-error"
+            />
+          </label>
+        </div>
+      </>
     )}
     <label for={`${id}-message`}>
       {kind === "baja" ? "Motivo de la solicitud (opcional)" : "Mensaje *"}
       <textarea
         id={`${id}-message`}
-        name="Mensaje"
+        name="message"
         rows="5"
+        maxlength="5000"
         required={kind !== "baja"}
+        aria-describedby={`${id}-help ${errorId("message")}`}
         placeholder={
           kind === "escuela"
             ? "Contanos qué te gustaría aprender y tus horarios disponibles."
@@ -218,73 +282,190 @@ const id = `form-${kind}`;
               : "Contanos en qué podemos ayudarte."
         }
       ></textarea>
+      <span
+        id={errorId("message")}
+        data-error="message"
+        class="field-error"
+      ></span>
     </label>
-    <p class="form-help">
-      No incluyas documentos, datos bancarios ni información sensible. Esta
-      solicitud inicia una consulta; no confirma un alta, una baja, una
-      inscripción ni una reserva.
+    <p id={`${id}-help`} class="form-help">
+      Hasta 5000 caracteres. No incluyas documentos, datos bancarios ni
+      información sensible.
+      {!contact &&
+        " Esta solicitud inicia una consulta; no confirma un alta, una baja, una inscripción ni una reserva."}
     </p>
+    <div class="form-honeypot" aria-hidden="true">
+      <label>
+        No completar
+        <input name="website" tabindex="-1" autocomplete="off" />
+      </label>
+    </div>
     <label class="consent" for={`${id}-consent`}>
       <input
         id={`${id}-consent`}
+        name="consent"
         type="checkbox"
-        name="Autorización de contacto"
-        value="Aceptada"
         required
+        aria-describedby={errorId("consent")}
       />
       <span>
-        Autorizo el uso de mis datos para responder esta solicitud. Leí la{" "}
+        Autorizo el uso de mis datos para responder esta{" "}
+        {contact ? "consulta" : "solicitud"}. Leí la{" "}
         <a href="/privacidad/">información de privacidad</a>. *
       </span>
     </label>
-    <button type="submit" class="button">
-      Enviar solicitud <span aria-hidden="true">↗</span>
+    <span
+      id={errorId("consent")}
+      data-error="consent"
+      class="field-error"
+    ></span>
+    {sitekey ? (
+      <div
+        id={`${id}-turnstile`}
+        class="cf-turnstile"
+        data-sitekey={sitekey}
+        data-action="contact"
+        data-language="es"
+        data-size="flexible"
+      />
+    ) : (
+      <p class="form-help">
+        El formulario no está disponible por el momento. Podés escribirnos por
+        correo.
+      </p>
+    )}
+    <span
+      id={errorId("turnstileToken")}
+      data-error="turnstileToken"
+      class="field-error"
+    ></span>
+    <button type="submit" class="button" disabled>
+      {contact ? "Enviar consulta" : "Enviar solicitud"}
+      <span aria-hidden="true">↗</span>
     </button>
-    <p class="form-help" role="status" aria-live="polite" data-form-status></p>
+    <p
+      class="form-help"
+      role="status"
+      aria-live="polite"
+      tabindex="-1"
+      data-form-status
+    ></p>
+    <noscript>
+      <p>
+        Para usar el formulario necesitás activar JavaScript. También podés
+        escribirnos al correo que figura debajo.
+      </p>
+    </noscript>
   </form>
   <p class="form-help">
     También podés escribir directamente a{" "}
     <a href={`mailto:${settings.email}`}>{settings.email}</a>.
   </p>
 </section>
-
+{sitekey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  />
+)}
 <script>
-  import { submitRequest } from "../../lib/submit-request";
+  import type { ContactResponse } from "../../types/contact";
+  type Turnstile = { reset: (container: string) => void };
 
   document
-    .querySelectorAll<HTMLFormElement>("form[data-formsubmit]")
+    .querySelectorAll<HTMLFormElement>("form[data-kind]")
     .forEach((form) => {
       const button = form.querySelector<HTMLButtonElement>(
         'button[type="submit"]',
       )!;
       const status = form.querySelector<HTMLElement>("[data-form-status]")!;
+      const widget = form.querySelector<HTMLElement>(".cf-turnstile");
+      button.disabled = !widget;
       form.addEventListener("submit", async (event) => {
         event.preventDefault();
         if (button.disabled || !form.reportValidity()) return;
+        form.querySelectorAll<HTMLElement>("[data-error]").forEach((el) => {
+          el.textContent = "";
+        });
+        form
+          .querySelectorAll("[aria-invalid]")
+          .forEach((el) => el.removeAttribute("aria-invalid"));
+        const { "cf-turnstile-response": token = "", ...fields } =
+          Object.fromEntries(new FormData(form)) as Record<string, string>;
+        if (!token) {
+          status.textContent =
+            "Esperá a que se complete la verificación de seguridad. Si no aparece, recargá la página o escribinos por correo.";
+          status.focus();
+          return;
+        }
         button.disabled = true;
         form.setAttribute("aria-busy", "true");
         status.textContent = "Enviando tu consulta…";
         try {
-          const result = await submitRequest(
-            form.action,
-            new FormData(form),
-            window.location.href,
-          );
-          if (result === "activation") {
-            status.textContent =
-              "El formulario todavía necesita ser activado por la institución. Por favor, escribinos al correo que figura debajo.";
+          const response = await fetch(form.action, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+            body: JSON.stringify({
+              ...fields,
+              kind: form.dataset.kind,
+              consent: fields.consent === "on",
+              turnstileToken: token,
+            }),
+            signal: AbortSignal.timeout(25000),
+          });
+          const result = (await response.json()) as ContactResponse;
+          if (!response.ok || !result.ok) {
+            if (result.ok) throw new Error("Unexpected response");
+            status.textContent = result.error.message;
+            for (const [field, messages] of Object.entries(
+              result.error.fields || {},
+            )) {
+              const label = form.querySelector<HTMLElement>(
+                `[data-error="${CSS.escape(field)}"]`,
+              );
+              if (label) label.textContent = messages.join(" ");
+              const input = form.elements.namedItem(field);
+              if (input instanceof HTMLElement)
+                input.setAttribute("aria-invalid", "true");
+            }
           } else {
-            form.reset();
             status.textContent =
-              "Tu consulta fue enviada para su entrega por correo. Te responderemos al email que indicaste. La solicitud requiere confirmación de la administración.";
+              form.dataset.kind === "contacto"
+                ? result.message
+                : `${result.message} La solicitud requiere confirmación de la administración.`;
+            form.reset();
           }
         } catch {
           status.textContent =
-            "No pudimos confirmar el envío. Conservamos tus datos en el formulario. Podés intentar nuevamente o escribirnos al correo que figura debajo.";
+            "No pudimos confirmar el envío. Tus datos siguen en el formulario. Intentá más tarde o escribinos por correo.";
         } finally {
           button.disabled = false;
           form.removeAttribute("aria-busy");
+          if (widget)
+            (window as Window & { turnstile?: Turnstile }).turnstile?.reset(
+              `#${widget.id}`,
+            );
+          const invalid = form.querySelector<HTMLElement>(
+            '[aria-invalid="true"]',
+          );
+          (invalid || status).focus();
         }
       });
     });
 </script>
+<style>
+  .field-error {
+    color: #8c382d;
+    font-size: 0.85rem;
+    font-weight: 400;
+  }
+  button:disabled {
+    opacity: 0.6;
+    cursor: wait;
+  }
+</style>

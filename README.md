@@ -105,9 +105,9 @@ En producción, si faltan remitente, destinatario, API key, origen, clave Turnst
 
 ## Contacto y correo
 
-`POST /api/contact` acepta JSON con `name`, `email`, `subject`, `message`, `consent: true`, `website: ""` y `turnstileToken`. Rechaza campos desconocidos, incluidos destinatarios enviados por el cliente.
+`POST /api/contact` recibe todos los formularios del sitio. Acepta JSON con `kind` (`contacto`, `alta`, `baja`, `escuela`, `salones`, `deudas`, `panteones` o `ciudadania`), `name`, `email`, `consent: true`, `website: ""`, `turnstileToken` y los campos propios de ese formulario, definidos en `web/src/lib/validation/contact.ts` (por ejemplo `subject` en contacto o `address`, `city` y `postalCode` en alta). Cada formulario tiene un esquema estricto: rechaza campos desconocidos o de otro formulario, incluidos destinatarios enviados por el cliente. Las opciones de los desplegables se validan contra la misma lista que usa el formulario.
 
-- Nombre: 1–100 caracteres; asunto: 1–140; mensaje: 1–5000. Se aceptan mensajes cortos.
+- Nombre: 1–100 caracteres; asunto: 1–140; mensaje: 1–5000 (opcional solo en baja). Se aceptan mensajes cortos.
 - Email válido, consentimiento obligatorio, token máximo 2048 caracteres.
 - Cuerpo máximo 32 KiB, medido al leerlo, sin confiar en `Content-Length`.
 - Solo JSON y mismo origen autorizado; no se habilita CORS para sitios externos.
@@ -134,11 +134,11 @@ Respuestas:
 
 Los errores usan `{ "ok": false, "error": { "code": "…", "message": "…", "fields": {} } }`; `fields` es opcional. Todas las respuestas indican `Cache-Control: no-store`. El formulario mantiene los datos ante errores, evita envíos simultáneos, renueva el desafío y anuncia el estado de forma accesible. Necesita JavaScript; siempre ofrece el correo directo como alternativa.
 
-### Formularios de trámites existentes
+### Formularios de trámites
 
-Los formularios de socios, escuela y salones **siguen usando FormSubmit**, con asunto por trámite, Reply-To, honeypot y respuesta dentro del sitio. Se preservó su comportamiento; esta refactorización migra solo `/contacto` a Resend. FormSubmit requiere activar el destinatario y comprobar recepción desde el sitio publicado. Los trámites no se guardan en Sanity ni se aprueban automáticamente.
+Socios, escuela y salones usan el mismo componente (`RequestForm.astro`) y el mismo endpoint que Contacto. El correo indica el trámite y el nombre en el asunto, y lista solo los campos completados. Los trámites no se guardan en Sanity ni se aprueban automáticamente.
 
-Cambiar el correo visible en Sanity actualiza los enlaces "escribinos" del sitio, pero no cambia `EMAIL_TO` ni el destinatario de FormSubmit, definido en `web/src/lib/navigation.ts` (también es el valor de respaldo del correo visible). La [guía de administración](docs/README.md) explica esta diferencia.
+Cambiar el correo visible en Sanity actualiza los enlaces "escribinos" del sitio, pero no cambia `EMAIL_TO`, definido en `web/wrangler.jsonc`. `web/src/lib/navigation.ts` define el correo de respaldo visible. La [guía de administración](docs/README.md) explica esta diferencia.
 
 ## Sanity: configuración y eventos
 
@@ -232,7 +232,7 @@ npx wrangler secret put TURNSTILE_SECRET_KEY
 
 5. En `web/wrangler.jsonc`, cambiá `EMAIL_FROM` por un remitente del dominio verificado, por ejemplo `Sociedad Italiana <contacto@tu-dominio.com.ar>`, y `CONTACT_ORIGIN` por el origen del dominio. `EMAIL_TO` es la casilla institucional. Son valores públicos, no secretos; se publican con un push. Mientras no haya dominio, el sitio usa el modo de prueba de Resend: remitente `onboarding@resend.dev` y entrega solo a la casilla de la cuenta de Resend, que debe coincidir con `EMAIL_TO`.
 6. Probá una consulta desde el sitio público. Comprobá el asunto, contenido, destinatario y que Responder vaya al visitante. Revisá los eventos de entrega de Resend y la bandeja/Spam: **202 significa aceptado por Resend, no entregado en Gmail**.
-7. Actualizá los enlaces de la guía de administración y verificá también los formularios de trámites que continúan en FormSubmit.
+7. Actualizá los enlaces de la guía de administración y probá también un formulario de trámite.
 
 La web puede estar publicada en `workers.dev` antes de comprar el dominio. La entrega normal con remitente institucional requiere verificar un dominio en Resend; mientras tanto, se desarrolla con el registro local, sin afirmar envíos reales.
 
