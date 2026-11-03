@@ -72,7 +72,7 @@ const filled = (document: object | null) =>
 async function load() {
   const data = await fetchSanityContent();
   // No board defaults: authorities are only published from confirmed data.
-  const board: Board = { members: [] };
+  const board: Board = { groups: [] };
   if (!data)
     return { settings: defaults, school: schoolDefaults, board, events: [] };
   return {

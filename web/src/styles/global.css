@@ -1059,11 +1059,13 @@ footer {
 .board-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 28px;
+  margin-bottom: 40px;
 }
 .board-table caption {
   text-align: left;
-  font-weight: 650;
+  font-family: var(--font-serif);
+  font-size: var(--type-card);
+  color: var(--color-forest);
   margin-bottom: 12px;
 }
 .board-table th,
@@ -1076,6 +1078,16 @@ footer {
 .board-table thead th {
   font-size: 0.85rem;
   color: #566159;
+}
+/* Fixed proportions keep columns aligned across the stacked tables. */
+.board-table {
+  table-layout: fixed;
+}
+.board-table thead th:first-child {
+  width: 34%;
+}
+.board-table thead th:last-child {
+  width: 22%;
 }
 .board-table tbody th {
   font-weight: 650;

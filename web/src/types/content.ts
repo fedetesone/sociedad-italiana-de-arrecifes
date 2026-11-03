@@ -28,7 +28,9 @@ export interface School {
 }
 
 export interface Board {
-  period?: string;
-  members: { role: string; name: string }[];
+  groups: {
+    title: string;
+    members: { role: string; name: string; until?: number }[];
+  }[];
   note?: string;
 }

@@ -195,10 +195,11 @@ Presioná **Publicar** y comprobá la página Escuela de italiano después de un
 
 Abrí **Comisión directiva** en el menú del administrador. Cargá solo nombres y cargos confirmados por la institución.
 
-1. Completá **Período de mandato**, por ejemplo «Mandato 2025–2027».
-2. En **Integrantes**, agregá una fila por persona con **Cargo** y **Nombre y apellido**. Arrastrá las filas para ordenarlas: la tabla de la web respeta ese orden.
-3. Si hace falta, usá **Aclaración** para un texto debajo de la tabla.
-4. Presioná **Publicar** y revisá Quiénes somos → Comisión directiva.
+1. En **Órganos** hay una entrada por cada tabla de la web, por ejemplo **Comisión Directiva** y **Junta Fiscalizadora**. Arrastralas para cambiar el orden.
+2. Dentro de cada órgano, en **Integrantes**, cada fila tiene **Cargo**, **Apellido y nombres** (como figura en la nómina, por ejemplo «LABRIOLA, Elio Remo») y **Mandato hasta (año)**. Arrastrá las filas para ordenarlas.
+3. Cuando cambie una persona, editá su fila; no hace falta borrar el órgano.
+4. Si hace falta, usá **Aclaración** para un texto debajo de las tablas.
+5. Presioná **Publicar** y revisá Quiénes somos → Comisión directiva.
 
 Mientras no haya integrantes publicados, la página muestra el aviso de que la nómina está en preparación.
 

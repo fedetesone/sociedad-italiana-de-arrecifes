@@ -350,45 +350,83 @@ const board = defineType({
   description: "Cargá solo nombres y cargos confirmados por la institución.",
   fields: [
     defineField({
-      name: "period",
-      title: "Período de mandato",
-      description: "Por ejemplo: Mandato 2025–2027.",
-      type: "string",
-      validation: (r) => r.max(80),
-    }),
-    defineField({
-      name: "members",
-      title: "Integrantes",
-      description: "Arrastrá para ordenar; la tabla respeta este orden.",
+      name: "groups",
+      title: "Órganos",
+      description:
+        "Por ejemplo: Comisión Directiva y Junta Fiscalizadora. Cada uno se muestra como una tabla, en este orden.",
       type: "array",
-      validation: (r) => r.max(40),
+      validation: (r) => r.max(6),
       of: [
         defineArrayMember({
           type: "object",
-          name: "member",
-          title: "Integrante",
+          name: "group",
+          title: "Órgano",
           fields: [
             defineField({
-              name: "role",
-              title: "Cargo",
+              name: "title",
+              title: "Nombre del órgano",
               type: "string",
               validation: (r) => r.required().max(80),
             }),
             defineField({
-              name: "name",
-              title: "Nombre y apellido",
-              type: "string",
-              validation: (r) => r.required().max(100),
+              name: "members",
+              title: "Integrantes",
+              description:
+                "Arrastrá para ordenar; la tabla respeta este orden.",
+              type: "array",
+              validation: (r) => r.max(40),
+              of: [
+                defineArrayMember({
+                  type: "object",
+                  name: "member",
+                  title: "Integrante",
+                  fields: [
+                    defineField({
+                      name: "role",
+                      title: "Cargo",
+                      type: "string",
+                      validation: (r) => r.required().max(80),
+                    }),
+                    defineField({
+                      name: "name",
+                      title: "Apellido y nombres",
+                      description:
+                        "Como figura en la nómina, por ejemplo: LABRIOLA, Elio Remo.",
+                      type: "string",
+                      validation: (r) => r.required().max(100),
+                    }),
+                    defineField({
+                      name: "until",
+                      title: "Mandato hasta (año)",
+                      type: "number",
+                      validation: (r) => r.integer().min(2000).max(2100),
+                    }),
+                  ],
+                  preview: {
+                    select: { title: "name", role: "role", until: "until" },
+                    prepare: ({ title, role, until }) => ({
+                      title,
+                      subtitle: until ? `${role} · hasta ${until}` : role,
+                    }),
+                  },
+                }),
+              ],
             }),
           ],
-          preview: { select: { title: "name", subtitle: "role" } },
+          preview: {
+            select: { title: "title", members: "members" },
+            prepare: ({ title, members }) => ({
+              title,
+              subtitle: `${members?.length ?? 0} integrantes`,
+            }),
+          },
         }),
       ],
     }),
     defineField({
       name: "note",
       title: "Aclaración",
-      description: "Texto opcional debajo de la tabla.",
+      description: "Texto opcional debajo de las tablas.",
       type: "text",
       rows: 2,
     }),

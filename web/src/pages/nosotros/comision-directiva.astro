@@ -3,6 +3,7 @@ export const prerender = true;
 import ServiceLayout from "../../layouts/ServiceLayout.astro";
 import { getContent } from "../../lib/content";
 const { settings, board } = await getContent();
+const groups = board.groups.filter((group) => group.members.length);
 ---
 
 <ServiceLayout
@@ -12,24 +13,28 @@ const { settings, board } = await getContent();
 >
   <div class="reading-panel">
     <h2>Autoridades del período vigente</h2>
-    {board.members.length ? (
-      <table class="board-table">
-        {board.period && <caption>{board.period}</caption>}
-        <thead>
-          <tr>
-            <th scope="col">Cargo</th>
-            <th scope="col">Nombre</th>
-          </tr>
-        </thead>
-        <tbody>
-          {board.members.map((member) => (
+    {groups.length ? (
+      groups.map((group) => (
+        <table class="board-table">
+          <caption>{group.title}</caption>
+          <thead>
             <tr>
-              <th scope="row">{member.role}</th>
-              <td>{member.name}</td>
+              <th scope="col">Cargo</th>
+              <th scope="col">Apellido y nombres</th>
+              <th scope="col">Mandato hasta</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {group.members.map((member) => (
+              <tr>
+                <th scope="row">{member.role}</th>
+                <td>{member.name}</td>
+                <td>{member.until}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      ))
     ) : (
       <p>
         Estamos preparando la nómina actualizada de la comisión directiva, con
