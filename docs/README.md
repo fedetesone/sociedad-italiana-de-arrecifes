@@ -48,7 +48,7 @@ Al entrar al administrador vas a encontrar dos secciones: **La institución** y 
 | Tarjetas de Cultura y comunidad del inicio                                        | La institución    |
 | Dirección, teléfono, horarios, correo visible y redes sociales                    | La institución    |
 
-**Todavía requieren ayuda técnica:** información de los salones, bonificaciones, panteones, ciudadanía, deudas, comisión directiva, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
+**Todavía requieren ayuda técnica:** información de los salones, bonificaciones, panteones, ciudadanía, deudas, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
 
 El nombre editable se usa en partes del sitio, como el pie de página; la marca del encabezado y algunos títulos están definidos en el diseño. Para cambiar el nombre en todo el sitio, pedí ayuda técnica.
 
@@ -191,6 +191,17 @@ En el menú del administrador, abrí **Escuela de italiano**. Es un documento ú
 
 Presioná **Publicar** y comprobá la página Escuela de italiano después de unos minutos.
 
+### Comisión directiva
+
+Abrí **Comisión directiva** en el menú del administrador. Cargá solo nombres y cargos confirmados por la institución.
+
+1. Completá **Período de mandato**, por ejemplo «Mandato 2025–2027».
+2. En **Integrantes**, agregá una fila por persona con **Cargo** y **Nombre y apellido**. Arrastrá las filas para ordenarlas: la tabla de la web respeta ese orden.
+3. Si hace falta, usá **Aclaración** para un texto debajo de la tabla.
+4. Presioná **Publicar** y revisá Quiénes somos → Comisión directiva.
+
+Mientras no haya integrantes publicados, la página muestra el aviso de que la nómina está en preparación.
+
 ## 9. Subir fotos y afiches
 
 1. Abrí el campo de imagen correspondiente.
@@ -243,7 +254,7 @@ No compartas la contraseña de una cuenta para dar acceso. Si alguien deja de co
 | No llegan las consultas                         | Revisá Spam y la casilla destinataria. Pedí revisar Resend y una prueba de entrega; el mensaje de confirmación de la web no garantiza que Gmail lo recibió. |
 | El evento sigue en Próximos después de terminar | Pedí revisar la actualización diaria del sitio. No hace falta borrarlo.                                                                                     |
 | Edité algo por error                            | Si ya estaba publicado, corregilo y publicá otra vez. Si necesitás recuperar una versión, pedí ayuda; no borres el documento.                               |
-| Quiero editar salones o comisión                | Solicitá el cambio al responsable técnico; esas páginas todavía no se editan desde Sanity. La Escuela se edita en Sanity (sección 8).                       |
+| Quiero editar salones                           | Solicitá el cambio al responsable técnico; esa página todavía no se edita desde Sanity. La Escuela y la Comisión directiva se editan en Sanity (sección 8). |
 
 Cuando pidas ayuda, indicá qué página o evento estabas editando, qué intentaste hacer, a qué hora y qué mensaje apareció. Podés adjuntar una captura sin contraseñas ni datos privados.
 

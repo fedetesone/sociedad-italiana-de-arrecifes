@@ -2,7 +2,7 @@
 export const prerender = true;
 import ServiceLayout from "../../layouts/ServiceLayout.astro";
 import { getContent } from "../../lib/content";
-const { settings } = await getContent();
+const { settings, board } = await getContent();
 ---
 
 <ServiceLayout
@@ -12,10 +12,31 @@ const { settings } = await getContent();
 >
   <div class="reading-panel">
     <h2>Autoridades del período vigente</h2>
-    <p>
-      Estamos preparando la nómina actualizada de la comisión directiva, con sus
-      cargos y período de mandato.
-    </p>
+    {board.members.length ? (
+      <table class="board-table">
+        {board.period && <caption>{board.period}</caption>}
+        <thead>
+          <tr>
+            <th scope="col">Cargo</th>
+            <th scope="col">Nombre</th>
+          </tr>
+        </thead>
+        <tbody>
+          {board.members.map((member) => (
+            <tr>
+              <th scope="row">{member.role}</th>
+              <td>{member.name}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    ) : (
+      <p>
+        Estamos preparando la nómina actualizada de la comisión directiva, con
+        sus cargos y período de mandato.
+      </p>
+    )}
+    {board.note && <p class="multiline">{board.note}</p>}
     <p>
       Para comunicarte con la conducción de la institución, escribí a{" "}
       <a href={`mailto:${settings.email}`}>{settings.email}</a>.

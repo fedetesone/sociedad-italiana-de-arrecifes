@@ -165,7 +165,7 @@ El nuevo campo **Estado → Cancelado** quita el evento de la agenda, conserva s
 
 En **Workers Builds**, creá un **Deploy Hook** para el Worker conectado al repositorio y a `main`. La URL es secreta. Si antes se usaba Pages, reemplazá el hook de Pages por el de Workers en ambos lugares siguientes:
 
-- **Sanity Manage → API → Webhooks:** URL del hook, método POST, dataset `production`, eventos create/update/delete; filtro `_type in ["event", "siteSettings", "school"] && !(_id in path("drafts.**"))`. Si se agrega otro tipo editable, sumarlo al filtro o sus cambios no recompilan la web.
+- **Sanity Manage → API → Webhooks:** URL del hook, método POST, dataset `production`, eventos create/update/delete; filtro `!(_id in path("drafts.**")) && !(_id in path("versions.**")) && !(_type in ["sanity.imageAsset", "sanity.fileAsset"])`. Dispara con cualquier documento publicado, así que los tipos nuevos no requieren cambiarlo; los borradores y las imágenes subidas sin publicar no recompilan.
 - **GitHub → Settings → Secrets and variables → Actions:** guardá la URL como `CLOUDFLARE_DEPLOY_HOOK`. El workflow `rebuild.yml` hace un POST diario a las 00:15 de Argentina y también admite ejecución manual.
 
 Sin el secreto, el workflow informa que falta configuración y no publica. Los cambios de fecha no se reflejan hasta la próxima compilación; GitHub puede retrasar tareas o deshabilitarlas en repositorios públicos inactivos. Comprobá publicaciones, cancelaciones, despublicaciones y actualización diaria después de migrar. [Deploy Hooks de Workers](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/).
@@ -246,7 +246,7 @@ La entrega real necesita credenciales y dominio verificado. La publicación en C
 
 ## Contenido institucional y mantenimiento
 
-Profesor: **Matias Costantini Reschia**. Escuela: **cuatro niveles más Conversación**. Dirección: **España 694, Arrecifes, Buenos Aires**. Teléfono: **2478 610004**. Faltan aranceles, horarios, condiciones de bonificaciones, nómina y mandato de comisión y detalles de salones. La Escuela de italiano se edita en Sanity (documento único "Escuela de italiano", con respaldo en `web/src/lib/content.ts`); los demás servicios siguen siendo páginas estáticas editadas en código. La fotografía de Italia es ilustrativa; reemplazarla por fotografías propias desde Sanity.
+Profesor: **Matias Costantini Reschia**. Escuela: **cuatro niveles más Conversación**. Dirección: **España 694, Arrecifes, Buenos Aires**. Teléfono: **2478 610004**. Faltan aranceles, horarios, condiciones de bonificaciones, nómina y mandato de comisión y detalles de salones. La Escuela de italiano y la Comisión directiva se editan en Sanity (documentos únicos; la Escuela tiene respaldo en `web/src/lib/content.ts`, la Comisión no, para no publicar autoridades sin confirmar). Los demás servicios siguen siendo páginas estáticas editadas en código. La fotografía de Italia es ilustrativa; reemplazarla por fotografías propias desde Sanity.
 
 Fuentes: [historia](docs/historia-fuentes.md) y [servicios](docs/servicios-fuentes.md). El proyecto conserva los overrides de dependencias indirectas de Sanity; revisarlos al actualizar paquetes. `npm run format` aplica Prettier.
 

@@ -26,3 +26,9 @@ export interface School {
   levels: { name: string; description?: string }[];
   note: string;
 }
+
+export interface Board {
+  period?: string;
+  members: { role: string; name: string }[];
+  note?: string;
+}

@@ -1,5 +1,5 @@
 import { fetchSanityContent } from "./sanity/data";
-import type { School, Settings } from "../types/content";
+import type { Board, School, Settings } from "../types/content";
 import { isValidEvent } from "./events/utils";
 import type { Event } from "../types/event";
 import { contactEmail } from "./navigation";
@@ -51,7 +51,13 @@ const schoolDefaults: School = {
   note: "Los contenidos, horarios y criterios de ingreso se informan al consultar. La solicitud no reserva una vacante.",
 };
 let content:
-  Promise<{ settings: Settings; school: School; events: Event[] }> | undefined;
+  | Promise<{
+      settings: Settings;
+      school: School;
+      board: Board;
+      events: Event[];
+    }>
+  | undefined;
 export function getContent() {
   return (content ??= load());
 }
@@ -65,10 +71,14 @@ const filled = (document: object | null) =>
   );
 async function load() {
   const data = await fetchSanityContent();
-  if (!data) return { settings: defaults, school: schoolDefaults, events: [] };
+  // No board defaults: authorities are only published from confirmed data.
+  const board: Board = { members: [] };
+  if (!data)
+    return { settings: defaults, school: schoolDefaults, board, events: [] };
   return {
     settings: { ...defaults, ...filled(data.settings) } as Settings,
     school: { ...schoolDefaults, ...filled(data.school) } as School,
+    board: { ...board, ...filled(data.board) } as Board,
     events: data.events.filter(isValidEvent),
   };
 }
