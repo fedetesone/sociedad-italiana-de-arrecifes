@@ -226,7 +226,7 @@ No cargues documentos de identidad, información bancaria, padrones ni material 
 
 ## 10. Leer y responder formularios
 
-Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configurada por la institución, normalmente **soc.italiana.arrecifes@gmail.com**. Todos los formularios (contacto, socios, escuela y salones) se envían por Resend. Si el envío todavía no está habilitado, la página lo informa y ofrece escribir por correo directamente.
+Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configurada por la institución, normalmente **soc.italiana.arrecifes@gmail.com**. Todos los formularios (contacto, socios, escuela y salones) se envían por Resend, con remitente `contacto@sociedaditalianaarrecifes.com.ar`. Esa dirección identifica los envíos de la web; no es una casilla de recepción. Para responder al visitante, usá **Responder** desde el mensaje recibido en Gmail. Si el envío todavía no está habilitado, la página lo informa y ofrece escribir por correo directamente.
 
 1. Abrí la casilla de correo.
 2. El asunto empieza con el nombre del formulario entre corchetes. En Contacto sigue lo que escribió la persona en el campo Asunto, por ejemplo **[Contacto] Consulta por cursos**. En los trámites sigue el nombre de quien lo envía, por ejemplo **[Solicitud de alta] Ana Pérez**. Todos llegan del remitente **Sociedad Italiana**.

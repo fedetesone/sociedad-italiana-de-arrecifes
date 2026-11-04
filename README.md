@@ -211,7 +211,7 @@ Si existe un proyecto Pages previo, mantenelo hasta verificar Workers. La integr
 
 ### Turnstile
 
-1. Creá un widget Turnstile en Cloudflare y autorizá el hostname exacto de la URL temporal `workers.dev` (sin protocolo ni ruta).
+1. Creá un widget Turnstile en Cloudflare y autorizá `sociedaditalianaarrecifes.com.ar` (sin protocolo ni ruta). Si usás además una URL temporal `workers.dev`, autorizá también su hostname exacto.
 2. Colocá la **site key real** en `PUBLIC_TURNSTILE_SITE_KEY` y recompilá.
 3. Guardá la **secret key real** en el Worker.
 4. Configurá `CONTACT_ORIGIN` en `web/wrangler.jsonc` con el origen HTTPS autorizado completo, sin barra final.
@@ -222,7 +222,7 @@ Las claves locales de ejemplo son las oficiales: site key `1x0000000000000000000
 
 La dirección principal es `https://sociedaditalianaarrecifes.com.ar`, sin `www`. `web/wrangler.jsonc` declara el dominio personalizado del Worker y ese mismo valor para `CONTACT_ORIGIN`. En Workers Builds, `PUBLIC_SITE_URL` debe coincidir; en el widget Turnstile debe estar autorizado `sociedaditalianaarrecifes.com.ar` (sin protocolo). Cambiar las variables de compilación requiere un nuevo build y despliegue. El dominio web y la verificación del remitente en Resend son configuraciones independientes.
 
-En la zona DNS de Cloudflare, `www` usa un registro A con proxy a `192.0.2.1`, destinado únicamente a redirección. La regla «Redirigir www al dominio principal» coincide con `http.host eq "www.sociedaditalianaarrecifes.com.ar"` y devuelve 301 a `concat("https://sociedaditalianaarrecifes.com.ar", http.request.uri.path)`, conservando la query string. Esta regla y el DNS se administran en Cloudflare; no son otro Worker ni un servidor de origen.
+En la zona DNS de Cloudflare, `www` usa un registro A con proxy a `192.0.2.1`, destinado únicamente a redirección. La regla «Redirigir www al dominio principal» coincide con `http.host eq "www.sociedaditalianaarrecifes.com.ar"` y devuelve 301 a `concat("https://sociedaditalianaarrecifes.com.ar", http.request.uri.path)`, conservando la query string. Esta regla y el DNS se administran en Cloudflare; no son otro Worker ni un servidor de origen. La opción **Always Use HTTPS** está habilitada para redirigir también los accesos HTTP.
 
 1. Conectá el dominio al Worker en Cloudflare y verificá HTTPS. Actualizá `PUBLIC_SITE_URL` y `CONTACT_ORIGIN`; agregá el nuevo hostname al widget Turnstile y recompilá.
 2. Creá o usá la cuenta institucional en Resend. Agregá el dominio remitente y copiá los registros DNS que indique Resend. No inventes registros ni reemplaces los de recepción de correo existentes.
@@ -234,7 +234,7 @@ npx wrangler secret put RESEND_API_KEY
 npx wrangler secret put TURNSTILE_SECRET_KEY
 ```
 
-5. En `web/wrangler.jsonc`, cambiá `EMAIL_FROM` por un remitente del dominio verificado, por ejemplo `Sociedad Italiana <contacto@tu-dominio.com.ar>`, y `CONTACT_ORIGIN` por el origen del dominio. `EMAIL_TO` es la casilla institucional. Son valores públicos, no secretos; se publican con un push. Mientras no haya dominio, el sitio usa el modo de prueba de Resend: remitente `onboarding@resend.dev` y entrega solo a la casilla de la cuenta de Resend, que debe coincidir con `EMAIL_TO`.
+5. `web/wrangler.jsonc` define `EMAIL_FROM` como `Sociedad Italiana <contacto@sociedaditalianaarrecifes.com.ar>` y `EMAIL_TO` como `soc.italiana.arrecifes@gmail.com`. Son valores públicos, no secretos; se aplican con el despliegue. El remitente requiere el dominio verificado en Resend. Esta configuración habilita envío, no crea una casilla para recibir mensajes en `contacto@`: las consultas llegan a Gmail y Responder apunta al visitante.
 6. Probá una consulta desde el sitio público. Comprobá el asunto, contenido, destinatario y que Responder vaya al visitante. Revisá los eventos de entrega de Resend y la bandeja/Spam: **202 significa aceptado por Resend, no entregado en Gmail**.
 7. Actualizá los enlaces de la guía de administración y probá también un formulario de trámite.
 
