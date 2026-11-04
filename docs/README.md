@@ -4,22 +4,24 @@
 
 Esta guía es para las personas que mantienen la información del sitio. No hace falta saber programación ni instalar programas: alcanza con un navegador, conexión a internet y un usuario autorizado.
 
-Está pensada para el uso cotidiano, una vez creadas las cuentas y configurados el dominio, Sanity y la publicación de la web. No es una constancia de que esas configuraciones ya estén terminadas. La persona responsable debe completar los accesos de abajo y comprobar una publicación antes de entregar el administrador.
+**Revisada el 4 de noviembre de 2026.** El sitio está publicado en el dominio institucional y el Studio usa el mismo proyecto de Sanity y el contenido de producción. El dominio de correo está verificado en Resend y Google Search Console está configurado. La entrega de una consulta en Gmail debe comprobarse con una consulta real; las pruebas automáticas no envían correos. Falta acordar internamente quién será la persona de soporte y cómo contactarla.
 
 ## 1. Guardá estos accesos
 
-| Acceso                                     | Dirección o dato                                             |
-| ------------------------------------------ | ------------------------------------------------------------ |
-| Sitio público: lo que ven los visitantes   | https://sociedaditalianaarrecifes.com.ar                     |
-| Administrador de contenidos: Sanity Studio | **Completar con el enlace real del Studio**                  |
-| Persona responsable de accesos y soporte   | **Completar nombre y forma de contacto**                     |
-| Correo que recibe las consultas            | soc.italiana.arrecifes@gmail.com                             |
-| Gestión de usuarios de Sanity              | https://www.sanity.io/manage                                 |
-| Alojamiento: Cloudflare                    | https://dash.cloudflare.com/                                 |
-| Código del sitio: GitHub                   | https://github.com/fedetesone/sociedad-italiana-de-arrecifes |
-| Empresa donde se renueva el dominio        | **Completar proveedor y fecha de renovación**                |
+| Acceso                                     | Dirección o dato                                                                                                                                        |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Sitio público: lo que ven los visitantes   | https://sociedaditalianaarrecifes.com.ar                                                                                                                |
+| Administrador de contenidos: Sanity Studio | https://sociedad-italiana-arrecifes.sanity.studio/                                                                                                      |
+| Persona responsable de accesos y soporte   | **Acordar y guardar el contacto de soporte internamente**                                                                                               |
+| Correo que recibe las consultas            | soc.italiana.arrecifes@gmail.com                                                                                                                        |
+| Gestión de usuarios de Sanity              | https://www.sanity.io/manage/project/krh4363u                                                                                                           |
+| Alojamiento: Cloudflare                    | https://dash.cloudflare.com/                                                                                                                            |
+| Código del sitio: GitHub                   | https://github.com/fedetesone/sociedad-italiana-de-arrecifes                                                                                            |
+| Renovación del dominio                     | [NIC Argentina](https://nic.ar/), mediante Trámites a Distancia. Vencimiento informado: **2 de noviembre de 2027**; confirmalo en NIC antes de renovar. |
+| Correo de los formularios: Resend          | https://resend.com/domains                                                                                                                              |
+| Presencia en Google: Search Console        | https://search.google.com/search-console                                                                                                                |
 
-Guardá el sitio público y el administrador en los favoritos del navegador. Son dos páginas distintas. El enlace del Studio suele terminar en `.sanity.studio`, aunque puede tener otra dirección.
+Guardá el sitio público y el administrador en los favoritos del navegador. Son dos páginas distintas. El enlace del Studio puede redirigirte al panel de Sanity para iniciar sesión. El proyecto se llama **sociedad-italiana-arrecifes**.
 
 **No escribas contraseñas, códigos de recuperación ni claves privadas en esta guía: el repositorio es público.** Cada persona debe ingresar con su propio usuario. Tener una cuenta de Google no alcanza: también tiene que estar invitada al proyecto de Sanity.
 
@@ -38,15 +40,18 @@ Para cargar un evento normalmente solo necesitás **Sanity Studio**. No necesit�
 
 ## 3. Qué podés cambiar desde Sanity
 
-Al entrar al administrador vas a encontrar dos secciones: **La institución** y **Eventos**.
+Al entrar al administrador vas a encontrar cinco secciones: **La institución**, **Escuela de italiano**, **Comisión directiva**, **Alquiler de salones** y **Eventos**.
 
-| Contenido                                                                         | Dónde se modifica |
-| --------------------------------------------------------------------------------- | ----------------- |
-| Eventos nuevos y anteriores, fechas, afiches, descripciones y enlaces de entradas | Eventos           |
-| Presentación, historia y propósito de la Sociedad                                 | La institución    |
-| Foto de portada y fotografía institucional                                        | La institución    |
-| Tarjetas de Cultura y comunidad del inicio                                        | La institución    |
-| Dirección, teléfono, horarios, correo visible y redes sociales                    | La institución    |
+| Contenido                                                                         | Dónde se modifica   |
+| --------------------------------------------------------------------------------- | ------------------- |
+| Eventos nuevos y anteriores, fechas, afiches, descripciones y enlaces de entradas | Eventos             |
+| Presentación, historia y propósito de la Sociedad                                 | La institución      |
+| Foto de portada y fotografía institucional                                        | La institución      |
+| Tarjetas de Cultura y comunidad del inicio                                        | La institución      |
+| Dirección, teléfono, horarios, correo visible y redes sociales                    | La institución      |
+| Profesor/a, aranceles, horarios y niveles                                         | Escuela de italiano |
+| Órganos, integrantes, cargos y mandatos                                           | Comisión directiva  |
+| Espacios, fotos, capacidades, servicios y tarifas                                 | Alquiler de salones |
 
 **Todavía requieren ayuda técnica:** bonificaciones, panteones, ciudadanía, deudas, menú, logo, diseño y campos de los formularios. La página Actualidad muestra la agenda, pero no tiene un editor separado de noticias. No hay gestión de pagos ni padrón de socios en este administrador.
 
@@ -56,7 +61,7 @@ El nombre editable se usa en partes del sitio, como el pie de página; la marca 
 
 1. Abrí el enlace de **Sanity Studio** guardado en la sección 1.
 2. Iniciá sesión con el mismo método y correo con el que aceptaste la invitación. Si fue con Google, elegí esa cuenta.
-3. Verificá que el administrador muestre la Sociedad Italiana y las secciones **La institución** y **Eventos**.
+3. Verificá que el administrador muestre la Sociedad Italiana y las cinco secciones indicadas en la sección 3.
 4. Elegí la sección que querés editar.
 
 Si aparece “sin acceso” o no encontrás el proyecto, pedile a la persona responsable que revise la invitación. No crees otro proyecto para resolverlo.
@@ -125,7 +130,7 @@ Si se cancela una actividad que ya difundiste, suele ser mejor mantener la pági
 
 En las acciones del documento, buscá **Despublicar** o **Unpublish**. Esto retira el evento publicado y conserva un borrador. La retirada se verá cuando se actualice la web.
 
-**Eliminar** borra el documento; no es necesario para quitarlo del sitio. Si tenés dudas, consultá antes de eliminar. La sección La institución no permite eliminarse ni despublicarse desde este administrador.
+**Eliminar** borra el documento; no es necesario para quitarlo del sitio. Si tenés dudas, consultá antes de eliminar. Los documentos únicos de La institución, Escuela de italiano, Comisión directiva y Alquiler de salones no permiten eliminarse ni despublicarse desde este administrador.
 
 ### Eventos anteriores
 
@@ -140,18 +145,18 @@ El responsable técnico debe mantener activa la actualización diaria. Por eso e
 3. Completá los campos obligatorios si es la primera carga.
 4. Presioná **Publicar** y comprobá las páginas correspondientes.
 
-| Campo                      | Dónde aparece o para qué sirve                                          |
-| -------------------------- | ----------------------------------------------------------------------- |
-| Presentación institucional | Introducción del inicio y de Quiénes somos; máximo 400 caracteres       |
-| Nuestra historia           | Reseña en Quiénes somos; usá fechas y datos confirmados                 |
-| Nuestro propósito          | Misión institucional en Quiénes somos                                   |
-| Foto de portada            | Imagen principal del inicio y vista previa al compartir el sitio        |
-| Fotografía institucional   | Imagen de Quiénes somos                                                 |
-| Cultura y comunidad        | Tarjetas del inicio; entre 1 y 6 si se carga la lista                   |
-| Dirección y teléfono       | Contacto y pie de página                                                |
-| Horarios de atención       | Contacto                                                                |
-| Correo electrónico         | Dirección visible de contacto                                           |
-| Instagram y Facebook       | Enlaces de Contacto; pegá la URL completa, no solo el nombre de usuario |
+| Campo                      | Dónde aparece o para qué sirve                                                       |
+| -------------------------- | ------------------------------------------------------------------------------------ |
+| Presentación institucional | Introducción del inicio y descripción general para buscadores; máximo 400 caracteres |
+| Nuestra historia           | Reseña en Quiénes somos; usá fechas y datos confirmados                              |
+| Nuestro propósito          | Misión institucional en Quiénes somos                                                |
+| Foto de portada            | Imagen principal del inicio y vista previa al compartir el sitio                     |
+| Fotografía institucional   | Imagen de Quiénes somos                                                              |
+| Cultura y comunidad        | Tarjetas del inicio; entre 1 y 6 si se carga la lista                                |
+| Dirección y teléfono       | Contacto y pie de página                                                             |
+| Horarios de atención       | Contacto                                                                             |
+| Correo electrónico         | Dirección visible de contacto                                                        |
+| Instagram y Facebook       | Enlaces de Contacto; pegá la URL completa, no solo el nombre de usuario              |
 
 Datos de referencia confirmados:
 
@@ -226,7 +231,7 @@ No cargues documentos de identidad, información bancaria, padrones ni material 
 
 ## 10. Leer y responder formularios
 
-Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configurada por la institución, normalmente **soc.italiana.arrecifes@gmail.com**. Todos los formularios (contacto, socios, escuela y salones) se envían por Resend, con remitente `contacto@sociedaditalianaarrecifes.com.ar`. Esa dirección identifica los envíos de la web; no es una casilla de recepción. Para responder al visitante, usá **Responder** desde el mensaje recibido en Gmail. Si el envío todavía no está habilitado, la página lo informa y ofrece escribir por correo directamente.
+Las solicitudes **no se consultan en Sanity**. Se reciben en la casilla configurada por la institución, actualmente **soc.italiana.arrecifes@gmail.com**. Todos los formularios (contacto, socios, escuela y salones) se envían por Resend, con remitente `contacto@sociedaditalianaarrecifes.com.ar`. Esa dirección identifica los envíos de la web; no es una casilla de recepción. Para responder al visitante, usá **Responder** desde el mensaje recibido en Gmail. Si ocurre un error de envío o de configuración, la página lo informa y ofrece escribir por correo directamente.
 
 1. Abrí la casilla de correo.
 2. El asunto empieza con el nombre del formulario entre corchetes. En Contacto sigue lo que escribió la persona en el campo Asunto, por ejemplo **[Contacto] Consulta por cursos**. En los trámites sigue el nombre de quien lo envía, por ejemplo **[Solicitud de alta] Ana Pérez**. Todos llegan del remitente **Sociedad Italiana**.
@@ -273,7 +278,7 @@ Cuando pidas ayuda, indicá qué página o evento estabas editando, qué intenta
 
 La persona responsable debe comprobar estos puntos antes de entregar el sitio para uso cotidiano:
 
-- Completar los enlaces reales y el contacto de soporte al comienzo de esta guía.
+- Comprobar los accesos del comienzo de esta guía y compartir internamente el contacto de soporte acordado.
 - Confirmar que el Studio y la web usan el mismo proyecto y contenido de Sanity.
 - Comprobar que publicar, corregir y despublicar un evento actualiza la web automáticamente.
 - Mantener activa la actualización diaria de la agenda.
@@ -292,8 +297,10 @@ Las instrucciones de instalación y configuración están en el [README técnico
 
 Los nombres de algunos botones pueden variar según el idioma, el plan y las actualizaciones del servicio.
 
-## Aparición en Google
+## 14. Aparición en Google
 
 La web informa a los buscadores su nombre, datos institucionales, títulos y descripciones. El sitemap se actualiza automáticamente cuando se recompila la web, incluidos los eventos publicados. Usá nombres claros, resúmenes útiles e imágenes con texto alternativo en Sanity; no repitas palabras clave de forma artificial ni publiques datos sin confirmar.
 
 Para revisar la presencia en Google, entrá a [Google Search Console](https://search.google.com/search-console) con `soc.italiana.arrecifes@gmail.com` y elegí `sociedaditalianaarrecifes.com.ar`. En **Sitemaps** se controla la lectura del mapa del sitio y en **Inspección de URLs**, el estado de una página. Google puede tardar en mostrar páginas nuevas o cambios; enviar una solicitud no garantiza su aparición ni una posición determinada. No borres el registro DNS `google-site-verification` de Cloudflare.
+
+El dominio ya está verificado, el índice del sitemap fue procesado correctamente y se solicitó la indexación de la portada. El mapa del sitio está en [sitemap-index.xml](https://sociedaditalianaarrecifes.com.ar/sitemap-index.xml); no hace falta volver a enviarlo por cada evento nuevo. Las páginas de agradecimiento y error se excluyen de los resultados. El ícono del sitio usa el logo de la Sociedad; Google puede tardar en actualizarlo.
