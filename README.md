@@ -218,7 +218,9 @@ Si existe un proyecto Pages previo, mantenelo hasta verificar Workers. La integr
 
 Las claves locales de ejemplo son las oficiales: site key `1x00000000000000000000AA` y secret key `1x0000000000000000000000000000000AA`. No se aceptan para la API de producción. [Pruebas oficiales](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).
 
-### Al comprar el futuro dominio `.com.ar`
+### Dominio institucional `.com.ar`
+
+La dirección principal es `https://sociedaditalianaarrecifes.com.ar`, sin `www`. `web/wrangler.jsonc` declara el dominio personalizado del Worker y ese mismo valor para `CONTACT_ORIGIN`. En Workers Builds, `PUBLIC_SITE_URL` debe coincidir; en el widget Turnstile debe estar autorizado `sociedaditalianaarrecifes.com.ar` (sin protocolo). Cambiar las variables de compilación requiere un nuevo build y despliegue. El dominio web y la verificación del remitente en Resend son configuraciones independientes.
 
 1. Conectá el dominio al Worker en Cloudflare y verificá HTTPS. Actualizá `PUBLIC_SITE_URL` y `CONTACT_ORIGIN`; agregá el nuevo hostname al widget Turnstile y recompilá.
 2. Creá o usá la cuenta institucional en Resend. Agregá el dominio remitente y copiá los registros DNS que indique Resend. No inventes registros ni reemplaces los de recepción de correo existentes.

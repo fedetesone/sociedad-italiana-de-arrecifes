@@ -5,6 +5,9 @@
   "compatibility_date": "2026-10-30",
   "compatibility_flags": ["nodejs_compat"],
   "workers_dev": true,
+  "routes": [
+    { "pattern": "sociedaditalianaarrecifes.com.ar", "custom_domain": true },
+  ],
   "assets": {
     "binding": "ASSETS",
     "directory": "./dist",
@@ -16,7 +19,7 @@
     // Resend test mode until the .com.ar domain is verified.
     "EMAIL_FROM": "Sociedad Italiana <onboarding@resend.dev>",
     "EMAIL_TO": "soc.italiana.arrecifes@gmail.com",
-    "CONTACT_ORIGIN": "https://sociedad-italiana-de-arrecifes.soc-italiana-arrecifes.workers.dev",
+    "CONTACT_ORIGIN": "https://sociedaditalianaarrecifes.com.ar",
   },
   "ratelimits": [
     {
