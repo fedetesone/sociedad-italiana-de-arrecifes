@@ -222,6 +222,8 @@ Las claves locales de ejemplo son las oficiales: site key `1x0000000000000000000
 
 La dirección principal es `https://sociedaditalianaarrecifes.com.ar`, sin `www`. `web/wrangler.jsonc` declara el dominio personalizado del Worker y ese mismo valor para `CONTACT_ORIGIN`. En Workers Builds, `PUBLIC_SITE_URL` debe coincidir; en el widget Turnstile debe estar autorizado `sociedaditalianaarrecifes.com.ar` (sin protocolo). Cambiar las variables de compilación requiere un nuevo build y despliegue. El dominio web y la verificación del remitente en Resend son configuraciones independientes.
 
+En la zona DNS de Cloudflare, `www` usa un registro A con proxy a `192.0.2.1`, destinado únicamente a redirección. La regla «Redirigir www al dominio principal» coincide con `http.host eq "www.sociedaditalianaarrecifes.com.ar"` y devuelve 301 a `concat("https://sociedaditalianaarrecifes.com.ar", http.request.uri.path)`, conservando la query string. Esta regla y el DNS se administran en Cloudflare; no son otro Worker ni un servidor de origen.
+
 1. Conectá el dominio al Worker en Cloudflare y verificá HTTPS. Actualizá `PUBLIC_SITE_URL` y `CONTACT_ORIGIN`; agregá el nuevo hostname al widget Turnstile y recompilá.
 2. Creá o usá la cuenta institucional en Resend. Agregá el dominio remitente y copiá los registros DNS que indique Resend. No inventes registros ni reemplaces los de recepción de correo existentes.
 3. Esperá que Resend indique dominio verificado y creá una API key con permiso de envío.

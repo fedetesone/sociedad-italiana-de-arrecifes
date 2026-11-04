@@ -10,7 +10,7 @@ Está pensada para el uso cotidiano, una vez creadas las cuentas y configurados 
 
 | Acceso                                     | Dirección o dato                                             |
 | ------------------------------------------ | ------------------------------------------------------------ |
-| Sitio público: lo que ven los visitantes   | https://sociedaditalianaarrecifes.com.ar                      |
+| Sitio público: lo que ven los visitantes   | https://sociedaditalianaarrecifes.com.ar                     |
 | Administrador de contenidos: Sanity Studio | **Completar con el enlace real del Studio**                  |
 | Persona responsable de accesos y soporte   | **Completar nombre y forma de contacto**                     |
 | Correo que recibe las consultas            | soc.italiana.arrecifes@gmail.com                             |
