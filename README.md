@@ -259,3 +259,11 @@ La sección de referencia consular de `/contacto/` se mantiene en `web/src/compo
 Las secciones de INAES y Municipalidad de Arrecifes se mantienen en `web/src/components/contact/PublicInstitutions.astro`, con el mismo criterio de contenido estático y fuentes oficiales documentadas.
 
 Referencias técnicas: [adaptador oficial Astro](https://docs.astro.build/en/guides/integrations-guide/cloudflare/), [Astro en Workers](https://developers.cloudflare.com/workers/framework-guides/web-apps/astro/), [rate limiting](https://developers.cloudflare.com/workers/runtime-apis/bindings/rate-limit/), [verificación Turnstile](https://developers.cloudflare.com/turnstile/get-started/server-side-validation/) y [API Resend](https://resend.com/docs/api-reference/emails/send-email).
+
+## SEO y Google Search Console
+
+La web genera HTML estático, títulos, descripciones, canonical HTTPS, Open Graph y Twitter Cards. La portada incluye JSON-LD `Organization` y `WebSite` con datos publicados en Sanity, sin inventar información institucional. `robots.txt` permite el rastreo y anuncia `/sitemap-index.xml`. El sitemap incluye páginas y eventos publicados; excluye `/gracias/` y la página 404, que llevan `noindex`.
+
+`npm run verify:build` comprueba los metadatos, los datos estructurados y la correspondencia entre canonical, sitemap y `noindex`. Los cambios de contenido de Sanity requieren el build por webhook o diario para actualizar también estos archivos.
+
+En [Google Search Console](https://search.google.com/search-console), usar la cuenta institucional y la propiedad de dominio `sociedaditalianaarrecifes.com.ar`. Conservar el TXT de verificación de Google en Cloudflare. Enviar `https://sociedaditalianaarrecifes.com.ar/sitemap-index.xml` en **Sitemaps** y usar **Inspección de URLs** para verificar acceso y solicitar indexación de la portada. El estado de configuración y los resultados de cada envío se verifican en el panel; publicar o enviar un sitemap no garantiza indexación inmediata ni posiciones.

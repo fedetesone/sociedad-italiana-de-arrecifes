@@ -23,6 +23,38 @@ const {
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const socialImage = new URL(image, Astro.site);
+const pageTitle = title ? `${title} | ${settings.name}` : settings.name;
+const home = new URL("/", Astro.site).href;
+// Use only the institution's published content. Escape < to keep CMS text inside JSON.
+const organizationId = `${home}#organizacion`;
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": organizationId,
+      name: settings.name,
+      url: home,
+      logo: new URL("/images/logo-sia.jpg", Astro.site).href,
+      description: settings.intro,
+      address: settings.address,
+      email: settings.email,
+      telephone: settings.phone,
+      sameAs: [safeUrl(settings.instagram), safeUrl(settings.facebook)].filter(
+        Boolean,
+      ),
+    },
+    {
+      "@type": "WebSite",
+      "@id": `${home}#sitio`,
+      url: home,
+      name: settings.name,
+      inLanguage: "es-AR",
+      publisher: { "@id": organizationId },
+    },
+  ],
+};
+const structuredJson = JSON.stringify(structuredData).replace(/</g, "\\u003c");
 ---
 
 <!doctype html>
@@ -30,21 +62,26 @@ const socialImage = new URL(image, Astro.site);
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title ? `${title} | ${settings.name}` : settings.name}</title>
+    <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <meta name="theme-color" content="#183e35" />
     <link rel="icon" href="/images/logo-sia.jpg" type="image/jpeg" />
     <meta property="og:locale" content="es_AR" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content={title || settings.name} />
+    <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
     <meta property="og:site_name" content={settings.name} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={socialImage} />
     {noindex && <meta name="robots" content="noindex" />}
+    {Astro.url.pathname === "/" && (
+      <script type="application/ld+json" set:html={structuredJson} />
+    )}
   </head>
   <body>
     <a class="skip" href="#contenido">

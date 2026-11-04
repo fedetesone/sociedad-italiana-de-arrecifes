@@ -36,6 +36,12 @@ export default defineConfig({
   }),
   session: false,
   trailingSlash: "ignore",
-  integrations: [requireBuildConfig, sitemap()],
+  integrations: [
+    requireBuildConfig,
+    sitemap({
+      filter: (page) =>
+        !["/gracias/", "/404/", "/404.html"].includes(new URL(page).pathname),
+    }),
+  ],
   vite: { plugins: [tailwindcss()] },
 });

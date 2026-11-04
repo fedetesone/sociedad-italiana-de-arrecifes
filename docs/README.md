@@ -291,3 +291,9 @@ Las instrucciones de instalación y configuración están en el [README técnico
 - [Conexión automática con Cloudflare](https://developers.cloudflare.com/workers/ci-cd/builds/deploy-hooks/).
 
 Los nombres de algunos botones pueden variar según el idioma, el plan y las actualizaciones del servicio.
+
+## Aparición en Google
+
+La web informa a los buscadores su nombre, datos institucionales, títulos y descripciones. El sitemap se actualiza automáticamente cuando se recompila la web, incluidos los eventos publicados. Usá nombres claros, resúmenes útiles e imágenes con texto alternativo en Sanity; no repitas palabras clave de forma artificial ni publiques datos sin confirmar.
+
+Para revisar la presencia en Google, entrá a [Google Search Console](https://search.google.com/search-console) con `soc.italiana.arrecifes@gmail.com` y elegí `sociedaditalianaarrecifes.com.ar`. En **Sitemaps** se controla la lectura del mapa del sitio y en **Inspección de URLs**, el estado de una página. Google puede tardar en mostrar páginas nuevas o cambios; enviar una solicitud no garantiza su aparición ni una posición determinada. No borres el registro DNS `google-site-verification` de Cloudflare.

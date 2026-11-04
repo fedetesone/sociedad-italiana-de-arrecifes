@@ -51,6 +51,49 @@ for (const file of await readdir(output, { recursive: true })) {
     `${file} must not contain server configuration`,
   );
 }
+// Check the generated SEO artifacts, including routes coming from Sanity.
+const sitemap = await readFile(new URL("sitemap-0.xml", output), "utf8");
+const homeHtml = await readFile(new URL("index.html", output), "utf8");
+const schemaMatch = homeHtml.match(
+  /<script type="application\/ld\+json">([\s\S]*?)<\/script>/,
+);
+assert.ok(
+  schemaMatch,
+  "Homepage must identify the institution for search engines",
+);
+const schema = JSON.parse(schemaMatch[1]);
+assert.equal(schema["@context"], "https://schema.org");
+const organization = schema["@graph"].find(
+  (item) => item["@type"] === "Organization",
+);
+const website = schema["@graph"].find((item) => item["@type"] === "WebSite");
+assert.ok(organization.name && organization.url && organization.logo);
+assert.equal(website.publisher["@id"], organization["@id"]);
+const canonicalUrls = new Set();
+for (const file of await readdir(output, { recursive: true })) {
+  if (!file.endsWith(".html")) continue;
+  const html = await readFile(new URL(file, output), "utf8");
+  const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+  assert.ok(canonical, `${file} needs a canonical URL`);
+  assert.ok(!canonicalUrls.has(canonical), `${file} repeats a canonical URL`);
+  canonicalUrls.add(canonical);
+  assert.match(
+    html,
+    /<meta name="description" content="[^"]+"/,
+    `${file} needs a description`,
+  );
+  if (html.includes('name="robots" content="noindex"')) {
+    assert.ok(
+      !sitemap.includes(`<loc>${canonical}</loc>`),
+      `${file} is noindex and must not be in the sitemap`,
+    );
+  } else {
+    assert.ok(
+      sitemap.includes(`<loc>${canonical}</loc>`),
+      `${file} must be discoverable in the sitemap`,
+    );
+  }
+}
 console.log(
-  `Verified ${count} static artifacts, runtime API, asset routing and no browser secret references.`,
+  `Verified ${count} static artifacts, runtime API, asset routing no browser secret references, structured data and sitemap consistency.`,
 );
